@@ -1,0 +1,7 @@
+## Interface: 80000
+## Title: GearLevel
+## Author: Pingumania
+## Notes: Display itemlevel of weapons and armour.
+## Version: 1.0
+
+init.xml
