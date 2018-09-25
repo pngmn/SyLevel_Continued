@@ -2,7 +2,7 @@ local P, C = unpack(select(2, ...))
 if C["EnableLoot"] ~= true then return end
 
 local function pipe()
-	if (LootFrame:IsShown() and SyLevel:IsPipeEnabled"loot") then
+	if LootFrame:IsShown() then
 		for i=1, LOOTFRAME_NUMBUTTONS or 4 do
 			local slotFrame = _G["LootButton" .. i]
 			local slot = slotFrame.slot
