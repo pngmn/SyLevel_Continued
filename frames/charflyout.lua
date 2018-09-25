@@ -5,16 +5,16 @@ local itemlink
 
 local function pipe(self)
 	local location = self.location
-	if (location and location < EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION) then
+	if (location and location < EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION - 1) then
         local player, bank, bags, _, slot, bag = EquipmentManager_UnpackLocation(location)
         if (not player and not bank and not bags) then return end
 
         if not bags then
             itemlink = GetInventoryItemLink("player", slot)
-            P:TextDisplay(self, nil, "player", slot)
+            P:TextDisplay(self, itemlink, "player", slot)
         else
-            itemlink = GetInventoryItemLink(bag, slot)
-            P:TextDisplay(self, nil, bag, slot)
+            itemlink = GetContainerItemLink(bag, slot)
+            P:TextDisplay(self, itemlink, bag, slot)
         end
 	end
 end
