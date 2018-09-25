@@ -13,8 +13,9 @@ function P:CreateText(self)
 	return tc
 end
 
-function P:TextDisplay(frame, value)
-	if not frame then return end
+function P:TextDisplay(frame, itemlink, id, slot)
+    if not frame then return end
+    local value = P:GetUpgradedItemLevel(itemlink, id, slot)
 	if value then
 		local tc = P:CreateText(frame)
 		tc:SetFont(C["ItemLevel"].Font, C["ItemLevel"].FontSize, "OUTLINE")

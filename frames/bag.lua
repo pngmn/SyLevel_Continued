@@ -5,12 +5,10 @@ local function pipe(self)
     local i = self:GetID()
     local container = self:GetParent():GetID()
     local name = self:GetName()
-
     local slotFrame = _G[name]
-    local slotLink = GetContainerItemLink(container, i)
+    local itemlink = GetContainerItemLink(container, i)
     
-    local ilevel = P:GetUpgradedItemLevel(slotLink, container, i)
-    P:TextDisplay(slotFrame, ilevel)
+    P:TextDisplay(slotFrame, itemlink, container, i)
 end
 
 hooksecurefunc("ContainerFrameItemButton_UpdateItemUpgradeIcon", pipe)

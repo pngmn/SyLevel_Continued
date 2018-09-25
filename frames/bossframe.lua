@@ -6,8 +6,7 @@ local function pipe(self, data)
     local slotLink = data.itemLink
     local slotFrame = self.IconHitBox
     
-    local ilevel = P:GetUpgradedItemLevel(slotLink)
-    P:TextDisplay(slotFrame, ilevel)
+    P:TextDisplay(slotFrame, slotLink)
 end
 
 hooksecurefunc("BossBanner_ConfigureLootFrame", pipe)
