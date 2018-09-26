@@ -14,16 +14,16 @@ local slots = {
 local function pipe(self)
 	if CharacterFrame:IsShown() then
 		for key, slotName in pairs(slots) do
-			local slotFrame = _G["Character" .. slotName .. "Slot"]
-			local slotLink = GetInventoryItemLink("player", key)
-            local ilevel = P:GetUpgradedItemLevel(slotLink)
-            P:TextDisplay(slotFrame, ilevel)
+			local slotFrame = _G["Character"..slotName.."Slot"]
+            local itemlink = GetInventoryItemLink("player", key)
+            
+            P:TextDisplay(slotFrame, itemlink, "player", key)
 		end
 	end
 end
 
 local function UNIT_INVENTORY_CHANGED(self, event, unit)
-    if (unit == "player") then
+    if unit == "player" then
 		pipe(self)
 	end
 end

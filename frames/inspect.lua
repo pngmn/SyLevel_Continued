@@ -17,27 +17,26 @@ local function pipe(self)
 		local itemLink = GetInventoryItemLink(unit, i)
 		local itemTexture = GetInventoryItemTexture(unit, i)
 
-		local ilevel = P:GetUpgradedItemLevel(itemLink)
-        P:TextDisplay(_G["Inspect"..slotName.."Slot"], ilevel)
+        P:TextDisplay(_G["Inspect"..slotName.."Slot"], itemLink)
 	end
 end
 
 local function UNIT_INVENTORY_CHANGED(self, event, unit)
-	if (InspectFrame.unit == unit) then
+	if InspectFrame.unit == unit then
 		pipe(self)
 	end
 end
 
 local function ADDON_LOADED(self, event, addon)
     if addon == "Blizzard_InspectUI" then
-        self:RegisterEvent("PLAYER_TARGET_CHANGED", pipe)
-        self:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
-        self:RegisterEvent("INSPECT_READY", pipe)
-        self:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
+        P:RegisterEvent("PLAYER_TARGET_CHANGED", pipe)
+        P:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
+        P:RegisterEvent("INSPECT_READY", pipe)
+        P:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
     end
 end
 
-if (IsAddOnLoaded("Blizzard_InspectUI")) then
+if IsAddOnLoaded("Blizzard_InspectUI") then
     P:RegisterEvent("PLAYER_TARGET_CHANGED", pipe)
     P:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
     P:RegisterEvent("INSPECT_READY", pipe)

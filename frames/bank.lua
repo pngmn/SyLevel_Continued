@@ -8,10 +8,8 @@ local function pipe(self)
         local name = self:GetName()
         
         local slotFrame = _G[name]
-        local slotLink = GetContainerItemLink(container, i)
 
-        local ilevel = P:GetUpgradedItemLevel(slotLink)
-        P:TextDisplay(slotFrame, ilevel)
+        P:TextDisplay(slotFrame, nil, container, i)
 	end
 end
 
