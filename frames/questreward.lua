@@ -15,7 +15,18 @@ local function pipe(self)
     end
 end
 
-hookesecurefunc(QuestChoiceFrame, "ShowRewards", pipe)
+local function ADDON_LOADED(self, event, addon)
+    if addon == "Blizzard_QuestChoice" then
+        hooksecurefunc(QuestChoiceFrame, "ShowRewards", pipe)
+        P:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
+    end
+end
+
+if IsAddOnLoaded("Blizzard_QuestChoice") then
+    hooksecurefunc(QuestChoiceFrame, "ShowRewards", pipe)
+else
+    P:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+end
 
 -- local function pipe()
     -- local numQuestRewards = 0
