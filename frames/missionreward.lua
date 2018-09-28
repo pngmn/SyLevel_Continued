@@ -6,4 +6,15 @@ local function pipe(frame)
     P:TextDisplay(frame, itemLink)
 end
 
-hooksecurefunc("GarrisonMissionFrame_SetItemRewardDetails", pipe)
+local function ADDON_LOADED(self, event, addon)
+    if addon == "Blizzard_GarrisonUI" then
+        hooksecurefunc("GarrisonMissionFrame_SetItemRewardDetails", pipe)
+        P:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
+    end
+end
+
+if IsAddOnLoaded("Blizzard_GarrisonUI") then
+    hooksecurefunc("GarrisonMissionFrame_SetItemRewardDetails", pipe)
+else
+    P:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+end
