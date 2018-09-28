@@ -2,19 +2,16 @@ local P, C = unpack(select(2, ...))
 if C["EnableLoot"] ~= true then return end
 
 local function pipe()
-	if LootFrame:IsShown() then
-		for i=1, LOOTFRAME_NUMBUTTONS or 4 do
-			local slotFrame = _G["LootButton" .. i]
-			local slot = slotFrame.slot
-			
-			local itemLink
-			if slot then
-				itemLink = GetLootSlotLink(slot)
-			end
-
+	if not LootFrame:IsShown() then return end
+    for i=1, LOOTFRAME_NUMBUTTONS or 4 do
+        local slotFrame = _G["LootButton"..i]
+        local slot = slotFrame.slot
+        
+        if slot then
+            local itemLink = GetLootSlotLink(slot)
             P:TextDisplay(slotFrame, itemLink)
-		end
-	end
+        end
+    end
 end
 
 LootFrameUpButton:HookScript("OnClick", pipe)

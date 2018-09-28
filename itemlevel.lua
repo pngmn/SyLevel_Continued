@@ -8,8 +8,7 @@ local threshold = C["ItemLevel"].Min
 
 do
     local oGetItemInfo = GetItemInfo
-    P.itemcache = P.itemcache or setmetatable({miss = 0, tot = 0}, {
-        __index = function(table, key)
+    P.itemcache = P.itemcache or setmetatable({miss = 0, tot = 0}, {__index = function(table, key)
 			if not key then return "" end
 			if key == "miss" then return 0 end
 			if key == "tot" then return 0 end
@@ -17,16 +16,14 @@ do
 			if #cached == 0 then return nil end
 			local itemLink = cached[2]
 			if not itemLink then return nil end
-			local itemID = P:GetItemID(itemLink)
-			local quality = cached[3]
+            cached.itemClass = P:CheckGear(itemLink)
 			local cacheIt = true
 			if cacheIt then
 				rawset(table, key, cached)
 			end
 			table.miss = table.miss + 1
 			return cached
-		end
-	})
+		end})
 end
 
 local cache = P.itemcache
@@ -49,11 +46,14 @@ local emptytable = {}
 local scanningTooltip, anchor
 local itemLevelPattern = _G.ITEM_LEVEL:gsub("%%d", "(%%d+)")
 
-local function ScanTip(itemLink, show, id, slot)
-	if type(itemLink) == "number" then
+local function ScanTip(itemLink, id, slot)
+	if not tipCache[itemLink].itemClass then return end
+    
+    if type(itemLink) == "number" then
 		itemLink = CachedGetItemInfo(itemLink, 2)
 		if not itemLink then return emptytable end
 	end
+    
 	if type(tipCache[itemLink].ilevel) == "nil" then -- or not tipCache[itemLink].cached then
 		local cacheIt = true
         local ilevel
@@ -67,7 +67,6 @@ local function ScanTip(itemLink, show, id, slot)
         -- scanningTooltip:SetOwner(UIParent, "ANCHOR_NONE")
         scanningTooltip:ClearLines()
 		local itemString = itemLink:match("|H(.-)|h")
-        local quality = CachedGetItemInfo(itemLink, 3)
 		local rc, message = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
         if id and type(id) == "string" and slot then
             rc, message = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, id, slot, nil, true)
@@ -75,18 +74,7 @@ local function ScanTip(itemLink, show, id, slot)
             rc, message = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot) 
         end
 		if not rc then return emptytable end
-      		
-		if show then
-			for i = 1, 12 do
-				local l, ltext = _G["LibItemUpgradeInfoTooltipTextLeft"..i], nil		
-				local r, rtext = _G["LibItemUpgradeInfoTooltipTextRight"..i], nil
-				if l then
-                    ltext = l:GetText()
-                    rtext = r:GetText()
-                    _G.print(i, ltext, " - ", rtext)
-				end		
-			end
-		end
+      	
         tipCache[itemLink] = {
             ilevel = nil,
             cached = cacheIt
@@ -96,10 +84,10 @@ local function ScanTip(itemLink, show, id, slot)
 			local label, text = _G["LibItemUpgradeInfoTooltipTextLeft"..i], nil
 			if label then text = label:GetText() end
 			if text then
-                if show then _G.print("|cFFFFFF00"..text.."|r") end
                 if c.ilevel == nil then c.ilevel = tonumber(text:match(itemLevelPattern)) end
 			end
 		end
+        c.itemClass = P:CheckGear(itemLink)
 		c.ilevel = c.ilevel or 1
         scanningTooltip:Hide()
 	end
@@ -112,10 +100,7 @@ function P:GetHeirloomTrueLevel(itemString, id, slot)
 	if not itemLink then
 		return nil, false
 	end
-    if not self:CheckGear(itemString) then 
-        return nil, false
-    end
-	local rc = ScanTip(itemString, nil, id, slot)
+	local rc = ScanTip(itemString, id, slot)
 	if rc.ilevel then
 		return rc.ilevel, true
 	else
@@ -130,18 +115,11 @@ function P:GetUpgradedItemLevel(itemString, id, slot)
     end
 end
 
-function P:GetItemID(itemlink)
-	if (type(itemlink) == "string") then
-		local itemid, context = GetItemInfoFromHyperlink(itemlink)
-		return tonumber(itemid) or 0
-	else
-		return 0
-	end
-end
-
 function P:CheckGear(itemString)
     local _, _, _, _, _, itemClass = GetItemInfoInstant(itemString)
     if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR then
-        return true
+        return true 
+    else 
+        return nil
     end
 end
