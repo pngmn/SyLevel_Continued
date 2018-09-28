@@ -1,7 +1,7 @@
 local P, C = unpack(select(2, ...))
 if C["EnableInspect"] ~= true then return end
 
-if(select(4, GetAddOnInfo("Fizzle"))) then return end
+if (select(4, GetAddOnInfo("Fizzle"))) then return end
 
 local slots = {
 	"Head", "Neck", "Shoulder", "Shirt", "Chest", "Waist", "Legs", "Feet", "Wrist",

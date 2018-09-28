@@ -22,16 +22,10 @@ local function pipe(self)
 	end
 end
 
-local function update(self)
-	if (selectedRecipeID and IsAddOnLoaded("Blizzard_TradeSkillUI")) then
-		return pipe(self, selectedRecipeID)
-	end
-end
-
 local function ADDON_LOADED(self, event, addon)
 	if addon == "Blizzard_TradeSkillUI" then
 		hooksecurefunc(TradeSkillFrame, "OnRecipeChanged", pipe)
-		self:UnregisterEvent(event, ADDON_LOADED)
+		P:UnregisterEvent(event, ADDON_LOADED)
 	end
 end
 
