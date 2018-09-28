@@ -1,9 +1,9 @@
 local P, C = unpack(select(2, ...))
 if C["EnableCharacter"] ~= true then return end
 
-if(select(4, GetAddOnInfo("Fizzle"))) then return end
-if(select(4, GetAddOnInfo("GW2_UI"))) then return end
-if(select(4, GetAddOnInfo("DejaCharacterStats"))) then return end
+if (select(4, GetAddOnInfo("Fizzle"))) then return end
+if (select(4, GetAddOnInfo("GW2_UI"))) then return end
+if (select(4, GetAddOnInfo("DejaCharacterStats"))) then return end
 
 local slots = {
 	"Head", "Neck", "Shoulder", "Shirt", "Chest", "Waist", "Legs", "Feet", "Wrist",
@@ -12,14 +12,13 @@ local slots = {
 }
 
 local function pipe(self)
-	if CharacterFrame:IsShown() then
-		for key, slotName in pairs(slots) do
-			local slotFrame = _G["Character"..slotName.."Slot"]
-            local itemlink = GetInventoryItemLink("player", key)
-            
-            P:TextDisplay(slotFrame, itemlink, "player", key)
-		end
-	end
+	if not CharacterFrame:IsShown() then return end
+    for key, slotName in pairs(slots) do
+        local slotFrame = _G["Character"..slotName.."Slot"]
+        local itemlink = GetInventoryItemLink("player", key)
+        
+        P:TextDisplay(slotFrame, itemlink, "player", key)
+    end
 end
 
 local function UNIT_INVENTORY_CHANGED(self, event, unit)

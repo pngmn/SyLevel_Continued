@@ -4,6 +4,7 @@ if C["EnableCharacter"] ~= true then return end
 local itemlink
 
 local function pipe(self)
+    if not CharacterFrame:IsShown() then return end
 	local location = self.location
 	if (location and location < EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION - 1) then
         local player, bank, bags, _, slot, bag = EquipmentManager_UnpackLocation(location)

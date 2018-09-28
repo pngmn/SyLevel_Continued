@@ -4,7 +4,7 @@ if C["EnableMail"] ~= true then return end
 local stack = {}
 
 local function send(self)
-	if(not SendMailFrame:IsShown()) then return end
+	if not SendMailFrame:IsShown() then return end
 
 	for i=1, ATTACHMENTS_MAX_SEND do
 		local slotLink = GetSendMailItemLink(i)
@@ -15,6 +15,7 @@ local function send(self)
 end
 
 local function inbox()
+    if not InboxFrame:IsShown() then return end
 	local numItems = GetInboxNumItems()
 	local index = ((InboxFrame.pageNum - 1) * INBOXITEMS_TO_DISPLAY) + 1
 
@@ -23,7 +24,7 @@ local function inbox()
 		if index <= numItems then
 			for j=1, ATTACHMENTS_MAX_RECEIVE do
 				local attachLink = GetInboxItemLink(index, j)
-				if(attachLink) then
+				if attachLink then
 					table.insert(stack, attachLink)
 				end
 			end
