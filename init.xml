@@ -1,1 +1,1 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">    <Script file="core.lua"/>	<Script file="event.lua"/>    <Script file="options.lua"/>    <Include file="frames\load_frames.xml"/>	<Script file="text.lua"/>    <Script file="itemlevel.lua"/></Ui>
+<Ui xmlns="http://www.blizzard.com/wow/ui/">    <Script file="core.lua"/>	<Script file="event.lua"/>    <Script file="options.lua"/>    <Include file="frames\load_frames.xml"/>    <Include file="addons\load_addons.xml"/>	<Script file="text.lua"/>    <Script file="itemlevel.lua"/></Ui>
