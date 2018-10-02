@@ -2,7 +2,6 @@ local P, C = unpack(select(2, ...))
 
 local type, tonumber, select, strsplit, GetItemInfoFromHyperlink = type, tonumber, select, strsplit, GetItemInfoFromHyperlink
 local unpack, GetDetailedItemLevelInfo = unpack, GetDetailedItemLevelInfo
-local print = function() end
 
 local threshold = C["ItemLevel"].Min
 
@@ -15,8 +14,6 @@ do
 			local cached = {oGetItemInfo(key)}
 			if #cached == 0 then return nil end
 			local itemLink = cached[2]
-			if not itemLink then return nil end
-            cached.itemClass = P:CheckGear(itemLink)
 			local cacheIt = true
 			if cacheIt then
 				rawset(table, key, cached)
@@ -45,9 +42,10 @@ local tipCache = P.tipCache
 local emptytable = {}
 local scanningTooltip, anchor
 local itemLevelPattern = _G.ITEM_LEVEL:gsub("%%d", "(%%d+)")
+local minItemLevelPattern = _G.ITEM_LEVEL:gsub("%%d", "(%%d+%+?)")
 
 local function ScanTip(itemLink, id, slot)
-	if not tipCache[itemLink].itemClass then return end
+    if P:CheckGear(itemLink) == false then return emptytable end
     
     if type(itemLink) == "number" then
 		itemLink = CachedGetItemInfo(itemLink, 2)
@@ -77,6 +75,7 @@ local function ScanTip(itemLink, id, slot)
       	
         tipCache[itemLink] = {
             ilevel = nil,
+            ilevelString = nil,
             cached = cacheIt
         }
         local c = tipCache[itemLink]
@@ -84,11 +83,15 @@ local function ScanTip(itemLink, id, slot)
 			local label, text = _G["LibItemUpgradeInfoTooltipTextLeft"..i], nil
 			if label then text = label:GetText() end
 			if text then
-                if c.ilevel == nil then c.ilevel = tonumber(text:match(itemLevelPattern)) end
+                if c.ilevel == nil then
+                    c.ilevel = tonumber(text:match(itemLevelPattern))
+                end
+                if c.ilevelString == nil then
+                    c.ilevelString = text:match(minItemLevelPattern)
+                end
 			end
 		end
-        c.itemClass = P:CheckGear(itemLink)
-		c.ilevel = c.ilevel or 1
+        c.ilevel = c.ilevel or 1
         scanningTooltip:Hide()
 	end
 	return tipCache[itemLink]
@@ -101,17 +104,17 @@ function P:GetHeirloomTrueLevel(itemString, id, slot)
 		return nil, false
 	end
 	local rc = ScanTip(itemString, id, slot)
-	if rc.ilevel then
-		return rc.ilevel, true
+	if rc.ilevel and rc.ilevelString then
+		return rc.ilevel, rc.ilevelString, true
 	else
         return nil, false
     end
 end
 
 function P:GetUpgradedItemLevel(itemString, id, slot)
-	local ilvl, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
+	local ilvl, ilvlText, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
     if isTrue and ilvl >= threshold then
-        return ilvl
+        return ilvlText
     end
 end
 
@@ -120,6 +123,6 @@ function P:CheckGear(itemString)
     if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR then
         return true 
     else 
-        return nil
+        return false
     end
 end
