@@ -2,14 +2,14 @@ local P, C = unpack(select(2, ...))
 if C["EnableBank"] ~= true then return end
 
 local function pipe(self)
-	if not BankFrame:IsShown() then return end
-    local i = self:GetID()
-    local container = self:GetParent():GetID()
-    local name = self:GetName()
-    local slotFrame = _G[name]
-    local itemlink = GetContainerItemLink(container, i)
-
-    P:TextDisplay(slotFrame, itemlink, container, i)
+	if BankFrame:IsShown() then
+		for i=1, NUM_BANKGENERIC_SLOTS or 28 do
+			local slotFrame = _G["BankFrameItem"..i]
+			local itemLink = GetContainerItemLink(-1, i)
+            P:TextDisplay(slotFrame, itemlink, -1, i)
+		end
+	end
 end
 
-hooksecurefunc("BankFrameItemButton_Update", pipe)
+P:RegisterEvent("BANKFRAME_OPENED", pipe)
+P:RegisterEvent("PLAYERBANKSLOTS_CHANGED", pipe)
