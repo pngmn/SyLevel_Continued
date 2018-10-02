@@ -3,7 +3,8 @@ local P, C = unpack(select(2, ...))
 C["ItemLevel"] = {
     ["Min"] = 266,
     ["Font"] = "Interface\\Addons\\Fontastic\\fonts\\GW2_UI\\trebuchet.ttf",
-    ["FontSize"] = 14,
+    ["FontSize"] = 13,
+    ["FontStyle"] = "OUTLINE",
 }
 
 C["EnableAdventureGuide"] = true
