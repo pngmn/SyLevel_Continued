@@ -3,13 +3,21 @@ if C["EnableBag"] ~= true then return end
 
 local function pipe(self)
     if not ContainerFrame:IsShown() then return end
-    local i = self:GetID()
-    local container = self:GetParent():GetID()
+    local id = self:GetID()
     local name = self:GetName()
-    local slotFrame = _G[name]
-    local itemlink = GetContainerItemLink(container, i)
-    
-    P:TextDisplay(slotFrame, itemlink, container, i)
+    local size = self.size
+
+    for i=1, size do
+        local bid = size - i + 1
+        local slotFrame = _G[name.."Item"..bid]
+        local itemLink = GetContainerItemLink(id, i)
+        P:TextDisplay(slotFrame, itemlink, id, i)
+    end
 end
 
-hooksecurefunc("ContainerFrameItemButton_UpdateItemUpgradeIcon", pipe)
+local function PLAYER_LOGIN()
+    if IsAddOnLoaded("LiteBag") then return end
+    hooksecurefunc("ContainerFrame_Update", pipe)
+end
+
+P:RegisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
