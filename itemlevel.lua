@@ -41,28 +41,41 @@ P.tipCache = P.tipCache or setmetatable({}, {__index = function(table, key) retu
 local tipCache = P.tipCache
 local emptytable = {}
 local scanningTooltip, anchor
-local itemLevelPattern = _G.ITEM_LEVEL:gsub("%%d", "(%%d+)")
-local minItemLevelPattern = _G.ITEM_LEVEL:gsub("%%d", "(%%d+%+?)")
+local itemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+).?%%(?(%%d*)%%)?')
+local minItemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+%%+?).?%%(?(%%d*)%%)?')
 
-local function ScanTip(itemLink, id, slot)
-    if P:CheckGear(itemLink) == false then return emptytable end
-    
+local function ScanTip(itemLink, id, slot)    
     if type(itemLink) == "number" then
 		itemLink = CachedGetItemInfo(itemLink, 2)
 		if not itemLink then return emptytable end
 	end
     
-	if type(tipCache[itemLink].ilevel) == "nil" then -- or not tipCache[itemLink].cached then
+    if type(tipCache[itemLink].gearcheck) == "nil" then
+        local cacheIt = true
+        
+        tipCache[itemLink] = {
+            ilevel = nil,
+            ilevelString = nil,
+            gearcheck = nil,
+            cached = cacheIt
+        }
+        local c = tipCache[itemLink]
+        c.gearcheck = P:CheckGear(itemLink)
+    end
+    
+    if tipCache[itemLink].gearcheck == false then
+        return emptytable
+    end
+
+	if type(tipCache[itemLink].ilevel) == "nil" then
 		local cacheIt = true
-        local ilevel
                      
 		if not scanningTooltip then
-			scanningTooltip = _G.CreateFrame("GameTooltip", "LibItemUpgradeInfoTooltip", nil, "GameTooltipTemplate")
+			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
             anchor = CreateFrame("Frame")
 			anchor:Hide()
 		end
         GameTooltip_SetDefaultAnchor(scanningTooltip, anchor)
-        -- scanningTooltip:SetOwner(UIParent, "ANCHOR_NONE")
         scanningTooltip:ClearLines()
 		local itemString = itemLink:match("|H(.-)|h")
 		local rc, message = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
@@ -73,27 +86,34 @@ local function ScanTip(itemLink, id, slot)
         end
 		if not rc then return emptytable end
       	
-        tipCache[itemLink] = {
-            ilevel = nil,
-            ilevelString = nil,
-            cached = cacheIt
-        }
         local c = tipCache[itemLink]
-		for i = 2, 6 do
-			local label, text = _G["LibItemUpgradeInfoTooltipTextLeft"..i], nil
+		for i = 2, 3 do
+			local label, text = _G["GearLevelScanTooltipTextLeft"..i], nil
 			if label then text = label:GetText() end
 			if text then
+                local normal, timewalking
                 if c.ilevel == nil then
-                    c.ilevel = tonumber(text:match(itemLevelPattern))
+                    normal, timewalking = text:match(itemLevelPattern)
+                    if timewalking ~= "" then
+                        c.ilevel = tonumber(timewalking)
+                    else
+                        c.ilevel = tonumber(normal)
+                    end
                 end
                 if c.ilevelString == nil then
-                    c.ilevelString = text:match(minItemLevelPattern)
+                    normal, timewalking = text:match(minItemLevelPattern)
+                    if timewalking ~= "" then
+                        c.ilevelString = timewalking
+                    else
+                        c.ilevelString = normal
+                    end
                 end
 			end
 		end
         c.ilevel = c.ilevel or 1
         scanningTooltip:Hide()
 	end
+    
 	return tipCache[itemLink]
 end
 
