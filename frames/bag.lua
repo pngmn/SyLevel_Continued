@@ -2,7 +2,6 @@ local P, C = unpack(select(2, ...))
 if C["EnableBag"] ~= true then return end
 
 local function pipe(self)
-    if not ContainerFrame:IsShown() then return end
     local id = self:GetID()
     local name = self:GetName()
     local size = self.size
@@ -11,7 +10,7 @@ local function pipe(self)
         local bid = size - i + 1
         local slotFrame = _G[name.."Item"..bid]
         local itemLink = GetContainerItemLink(id, i)
-        P:TextDisplay(slotFrame, itemlink, id, i)
+        P:TextDisplay(slotFrame, itemLink, id, i)
     end
 end
 
