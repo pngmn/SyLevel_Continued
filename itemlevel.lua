@@ -56,6 +56,7 @@ local function ScanTip(itemLink, id, slot)
         tipCache[itemLink] = {
             ilevel = nil,
             ilevelString = nil,
+            quality = nil,
             gearcheck = nil,
             cached = cacheIt
         }
@@ -69,6 +70,7 @@ local function ScanTip(itemLink, id, slot)
 
 	if type(tipCache[itemLink].ilevel) == "nil" then
 		local cacheIt = true
+        local _, quality
                      
 		if not scanningTooltip then
 			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
@@ -81,8 +83,12 @@ local function ScanTip(itemLink, id, slot)
 		local rc, message = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
         if id and type(id) == "string" and slot then
             rc, message = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, id, slot, nil, true)
+            quality = GetInventoryItemQuality(id, slot)
         elseif id and type(id) == "number" and slot then
             rc, message = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot) 
+            _, _, _, quality = GetContainerItemInfo(id, slot)
+        else
+            _, _, quality = GetItemInfo(itemLink)
         end
 		if not rc then return emptytable end
       	
@@ -111,6 +117,7 @@ local function ScanTip(itemLink, id, slot)
 			end
 		end
         c.ilevel = c.ilevel or 1
+        c.quality = quality
         scanningTooltip:Hide()
 	end
     
@@ -125,16 +132,16 @@ function P:GetHeirloomTrueLevel(itemString, id, slot)
 	end
 	local rc = ScanTip(itemString, id, slot)
 	if rc.ilevel and rc.ilevelString then
-		return rc.ilevel, rc.ilevelString, true
+		return rc.ilevel, rc.ilevelString, rc.quality, true
 	else
         return nil, false
     end
 end
 
 function P:GetUpgradedItemLevel(itemString, id, slot)
-	local ilvl, ilvlText, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
+	local ilvl, ilvlText, quality, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
     if isTrue and ilvl >= threshold then
-        return ilvlText
+        return ilvlText, quality
     end
 end
 
