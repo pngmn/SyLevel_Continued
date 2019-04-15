@@ -1,5 +1,5 @@
-## Interface: 80000
-## Title: GearLevel
+## Interface: 80100
+## Title: PingumaniaItemlevel
 ## Author: Pingumania
 ## Notes: Display itemlevel of weapons and armour.
 ## Version: 1.0
