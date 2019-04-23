@@ -3,5 +3,6 @@
 ## Author: Pingumania
 ## Notes: Display itemlevel of weapons and armour.
 ## Version: 1.0
+## SavedVariables: PingumaniaItemlevelDB
 
 init.xml

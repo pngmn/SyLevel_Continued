@@ -1,51 +1,18 @@
 local P, C = unpack(select(2, ...))
 
-C["ItemLevel"] = {
-    ["Min"] = 266,
-    ["Font"] = "Interface\\Addons\\Fontastic\\fonts\\GW2_UI\\trebuchet.ttf",
-    ["FontSize"] = 13,
-    ["FontStyle"] = "OUTLINE",
-}
-
-C["EnableAdventureGuide"] = true
-C["EnableBag"] = true
-C["EnableBank"] = true
-C["EnableBossFrame"] = true
-C["EnableCharacter"] = true
-C["EnableGuildBank"] = true
-C["EnableInspect"] = true
-C["EnableLoot"] = true
-C["EnableMail"] = true
-C["EnableMapReward"] = true
-C["EnableMerchant"] = true
-C["EnableMissionReward"] = true
-C["EnableQuestReward"] = true
-C["EnableScrapper"] = true
-C["EnableTrade"] = true
-C["EnableTradeskill"] = true
-C["EnableVoidStorage"] = true
-
-local Options = CreateFrame("Frame", P.Name.."Options", InterfaceOptionsFramePanelContainer)
-Options.name = GetAddOnMetadata(P.Name, "Title") or P.Name
-InterfaceOptions_AddCategory(Options)
-C.OptionsPanel = Options
-
-SLASH_BBPT1 = "/pilvl"
-SlashCmdList.PILVL = function()
-	InterfaceOptionsFrame_OpenToCategory(Options)
-end
+local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
+frame.name = "Pipes"
+frame.parent = P
 
 do
-	local title = createFontString(self, "GameFontNormalLarge")
+	local title = P.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText(P.Name.." - Now with 30% less toxic radiation!")
+	title:SetText(P.Name)
 
-	local subtitle = createFontString(self)
+	local subtitle = P.createFontString(self)
 	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
 	subtitle:SetPoint("RIGHT", self, -32, 0)
-	subtitle:SetJustifyH"LEFT"
-	-- Might be useful later~
-	--subtitle:SetText("Configurations are awesome!")
+	subtitle:SetText"Select your display locations!"
 
 	local scroll = CreateFrame("ScrollFrame", nil, self)
 	scroll:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -8)
@@ -53,7 +20,7 @@ do
 
 	local scrollchild = CreateFrame("Frame", nil, self)
 	scrollchild.rows = {}
-	scrollchild:SetPoint("LEFT")
+	scrollchild:SetPoint"LEFT"
 	scrollchild:SetHeight(scroll:GetHeight())
 	-- So we have correct spacing on the right side.
 	scrollchild:SetWidth(scroll:GetWidth() -16)
@@ -71,6 +38,10 @@ do
 	scroll:SetVerticalScroll(0)
 	scrollchild:SetPoint("TOP", 0, 0)
 
+	self:refresh()
+end
+
+do
 	local CheckBox_OnClick = function(self)
 		local pipe = self:GetParent().pipe
 		if (self:GetChecked()) then
@@ -137,11 +108,11 @@ do
 		self:SetBackdropBorderColor(.5, .9, .06)
 
 		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
-		GameTooltip:SetText("Click for additional settings.")
+		GameTooltip:SetText"Click for additional settings."
 	end
 
 	local Row_OnLeave = function(self)
-		if (self ~= self.owner.active) then
+		if(self ~= self.owner.active) then
 			self:SetBackdropBorderColor(.3, .3, .3)
 		end
 
@@ -155,7 +126,7 @@ do
 		row:SetBackdropColor(.1, .1, .1, .5)
 		row:SetBackdropBorderColor(.3, .3, .3)
 
-		if (i == 1) then
+		if(i == 1) then
 			row:SetPoint("TOP", 0, -8)
 		else
 			row:SetPoint("TOP", parent.rows[i - 1], "BOTTOM")
@@ -175,7 +146,7 @@ do
 		check:SetScript("OnClick", CheckBox_OnClick)
 		row.check = check
 
-		local label = createFontString(row)
+		local label = P.createFontString(row)
 		label:SetPoint("LEFT", check, "RIGHT", 5, -1)
 		row.label = label
 
@@ -220,7 +191,7 @@ do
 
 			local label = check.label
 			if (not label) then
-				label =  createFontString(check)
+				label =  P.createFontString(check)
 				label:SetPoint("LEFT", check, "RIGHT", 5, -1)
 				check.label = label
 			end
@@ -236,7 +207,44 @@ do
 		-- numFilters == 1.
 		filterFrame:SetHeight(((split-1) * 16) + 28)
 		filterFrame:Hide()
+		--[[
+		local n = 1
+		local unsortedRows = {}
+		local sortedRows = {}
+		for pipe, active, name, desc in P.IteratePipes() do
+			sortedRows[name] = n
+			unsortedRows[n] = {pipe, active, name, desc}
+			n = n + 1
+		end
+		function pairsByKeys (t, f)
+			local a = {}
+			for n in pairs(t) do table.insert(a, n) end
+				table.sort(a, f)
+				local i = 0
+				local iter = function ()
+				i = i + 1
+				if a[i] == nil then
+					return nil
+				else
+					return a[i], t[a[i]]--[[
+				end
+			end
+			return iter
+		end
+		n = 1
+		for k,v in pairsByKeys(sortedRows) do
+			local pipe, active, name, desc = unpack(unsortedRows[v])
+			local row = sChild.rows[n] or createRow(sChild, n)
 
+			row:SetBackdropBorderColor(.3, .3, .3)
+			row:SetHeight(24)
+
+			row.owner = self
+			row.pipe = pipe
+			row.check:SetChecked(active)
+			row.label:SetText(name)
+			n = n + 1
+		end]]
 		local n = 1
 		for pipe, active, name, desc in P.IteratePipes() do
 			local row = sChild.rows[n] or createRow(sChild, n)
@@ -253,3 +261,5 @@ do
 		end
 	end
 end
+
+InterfaceOptions_AddCategory(frame)
