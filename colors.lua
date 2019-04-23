@@ -1,6 +1,7 @@
-local P, C = unpack(select(2, ...))
+local _, ns = ...
+local SyLevel = ns.SyLevel
 
-local argcheck = P.argcheck
+local argcheck = SyLevel.argcheck
 
 local GREY = {0.55,0.55,0.55}
 local RED = {1,0,0}
@@ -109,7 +110,7 @@ end
 
 local colorFunctions = {
 	[1] = function(ilvl)
-		argcheck(ilvl,2,"number")
+		argcheck(ilvl,2,'number')
 		ilvl = (ilvl / 795)
 		local r,g,b
 		if ilvl < .5 then
@@ -124,7 +125,7 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[2] = function(ilvl)
-		argcheck(ilvl,2,"number")
+		argcheck(ilvl,2,'number')
 		ilvl = (ilvl / 795)
 		local r,g,b
 		if ilvl < .5 then
@@ -139,7 +140,7 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[3] = function(ilvl)
-		argcheck(ilvl,2,"number")
+		argcheck(ilvl,2,'number')
 		for i=1,#ilvls do
 			if ilvl >= ilvls[i] then
 				return unpack(colors[i] or {0.3,0.3,0.3})
@@ -147,13 +148,13 @@ local colorFunctions = {
 		end		
 	end,
 	[4] = function(ilvl)
-		argcheck(ilvl,2,"number")
+		argcheck(ilvl,2,'number')
 		local o, e = GetAverageItemLevel()
 		local relative = BuildRelative(e)
 		return ColorFunction(relative[12],relative[1],PINK,YELLOW,ilvl)
 	end,
 	[5] = function(ilvl)
-		argcheck(ilvl,2,"number")
+		argcheck(ilvl,2,'number')
 		local r,g,b
 		if ilvl <= 450 then
 			r = 0.55
@@ -175,7 +176,7 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[6] = function(ilvl)
-		argcheck(ilvl, 2, "number")
+		argcheck(ilvl,2,'number')
 		local r,g,b
 		if ilvl <= 450 then
 			r = 0.55
@@ -199,18 +200,20 @@ local colorFunctions = {
 		local cColors = RAID_CLASS_COLORS[select(2,UnitClass("player"))]
 		return cColors.r, cColors.g, cColors.b
 	end,
-    [8] = function(ilvl, quality)
-        if not quality return 1,1,1 end
+	[8] = function(_, quality)
+		if not quality then return 1, 1, 1 end
 		local cColors = GetItemQualityColor(quality)
 		return cColors.r, cColors.g, cColors.b
-	end,
+	end
 }
 
-function P:SetColorFunc(index)
-	PingumaniaItemLevelDB.ColorFunc = index
-	P:UpdateAllPipes()
+
+
+function SyLevel:SetColorFunc(index)
+	SyLevelDB.ColorFunc = index
+	SyLevel:UpdateAllPipes()
 end
 
-function P:GetColorFunc()
-	return colorFunctions[PingumaniaItemLevelDB.ColorFunc]
+function SyLevel:GetColorFunc()
+	return colorFunctions[SyLevelDB.ColorFunc]
 end

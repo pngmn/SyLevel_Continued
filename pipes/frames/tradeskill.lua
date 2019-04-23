@@ -1,4 +1,3 @@
-local P, C = unpack(select(2, ...))
 
 local _E
 local hook
@@ -11,7 +10,7 @@ local function pipe(self)
 
 	local itemLink = C_TradeSkillUI.GetRecipeItemLink(selectedRecipeID)
 	if itemLink then
-        P:CallFilters("tradeskill", TradeSkillFrame.DetailsFrame.Contents.ResultIcon, _E and itemLink)
+        PingumaniaItemlevel:CallFilters("tradeskill", TradeSkillFrame.DetailsFrame.Contents.ResultIcon, _E and itemLink)
 	end
 
 	local numReagents = C_TradeSkillUI.GetRecipeNumReagents(selectedRecipeID)
@@ -19,7 +18,7 @@ local function pipe(self)
 		local reagentFrame = TradeSkillFrame.DetailsFrame.Contents.Reagents[reagentIndex]
 		local reagentLink = C_TradeSkillUI.GetRecipeReagentItemLink(selectedRecipeID, reagentIndex)
 
-        P:CallFilters("tradeskill", reagentFrame, _E and reagentLink)
+        PingumaniaItemlevel:CallFilters("tradeskill", reagentFrame, _E and reagentLink)
 	end
 end
 
@@ -36,7 +35,7 @@ end
 local function ADDON_LOADED(self, event, addon)
 	if (addon == "Blizzard_TradeSkillUI") then
 		doHook()
-		P:UnregisterEvent(event, ADDON_LOADED)
+		PingumaniaItemlevel:UnregisterEvent(event, ADDON_LOADED)
 	end
 end
 
@@ -52,14 +51,14 @@ local function enable(self)
 	if (IsAddOnLoaded("Blizzard_TradeSkillUI")) then
 		doHook()
 	else
-		P:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+		PingumaniaItemlevel:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
 	end
 end
 
 local function disable(self)
 	_E = nil
 
-	P:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
+	PingumaniaItemlevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
 end
 
-P:RegisterPipe("tradeskill", enable, disable, update, "Profession Window", nil)
+PingumaniaItemlevel:RegisterPipe("tradeskill", enable, disable, update, "Profession Window", nil)

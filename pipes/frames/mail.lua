@@ -1,4 +1,3 @@
-local P, C = unpack(select(2, ...))
 
 local _E
 local hook
@@ -10,7 +9,7 @@ local function send(self)
 	for i=1, ATTACHMENTS_MAX_SEND do
 		local slotLink = GetSendMailItemLink(i)
 		local slotFrame = _G["SendMailAttachment"..i]
-		P:CallFilters("mail", slotFrame, _E and slotLink)
+		PingumaniaItemlevel:CallFilters("mail", slotFrame, _E and slotLink)
 	end
 end
 
@@ -29,7 +28,7 @@ local function inbox()
 			end
 		end
 
-		P:CallFilters("mail", slotFrame, _E and unpack(stack))
+		PingumaniaItemlevel:CallFilters("mail", slotFrame, _E and unpack(stack))
 		wipe(stack)
 
 		index = index + 1
@@ -44,7 +43,7 @@ local function letter()
 		if (itemLink) then
 			local slotFrame = _G["OpenMailAttachmentButton"..i]
 
-			P:CallFilters("mail", slotFrame, _E and itemLink)
+			PingumaniaItemlevel:CallFilters("mail", slotFrame, _E and itemLink)
 		end
 	end
 end
@@ -66,9 +65,9 @@ end
 local function enable(self)
 	_E = true
 
-	P:RegisterEvent("MAIL_SHOW", send)
-	P:RegisterEvent("MAIL_SEND_INFO_UPDATE", send)
-	P:RegisterEvent("MAIL_SEND_SUCCESS", send)
+	PingumaniaItemlevel:RegisterEvent("MAIL_SHOW", send)
+	PingumaniaItemlevel:RegisterEvent("MAIL_SEND_INFO_UPDATE", send)
+	PingumaniaItemlevel:RegisterEvent("MAIL_SEND_SUCCESS", send)
 
 	if (not hook) then
 		hooksecurefunc("OpenMail_Update", hookLetter)
@@ -80,9 +79,9 @@ end
 local function disable(self)
 	_E =  nil
 
-	P:UnregisterEvent("MAIL_SHOW", send)
-	P:UnregisterEvent("MAIL_SEND_INFO_UPDATE", send)
-	P:UnregisterEvent("MAIL_SEND_SUCCESS", send)
+	PingumaniaItemlevel:UnregisterEvent("MAIL_SHOW", send)
+	PingumaniaItemlevel:UnregisterEvent("MAIL_SEND_INFO_UPDATE", send)
+	PingumaniaItemlevel:UnregisterEvent("MAIL_SEND_SUCCESS", send)
 end
 
-P:RegisterPipe("mail", enable, disable, update, "Mail Window", nil)
+PingumaniaItemlevel:RegisterPipe("mail", enable, disable, update, "Mail Window", nil)

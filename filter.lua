@@ -1,19 +1,20 @@
-local P, C = unpack(select(2, ...))
+local _, ns = ...
+local SyLevel = ns.SyLevel
 
-local argcheck = P.argcheck
-local pipesTable = P.pipesTable
+local argcheck = SyLevel.argcheck
+local pipesTable = ns.pipesTable
 
 local filtersTable = {}
 local activeFilters = {}
 local numFilters = 0
 
-function P:RegisterFilter(name, type, filter, desc)
-	argcheck(name, 2, "string")
-	argcheck(type, 3, "string")
-	argcheck(filter, 4, "function")
-	argcheck(desc, 5, "string", "nil")
+function SyLevel:RegisterFilter(name, type, filter, desc)
+	argcheck(name, 2, 'string')
+	argcheck(type, 3, 'string')
+	argcheck(filter, 4, 'function')
+	argcheck(desc, 5, 'string', 'nil')
 
-	if(filtersTable[name]) then return nil, "Filter function is already registered." end
+	if(filtersTable[name]) then return nil, 'Filter function is already registered.' end
 	filtersTable[name] = {type, filter, name, desc}
 
 	numFilters = numFilters + 1
@@ -29,18 +30,18 @@ do
 		end
 	end
 
-	function P.IterateFilters()
+	function SyLevel.IterateFilters()
 		return iter, nil, nil
 	end
 end
 
 -- TODO: Validate that the display we try to use actually exists.
-function P:RegisterFilterOnPipe(pipe, filter)
-	argcheck(pipe, 2, "string")
-	argcheck(filter, 3, "string")
+function SyLevel:RegisterFilterOnPipe(pipe, filter)
+	argcheck(pipe, 2, 'string')
+	argcheck(filter, 3, 'string')
 
-	if(not pipesTable[pipe]) then return nil, "Pipe does not exist." end
-	if(not filtersTable[filter]) then return nil, "Filter does not exist." end
+	if(not pipesTable[pipe]) then return nil, 'Pipe does not exist.' end
+	if(not filtersTable[filter]) then return nil, 'Filter does not exist.' end
 
 	-- XXX: Clean up this logic.
 	if(not activeFilters[pipe]) then
@@ -55,21 +56,21 @@ function P:RegisterFilterOnPipe(pipe, filter)
 
 		for _, func in next, ref do
 			if(func == filter) then
-				return nil, "Filter function is already registered."
+				return nil, 'Filter function is already registered.'
 			end
 		end
 		table.insert(ref, filterTable)
 	end
 
-	if(not PingumaniaItemLevelDB.EnabledFilters[filter]) then
-		PingumaniaItemLevelDB.EnabledFilters[filter] = {}
+	if(not SyLevelDB.EnabledFilters[filter]) then
+		SyLevelDB.EnabledFilters[filter] = {}
 	end
-	PingumaniaItemLevelDB.EnabledFilters[filter][pipe] = true
+	SyLevelDB.EnabledFilters[filter][pipe] = true
 
 	return true
 end
 
-P.IterateFiltersOnPipe = function(pipe)
+SyLevel.IterateFiltersOnPipe = function(pipe)
 	local t = activeFilters[pipe]
 	return coroutine.wrap(function()
 		if(t) then
@@ -82,12 +83,12 @@ P.IterateFiltersOnPipe = function(pipe)
 	end)
 end
 
-function P:UnregisterFilterOnPipe(pipe, filter)
-	argcheck(pipe, 2, "string")
-	argcheck(filter, 3, "string")
+function SyLevel:UnregisterFilterOnPipe(pipe, filter)
+	argcheck(pipe, 2, 'string')
+	argcheck(filter, 3, 'string')
 
-	if(not pipesTable[pipe]) then return nil, "Pipe does not exist." end
-	if(not filtersTable[filter]) then return nil, "Filter does not exist." end
+	if(not pipesTable[pipe]) then return nil, 'Pipe does not exist.' end
+	if(not filtersTable[filter]) then return nil, 'Filter does not exist.' end
 
 	--- XXX: Be more defensive here.
 	local filterTable = filtersTable[filter]
@@ -96,7 +97,7 @@ function P:UnregisterFilterOnPipe(pipe, filter)
 		for k, func in next, ref do
 			if(func == filterTable) then
 				table.remove(ref, k)
-				PingumaniaItemLevelDB.EnabledFilters[filter][pipe] = nil
+				SyLevelDB.EnabledFilters[filter][pipe] = nil
 
 				return true
 			end
@@ -104,9 +105,9 @@ function P:UnregisterFilterOnPipe(pipe, filter)
 	end
 end
 
-function P:GetNumFilters()
+function SyLevel:GetNumFilters()
 	return numFilters
 end
 
-P.filtersTable = filtersTable
-P.activeFilters = activeFilters
+ns.filtersTable = filtersTable
+ns.activeFilters = activeFilters

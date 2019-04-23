@@ -1,4 +1,4 @@
-local P, C = unpack(select(2, ...))
+
 
 local hook
 local _E
@@ -21,7 +21,7 @@ local function pipe(self)
 		itemLink, id, slot = getIL(location)
 	end
 
-	return P:CallFilters("char-flyout", self, _E and itemLink, id, slot)
+	return PingumaniaItemlevel:CallFilters("char-flyout", self, _E and itemLink, id, slot)
 end
 
 local function update(self)
@@ -47,4 +47,4 @@ local function disable(self)
 	_E = nil
 end
 
-P:RegisterPipe("char-flyout", enable, disable, update, "Character Equipment Flyout", nil)
+PingumaniaItemlevel:RegisterPipe("char-flyout", enable, disable, update, "Character Equipment Flyout", nil)

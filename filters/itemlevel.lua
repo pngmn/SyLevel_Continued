@@ -1,16 +1,26 @@
-local P, C = unpack(select(2, ...))
+local threshold
+--local IUI = LibStub("LibItemUpgradeInfo-1.0")
 
-local threshold, quality
-
-local ilevel = function(frame, itemlink, id, slot)
+local ilevel = function(...)
 	local ilevel = -1
-    ilevel, quality = P:GetUpgradedItemLevel(itemlink, id, slot)
+	local upgrades, upgraded
+	for i=1, select('#', ...) do
+		local itemLink = select(i, ...)
+
+		if (itemLink) then
+			ilevel = SyLevel:GetUpgradedItemLevel(itemLink)
+			if not ilevel then
+				ilevel = -1
+			end
+		end
+	end
+
 	if ilevel and (ilevel >= threshold) then
-		return ilevel, quality
+		return ilevel
 	end
 end
 
-P:RegisterOptionCallback(function(db)
+SyLevel:RegisterOptionCallback(function(db)
 	local filters = db.FilterSettings
 	if(filters and filters.ilevel) then
 		threshold = filters.ilevel
@@ -19,4 +29,4 @@ P:RegisterOptionCallback(function(db)
 	end
 end)
 
-P:RegisterFilter('Item level text', 'Text', ilevel, [[Adds item level text that the items have.]])
+SyLevel:RegisterFilter('Item level text', 'Text', ilevel, [[Adds item level text that the items have.]])

@@ -1,4 +1,3 @@
-local P, C = unpack(select(2, ...))
 
 local _E
 local hook
@@ -11,7 +10,7 @@ local function update(self)
         if numItems ~= 0 then
             local _, _, _, _, _, itemLink = GetQuestChoiceRewardItem(i, 1) --for now there is only ever 1 item by design
             if itemLink then
-                P:CallFilters("questreward", rewardFrame.Item, _E and itemLink)
+                PingumaniaItemlevel:CallFilters("questreward", rewardFrame.Item, _E and itemLink)
             end
         end
     end
@@ -24,7 +23,7 @@ local function ADDON_LOADED(self, event, addon)
             -- hookesecurefunc("QuestInfo_ShowRewards", update)
             hook = true
         end
-        P:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
+        PingumaniaItemlevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
     end
 end
 
@@ -54,9 +53,9 @@ end
             -- index = i + baseIndex
             -- questItem = QuestInfo_GetRewardButton(rewardsFrame, index)
             -- if QuestInfoFrame.questLog then
-                -- P:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
+                -- PingumaniaItemlevel:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
             -- else
-                -- P:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
+                -- PingumaniaItemlevel:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
             -- end
             -- rewardsCount = rewardsCount + 1
         -- end
@@ -69,9 +68,9 @@ end
             -- index = i + baseIndex
             -- questItem = QuestInfo_GetRewardButton(rewardsFrame, index)
             -- if QuestInfoFrame.questLog then
-                -- P:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
+                -- PingumaniaItemlevel:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
             -- else
-                -- P:CallFilters("questreward", questItem, _E and GetQuestItemLink(questItem.type, i))
+                -- PingumaniaItemlevel:CallFilters("questreward", questItem, _E and GetQuestItemLink(questItem.type, i))
             -- end
             -- rewardsCount = rewardsCount + 1
         -- end
@@ -90,7 +89,7 @@ local function enable()
             hook = true
         end
     else
-        P:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+        PingumaniaItemlevel:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
     end
 end
 
@@ -98,4 +97,4 @@ local function disable()
     _E = nil
 end
 
-P:RegisterPipe("questreward", enable, disable, update, "Quest Reward Frame", nil)
+PingumaniaItemlevel:RegisterPipe("questreward", enable, disable, update, "Quest Reward Frame", nil)

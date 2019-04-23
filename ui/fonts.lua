@@ -1,10 +1,17 @@
-local P, C = unpack(select(2, ...))
+local _, ns = ...
+local SyLevel = ns.SyLevel
 
-local colorTable = P.colorTable
+local colorTable = ns.colorTable
 
-local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
-frame.name = "Font Settings"
-frame.parent = P
+local frame = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+frame:Hide()
+frame.name = 'Font Settings'
+frame.parent = 'SyLevel'
+
+frame:SetScript('OnShow', function(self)
+	self:CreateOptions()
+	self:SetScript('OnShow', nil)
+end)
 
 local sliders = {
 	["size"] = {
@@ -27,38 +34,38 @@ local sliders = {
 	},
 }
 
-do
-	local db = PingumaniaItemlevelDB.FontSettings
+function frame:CreateOptions()
+	local db = SyLevelDB.FontSettings
 	
-	local title = P.createFontString(self, "GameFontNormalLarge")
-	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText(P.Name..": Font Settings")
+	local title = ns.createFontString(self, 'GameFontNormalLarge')
+	title:SetPoint('TOPLEFT', 16, -16)
+	title:SetText'SyLevel: Font Settings'
 	
-	local fontsLabel = P.createFontString(self, "GameFontNormalSmall")
-	fontsLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
-	fontsLabel:SetText("Typeface")
+	local fontsLabel = ns.createFontString(self, 'GameFontNormalSmall')
+	fontsLabel:SetPoint('TOPLEFT', title, 'BOTTOMLEFT', 0, -16)
+	fontsLabel:SetText('Typeface')
 	
-	local fontsDDown = CreateFrame("Button", P.Name.."_FontsDropdown", self, "UIDropDownMenuTemplate")
+	local fontsDDown = CreateFrame("Button", "SyLevel_FontsDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDown:SetPoint("TOPLEFT", fontsLabel, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDown,200)
 	
 	do
 		local DropDown_OnClick = function(self)
-			local t = P.media:List("font")
+			local t = SyLevel.media:List("font")
 			db.typeface = t[self.value]
-			P:SetFontSettings()
+			SyLevel:SetFontSettings()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
 
 		local DropDown_OnEnter = function(self)
-			GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
-			GameTooltip:SetText("Set your preferred font for text display.", nil, nil, nil, nil, 1)
+			GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT')
+			GameTooltip:SetText('Set your preferred font for text display.', nil, nil, nil, nil, 1)
 		end
 
 		local DropDown_OnLeave = GameTooltip_Hide
 
 		local UpdateSelected = function(self)
-			local t = P.media:List("font")
+			local t = SyLevel.media:List("font")
 			for i=1,#t do
 				if db.typeface == t[i] then
 					UIDropDownMenu_SetSelectedID(fontsDDown,i)
@@ -68,7 +75,7 @@ do
 
 		local DropDown_init = function(self)
 			local info
-			local t = P.media:List("font")
+			local t = SyLevel.media:List("font")
 			for i=1,#t do
 				
 				info = UIDropDownMenu_CreateInfo()
@@ -80,8 +87,8 @@ do
 			end
 		end
 
-		fontsDDown:SetScript("OnEnter", DropDown_OnEnter)
-		fontsDDown:SetScript("OnLeave", DropDown_OnLeave)
+		fontsDDown:SetScript('OnEnter', DropDown_OnEnter)
+		fontsDDown:SetScript('OnLeave', DropDown_OnLeave)
 
 		function frame:refresh()
 			UIDropDownMenu_Initialize(fontsDDown, DropDown_init)
@@ -90,23 +97,25 @@ do
 		end
 		self:refresh()
 	end
+	--ns.createSlider = function(self, name, minv, maxv, step)
+	--ns.createEditBox = function(self,name,width,height,type,max)
 	
-	local s1 = P.createSlider(frame, "Font Size", 2, 60, 1)
-	s1:SetPoint("TOPLEFT", fontsDDown, "BOTTOMLEFT", 10, -16)
+	local s1 = ns.createSlider(frame,"Font Size",2,60,1)
+	s1:SetPoint("TOPLEFT",fontsDDown,"BOTTOMLEFT",10,-16)
 	s1:SetValue(db.size)
 	s1:Show()
 	
-	local e1 = P.createEditBox(self, "Font Size", 40, 20, true, 2)
-	e1:SetPoint("TOP", s1, "BOTTOM")
+	local e1 = ns.createEditBox(self,"Font Size",40,20,true,2)
+	e1:SetPoint("TOP",s1,"BOTTOM")
 	e1:SetNumber(db.size)
 	e1.Update = function()
 		e1:SetNumber(db.size)
 		s1:SetValue(db.size)
 		
 		e1:ClearFocus()
-		P:SetFontSettings()
+		SyLevel:SetFontSettings()
 	end
-	e1:SetScript("OnEnterPressed", function(self)
+	e1:SetScript("OnEnterPressed",function(self)
 		local value = tonumber(self:GetText())
 		if not value or value < 2 then
 			value = 2
@@ -116,24 +125,24 @@ do
 		db.size = value
 		e1.Update()
 	end)
-	s1:SetScript("OnValueChanged", function(self)
+	s1:SetScript("OnValueChanged",function(self)
 		db.size = self:GetValue()
 		e1.Update()
 	end)
 	
-	local s2 = P.createSlider(frame, "X Offset", -64, 64, 1)
-	s2:SetPoint("LEFT", s1, "RIGHT", 10, 0)
+	local s2 = ns.createSlider(frame,"X Offset",-64,64,1)
+	s2:SetPoint("LEFT",s1,"RIGHT",10,0)
 	s2:SetValue(db.offsetx)
 	s2:Show()	
-	local e2 = P.createEditBox(self, "X Offset", 40, 20, false, 4)
-	e2:SetPoint("TOP", s2, "BOTTOM")
+	local e2 = ns.createEditBox(self,"X Offset",40,20,false,4)
+	e2:SetPoint("TOP",s2,"BOTTOM")
 	e2:SetText(db.offsetx or 0)
 	e2.Update = function()
 		e2:SetText(db.offsetx)
 		s2:SetValue(db.offsetx)
 		
 		e2:ClearFocus()
-		P:SetFontSettings()
+		SyLevel:SetFontSettings()
 	end
 	e2:SetScript("OnEnterPressed",function(self)
 		local value = tonumber(self:GetText())
@@ -150,11 +159,11 @@ do
 		e2.Update()
 	end)
 	
-	local s3 = P.createSlider(frame, "Y Offset", -64, 64, 1)
+	local s3 = ns.createSlider(frame,"Y Offset",-64,64,1)
 	s3:SetPoint("LEFT",s2,"RIGHT",10,0)
 	s3:SetValue(db.offsety)
 	s3:Show()	
-	local e3 = P.createEditBox(self, "Y Offset", 40, 20, false, 4)
+	local e3 = ns.createEditBox(self,"Y Offset",40,20,false,4)
 	e3:SetPoint("TOP",s3,"BOTTOM")
 	e3:SetText(db.offsety or 0)
 	e3.Update = function()
@@ -162,7 +171,7 @@ do
 		s3:SetValue(db.offsety)
 		
 		e3:ClearFocus()
-		P:SetFontSettings()
+		SyLevel:SetFontSettings()
 	end
 	e3:SetScript("OnEnterPressed",function(self)
 		local value = tonumber(self:GetText())
@@ -177,7 +186,10 @@ do
 	s3:SetScript("OnValueChanged",function(self)
 		db.offsety = self:GetValue()
 		e3.Update()
-	end)	
+	end)
+	
+	--[[ Sliders and Editboxes ]]--
+	
 end
 
 InterfaceOptions_AddCategory(frame)

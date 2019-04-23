@@ -1,4 +1,3 @@
-local P, C = unpack(select(2, ...))
 
 local _E
 local hook
@@ -11,17 +10,17 @@ local function update()
 				local itemLink = GetMerchantItemLink(index)
 				local slotFrame = _G["MerchantItem" .. i .. "ItemButton"]
 
-				P:CallFilters("merchant", slotFrame, _E and itemLink)
+				PingumaniaItemlevel:CallFilters("merchant", slotFrame, _E and itemLink)
 			end
 
 			local buyBackLink = GetBuybackItemLink(GetNumBuybackItems())
-			P:CallFilters("merchant", MerchantBuyBackItemItemButton, _E and buyBackLink)
+			PingumaniaItemlevel:CallFilters("merchant", MerchantBuyBackItemItemButton, _E and buyBackLink)
 		else
 			for i=1, BUYBACK_ITEMS_PER_PAGE do
 				local itemLink = GetBuybackItemLink(i)
 				local slotFrame = _G["MerchantItem" .. i .. "ItemButton"]
 
-				P:CallFilters("merchant", slotFrame, _E and itemLink)
+				PingumaniaItemlevel:CallFilters("merchant", slotFrame, _E and itemLink)
 			end
 		end
 	end
@@ -43,4 +42,4 @@ local function disable(self)
 	_E = nil
 end
 
-P:RegisterPipe("merchant", enable, disable, update, "Merchant Window", nil)
+PingumaniaItemlevel:RegisterPipe("merchant", enable, disable, update, "Merchant Window", nil)

@@ -1,4 +1,4 @@
-local P, C = unpack(select(2, ...))
+
 
 local _E
 
@@ -16,22 +16,22 @@ local function update(self)
 		local slotLink = GetGuildBankItemLink(tab, i)
 		local slotFrame = _G["GuildBankColumn"..column.."Button"..index]
 
-		P:CallFilters("gbank", slotFrame, _E and slotLink)
+		PingumaniaItemlevel:CallFilters("gbank", slotFrame, _E and slotLink)
 	end
 end
 
 local function enable(self)
 	_E = true
 
-	P:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", update)
-	P:RegisterEvent("GUILDBANKFRAME_OPENED", update)
+	PingumaniaItemlevel:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", update)
+	PingumaniaItemlevel:RegisterEvent("GUILDBANKFRAME_OPENED", update)
 end
 
 local function disable(self)
 	_E = nil
 
-	P:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED", update)
-	P:UnregisterEvent("GUILDBANKFRAME_OPENED", update)
+	PingumaniaItemlevel:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED", update)
+	PingumaniaItemlevel:UnregisterEvent("GUILDBANKFRAME_OPENED", update)
 end
 
-P:RegisterPipe("gbank", enable, disable, update, "Guild Bank Window", nil)
+PingumaniaItemlevel:RegisterPipe("gbank", enable, disable, update, "Guild Bank Window", nil)

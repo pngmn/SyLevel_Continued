@@ -1,4 +1,3 @@
-local P, C = unpack(select(2, ...))
 
 local _E
 local hooked
@@ -13,7 +12,7 @@ local function updateContents(self)
 		if itemID then
 			itemName, itemLink = GetItemInfo(itemID)
 		end
-		P:CallFilters("voidstore", slotFrame, _E and itemLink)
+		PingumaniaItemlevel:CallFilters("voidstore", slotFrame, _E and itemLink)
 	end
 
 	for slot=1, VOID_WITHDRAW_MAX or 9 do
@@ -23,7 +22,7 @@ local function updateContents(self)
 		if itemID then
 			itemName, itemLink = GetItemInfo(itemID)
 		end
-		P:CallFilters("voidstore", slotFrame, _E and itemLink)
+		PingumaniaItemlevel:CallFilters("voidstore", slotFrame, _E and itemLink)
 	end
 end
 
@@ -36,7 +35,7 @@ local function updateDeposit(self, event, slot)
 	if itemID then
 		itemName, itemLink = GetItemInfo(itemID)
 	end
-	P:CallFilters("voidstore", slotFrame, _E and itemLink)
+	PingumaniaItemlevel:CallFilters("voidstore", slotFrame, _E and itemLink)
 end
 
 local function update(self)
@@ -56,24 +55,24 @@ end
 
 local function enable(self)
 	_E = true
-	P:RegisterEvent("VOID_STORAGE_UPDATE", updateContents);
-	P:RegisterEvent("INVENTORY_SEARCH_UPDATE", updateContents);
-	P:RegisterEvent("VOID_DEPOSIT_WARNING", updateContents);
-	P:RegisterEvent("VOID_STORAGE_CONTENTS_UPDATE", updateContents)
-	P:RegisterEvent("VOID_STORAGE_DEPOSIT_UPDATE", updateDeposit)
-	P:RegisterEvent("VOID_TRANSFER_DONE", update)
-	P:RegisterEvent("VOID_STORAGE_OPEN", update)
+	PingumaniaItemlevel:RegisterEvent("VOID_STORAGE_UPDATE", updateContents);
+	PingumaniaItemlevel:RegisterEvent("INVENTORY_SEARCH_UPDATE", updateContents);
+	PingumaniaItemlevel:RegisterEvent("VOID_DEPOSIT_WARNING", updateContents);
+	PingumaniaItemlevel:RegisterEvent("VOID_STORAGE_CONTENTS_UPDATE", updateContents)
+	PingumaniaItemlevel:RegisterEvent("VOID_STORAGE_DEPOSIT_UPDATE", updateDeposit)
+	PingumaniaItemlevel:RegisterEvent("VOID_TRANSFER_DONE", update)
+	PingumaniaItemlevel:RegisterEvent("VOID_STORAGE_OPEN", update)
 end
 
 local function disable(self)
 	_E = nil
-	P:UnregisterEvent("VOID_STORAGE_UPDATE", updateContents);
-	P:UnregisterEvent("INVENTORY_SEARCH_UPDATE", updateContents);
-	P:UnregisterEvent("VOID_DEPOSIT_WARNING", updateContents);
-	P:UnregisterEvent("VOID_STORAGE_CONTENTS_UPDATE", updateContents)
-	P:UnregisterEvent("VOID_STORAGE_DEPOSIT_UPDATE", updateDeposit)
-	P:UnregisterEvent("VOID_TRANSFER_DONE", update)
-	P:UnregisterEvent("VOID_STORAGE_OPEN", update)
+	PingumaniaItemlevel:UnregisterEvent("VOID_STORAGE_UPDATE", updateContents);
+	PingumaniaItemlevel:UnregisterEvent("INVENTORY_SEARCH_UPDATE", updateContents);
+	PingumaniaItemlevel:UnregisterEvent("VOID_DEPOSIT_WARNING", updateContents);
+	PingumaniaItemlevel:UnregisterEvent("VOID_STORAGE_CONTENTS_UPDATE", updateContents)
+	PingumaniaItemlevel:UnregisterEvent("VOID_STORAGE_DEPOSIT_UPDATE", updateDeposit)
+	PingumaniaItemlevel:UnregisterEvent("VOID_TRANSFER_DONE", update)
+	PingumaniaItemlevel:UnregisterEvent("VOID_STORAGE_OPEN", update)
 end
 
-P:RegisterPipe("voidstore", enable, disable, update, "Void Storage Window", nil)
+PingumaniaItemlevel:RegisterPipe("voidstore", enable, disable, update, "Void Storage Window", nil)

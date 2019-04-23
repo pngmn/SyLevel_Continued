@@ -1,4 +1,3 @@
-local P, C = unpack(select(2, ...))
 
 if (select(4, GetAddOnInfo("Fizzle"))) then return end
 if (select(4, GetAddOnInfo("GW2_UI"))) then return end
@@ -17,7 +16,7 @@ local function update(self)
 		for key, slotName in pairs(slots) do
 			local slotFrame = _G["Character" .. slotName .. "Slot"]
 			local itemLink = GetInventoryItemLink("player", key)
-			P:CallFilters("char", slotFrame, _E and itemLink, key)
+			PingumaniaItemlevel:CallFilters("char", slotFrame, _E and itemLink, key)
 		end
 	end
 end
@@ -31,7 +30,7 @@ end
 local function enable(self)
 	_E = true
 
-	P:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
+	PingumaniaItemlevel:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
 
 	if (not hook) then
 		hook = function(...)
@@ -44,7 +43,7 @@ end
 
 local function disable(self)
 	_E = nil
-	P:UnregisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
+	PingumaniaItemlevel:UnregisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
 end
 
-P:RegisterPipe("char", enable, disable, update, "Character", nil)
+PingumaniaItemlevel:RegisterPipe("char", enable, disable, update, "Character", nil)

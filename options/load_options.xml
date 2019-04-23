@@ -1,1 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">    <Script file="helpers.lua"/>    <Script file="colors.lua"/>	<Script file="fonts.lua"/>    <Script file="ilevel.lua"/>    <Script file="pipes.lua"/></Ui>

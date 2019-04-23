@@ -1,5 +1,3 @@
-local P, C = unpack(select(2, ...))
-
 local _E
 local hook
 
@@ -10,7 +8,7 @@ local function update(self)
     local name = self:GetName()
     local slotFrame = _G[name]
     local itemlink = GetContainerItemLink(container, i)
-    P:CallFilters("litebag", slotFrame, _E and itemLink, container, i)
+    PingumaniaItemlevel:CallFilters("litebag", slotFrame, _E and itemLink, container, i)
 end
 
 local function PLAYER_LOGIN()
@@ -23,12 +21,12 @@ end
 
 local function enable()
 	_E = true
-    P:RegisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
+    PingumaniaItemlevel:RegisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
 end
 
 local function disable()
     _E = nil
-    P:UnregisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
+    PingumaniaItemlevel:UnregisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
 end
 
-P:RegisterPipe("litebag", enable, disable, update, "LiteBag", nil)
+PingumaniaItemlevel:RegisterPipe("litebag", enable, disable, update, "LiteBag", nil)

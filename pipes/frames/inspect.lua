@@ -1,4 +1,3 @@
-local P, C = unpack(select(2, ...))
 
 if (select(4, GetAddOnInfo("Fizzle"))) then return end
 
@@ -27,7 +26,7 @@ pollFrame:SetScript("OnUpdate", function(self, elapsed)
 		for i, slotName in next, _MISSING do
 			local itemLink = GetInventoryItemLink(unit, i)
 			if (itemLink) then
-				P:CallFilters("inspect", _G["Inspect" .. slotName .. "Slot"], _E and itemLink)
+				PingumaniaItemlevel:CallFilters("inspect", _G["Inspect" .. slotName .. "Slot"], _E and itemLink)
 
 				_MISSING[i] = nil
 			end
@@ -52,7 +51,7 @@ local function update(self)
 			pollFrame:Show()
 		end
 
-		P:CallFilters("inspect", _G["Inspect"..slotName.."Slot"], _E and itemLink)
+		PingumaniaItemlevel:CallFilters("inspect", _G["Inspect"..slotName.."Slot"], _E and itemLink)
 	end
 end
 
@@ -64,10 +63,10 @@ end
 
 local function ADDON_LOADED(self, event, addon)
 	if (addon == "Blizzard_InspectUI") then
-		P:RegisterEvent("PLAYER_TARGET_CHANGED", update)
-		P:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
-		P:RegisterEvent("INSPECT_READY", update)
-		P:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
+		PingumaniaItemlevel:RegisterEvent("PLAYER_TARGET_CHANGED", update)
+		PingumaniaItemlevel:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
+		PingumaniaItemlevel:RegisterEvent("INSPECT_READY", update)
+		PingumaniaItemlevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
 	end
 end
 
@@ -75,21 +74,21 @@ local function enable(self)
 	_E = true
 
 	if (IsAddOnLoaded("Blizzard_InspectUI")) then
-		P:RegisterEvent("PLAYER_TARGET_CHANGED", update)
-		P:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
-		P:RegisterEvent("INSPECT_READY", update)
+		PingumaniaItemlevel:RegisterEvent("PLAYER_TARGET_CHANGED", update)
+		PingumaniaItemlevel:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
+		PingumaniaItemlevel:RegisterEvent("INSPECT_READY", update)
 	else
-		P:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+		PingumaniaItemlevel:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
 	end
 end
 
 local function disable(self)
 	_E = nil
 
-	P:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
-	P:UnregisterEvent("PLAYER_TARGET_CHANGED", update)
-	P:UnregisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
-	P:UnregisterEvent("INSPECT_READY", update)
+	PingumaniaItemlevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
+	PingumaniaItemlevel:UnregisterEvent("PLAYER_TARGET_CHANGED", update)
+	PingumaniaItemlevel:UnregisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
+	PingumaniaItemlevel:UnregisterEvent("INSPECT_READY", update)
 end
 
-P:RegisterPipe("inspect", enable, disable, update, "Inspect Window", nil)
+PingumaniaItemlevel:RegisterPipe("inspect", enable, disable, update, "Inspect Window", nil)

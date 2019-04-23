@@ -1,13 +1,12 @@
-local P, C = unpack(select(2, ...))
+local _, ns = ...
+local SyLevel = ns.SyLevel
 
 local type, tonumber, select, strsplit, GetItemInfoFromHyperlink = type, tonumber, select, strsplit, GetItemInfoFromHyperlink
 local unpack, GetDetailedItemLevelInfo = unpack, GetDetailedItemLevelInfo
 
-local threshold = C["ItemLevel"].Min
-
 do
     local oGetItemInfo = GetItemInfo
-    P.itemcache = P.itemcache or setmetatable({miss = 0, tot = 0}, {__index = function(table, key)
+    ns.itemcache = ns.itemcache or setmetatable({miss = 0, tot = 0}, {__index = function(table, key)
 			if not key then return "" end
 			if key == "miss" then return 0 end
 			if key == "tot" then return 0 end
@@ -23,7 +22,7 @@ do
 		end})
 end
 
-local cache = P.itemcache
+local cache = ns.itemcache
 local function CachedGetItemInfo(key, index)
 	if not key then return nil end
 	index = index or 1
@@ -37,8 +36,8 @@ local function CachedGetItemInfo(key, index)
 end
 
 -- Tooltip Scanning stuff
-P.tipCache = P.tipCache or setmetatable({}, {__index = function(table, key) return {} end})
-local tipCache = P.tipCache
+ns.tipCache = ns.tipCache or setmetatable({}, {__index = function(table, key) return {} end})
+local tipCache = ns.tipCache
 local emptytable = {}
 local scanningTooltip, anchor
 local itemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+).?%%(?(%%d*)%%)?')
@@ -61,7 +60,7 @@ local function ScanTip(itemLink, id, slot)
             cached = cacheIt
         }
         local c = tipCache[itemLink]
-        c.gearcheck = P:CheckGear(itemLink)
+        c.gearcheck = SyLevel:CheckGear(itemLink)
     end
     
     if tipCache[itemLink].gearcheck == false then
@@ -124,7 +123,7 @@ local function ScanTip(itemLink, id, slot)
 	return tipCache[itemLink]
 end
 
-function P:GetHeirloomTrueLevel(itemString, id, slot)
+function SyLevel:GetHeirloomTrueLevel(itemString, id, slot)
 	if type(itemString) ~= "string" then return nil, false end
 	local _, itemLink = CachedGetItemInfo(itemString)
 	if not itemLink then
@@ -138,14 +137,14 @@ function P:GetHeirloomTrueLevel(itemString, id, slot)
     end
 end
 
-function P:GetUpgradedItemLevel(itemString, id, slot)
+function SyLevel:GetUpgradedItemLevel(itemString, id, slot)
 	local ilvl, ilvlText, quality, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
-    if isTrue and ilvl >= threshold then
-        return ilvlText, quality
+    if isTrue then
+        return ilvl, quality
     end
 end
 
-function P:CheckGear(itemString)
+function SyLevel:CheckGear(itemString)
     local _, _, _, _, _, itemClass = GetItemInfoInstant(itemString)
     if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR then
         return true 

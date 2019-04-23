@@ -1,8 +1,43 @@
 ## Interface: 80100
 ## Title: PingumaniaItemlevel
 ## Author: Pingumania
-## Notes: Display itemlevel of weapons and armour.
-## Version: 1.0
-## SavedVariables: PingumaniaItemlevelDB
+## Version: 1.0.0
+## SavedVariables: SyLevelDB
+## Notes: Displays item level information on your item slots!
 
-init.xml
+libs\Libs.xml
+
+init.lua
+media.lua
+event.lua
+pipe.lua
+filter.lua
+display.lua
+colors.lua
+fonts.lua
+sylevel.lua
+itemlevel.lua
+
+ui\helpers.lua
+ui\pipes.lua
+ui\ilevel.lua
+ui\colors.lua
+ui\fonts.lua
+
+pipes\adventureguide.lua
+pipes\bags.lua
+pipes\bank.lua
+pipes\char.lua
+pipes\char-flyout.lua
+pipes\gbank.lua
+pipes\inspect.lua
+pipes\loot.lua
+pipes\mail.lua
+pipes\merchant.lua
+pipes\trade.lua
+pipes\tradeskill.lua
+pipes\voidstorage.lua
+
+displays\text.lua
+
+filters\itemlevel.lua

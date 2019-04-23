@@ -1,12 +1,13 @@
-local P, C = unpack(select(2, ...))
+local _, ns = ...
+local SyLevel = ns.SyLevel
 
-local argcheck = P.argcheck
+local argcheck = SyLevel.argcheck
 
-function P:SetFontSettings()
-	P:UpdateAllPipes()
+function SyLevel:SetFontSettings()
+	SyLevel:UpdateAllPipes()
 end
 
-function P:GetFontSettings()
-	local db = PingumaniaItemLevelDB.FontSettings
-	return db.typeface, db.size, db.align, db.reference, db.offsetx, db.offsety, db.flags, db.color
+function SyLevel:GetFontSettings()
+	local db = SyLevelDB.FontSettings
+	return db.typeface, db.size, db.align, db.reference, db.offsetx, db.offsety, db.flags
 end
