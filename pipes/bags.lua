@@ -15,7 +15,7 @@ local pipe = function(self)
 			local bid = size - i + 1
 			local slotFrame = _G[name .. 'Item' .. bid]
 			local slotLink = GetContainerItemLink(id, i)
-			SyLevel:CallFilters('bags', slotFrame, _E and slotLink)
+			SyLevel:CallFilters('bags', slotFrame, _E and slotLink, id, i)
 		end
 	--end
 end

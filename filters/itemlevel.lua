@@ -1,17 +1,13 @@
 local threshold
 --local IUI = LibStub("LibItemUpgradeInfo-1.0")
 
-local ilevel = function(...)
+local ilevel = function(itemLink, id, slot)
 	local ilevel = -1
-	local upgrades, upgraded
-	for i=1, select('#', ...) do
-		local itemLink = select(i, ...)
 
-		if (itemLink) then
-			ilevel = SyLevel:GetUpgradedItemLevel(itemLink)
-			if not ilevel then
-				ilevel = -1
-			end
+	if (itemLink) then
+		ilevel = SyLevel:GetUpgradedItemLevel(itemLink, id, slot)
+		if not ilevel then
+			ilevel = -1
 		end
 	end
 

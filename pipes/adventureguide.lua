@@ -3,9 +3,8 @@ local _E
 local hook
 
 local function update(self)
-    if EncounterJournal and not EncounterJournal:IsShown() then return end
     local itemLink = self.link
-    local slotFrame = _G[self:GetName().."Icon"]
+    local slotFrame = self.icon:GetName()
     SyLevel:CallFilters("adventureguide", slotFrame, _E and itemLink)
 end
 
