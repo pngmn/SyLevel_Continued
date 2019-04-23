@@ -1,8 +1,8 @@
 local P, C = unpack(select(2, ...))
 
 C["ItemLevel"] = {
-    ["Min"] = 266,
-    ["Font"] = "Interface\\Addons\\Fontastic\\fonts\\GW2_UI\\trebuchet.ttf",
+    ["Min"] = 100,
+    ["Font"] = STANDARD_TEXT_FONT,
     ["FontSize"] = 13,
     ["FontStyle"] = "OUTLINE",
 }
