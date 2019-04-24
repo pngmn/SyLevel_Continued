@@ -4,9 +4,9 @@ local hook
 
 local function update(self, data)
     if not data then return end
-    local slotLink = data.itemLink
+    local itemLink = data.itemLink
     local slotFrame = self.IconHitBox
-    PingumaniaItemlevel:CallFilters("bossframe", slotFrame, _E and slotLink)
+    Sylevel:CallFilters("bossframe", slotFrame, _E and itemLink)
 end
 
 local function enable()
@@ -22,4 +22,4 @@ local function disable()
     _E = nil
 end
 
-PingumaniaItemlevel:RegisterPipe("bossframe", enable, disable, update, "Boss Frame", nil)
+SyLevel:RegisterPipe("bossframe", enable, disable, update, "Boss Frame", nil)
