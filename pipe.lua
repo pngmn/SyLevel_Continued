@@ -7,16 +7,16 @@ local numPipes = 0
 local argcheck = SyLevel.argcheck
 
 function SyLevel:RegisterPipe(pipe, enable, disable, update, name, desc)
-	argcheck(pipe, 2, 'string')
-	argcheck(enable, 3, 'function')
-	argcheck(disable, 4, 'function', 'nil')
-	argcheck(update, 5, 'function')
-	argcheck(name, 6, 'string', 'nil')
-	argcheck(desc, 7, 'string', 'nil')
+	argcheck(pipe, 2, "string")
+	argcheck(enable, 3, "function")
+	argcheck(disable, 4, "function", "nil")
+	argcheck(update, 5, "function")
+	argcheck(name, 6, "string", "nil")
+	argcheck(desc, 7, "string", "nil")
 
 	-- Silently fail.
-	if(pipesTable[pipe]) then
-		return nil, string.format('Pipe [%s] is already registered.')
+	if (pipesTable[pipe]) then
+		return nil, string.format("Pipe [%s] is already registered.")
 	else
 		numPipes = numPipes + 1
 
@@ -35,7 +35,7 @@ end
 do
 	local function iter(_, n)
 		local n, t = next(pipesTable, n)
-		if(t) then
+		if (t) then
 			return n, t.isActive, t.name, t.desc
 		end
 	end
@@ -46,10 +46,10 @@ do
 end
 
 function SyLevel:EnablePipe(pipe)
-	argcheck(pipe, 2, 'string')
+	argcheck(pipe, 2, "string")
 
 	local ref = pipesTable[pipe]
-	if(ref and not ref.isActive) then
+	if (ref and not ref.isActive) then
 		ref.enable(self)
 		ref.isActive = true
 
@@ -60,11 +60,11 @@ function SyLevel:EnablePipe(pipe)
 end
 
 function SyLevel:DisablePipe(pipe)
-	argcheck(pipe, 2, 'string')
+	argcheck(pipe, 2, "string")
 
 	local ref = pipesTable[pipe]
-	if(ref and ref.isActive) then
-		if(ref.disable) then ref.disable(self) end
+	if (ref and ref.isActive) then
+		if (ref.disable) then ref.disable(self) end
 		ref.isActive = false
 
 		SyLevelDB.EnabledPipes[pipe] = false
@@ -74,16 +74,16 @@ function SyLevel:DisablePipe(pipe)
 end
 
 function SyLevel:IsPipeEnabled(pipe)
-	argcheck(pipe, 2, 'string')
+	argcheck(pipe, 2, "string")
 
 	return pipesTable[pipe].isActive
 end
 
 function SyLevel:UpdatePipe(pipe)
-	argcheck(pipe, 2, 'string')
+	argcheck(pipe, 2, "string")
 
 	local ref = pipesTable[pipe]
-	if(ref) then
+	if (ref) then
 		ref.update(self)
 
 		return true

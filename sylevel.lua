@@ -1,7 +1,7 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local _VERSION = GetAddOnMetadata('SyLevel', 'version')
+local _VERSION = GetAddOnMetadata("SyLevel", "version")
 
 local argcheck = SyLevel.argcheck
 
@@ -60,7 +60,7 @@ local updateDB = function(db)
 end
 
 local ADDON_LOADED = function(self, event, addon)
-	if(addon == 'PingumaniaItemlevel') then
+	if (addon == "PingumaniaItemlevel") then
 		if (not SyLevelDB) then
 			SyLevelDB = {}
 			SyLevelDB = copyTable(defaults)			
@@ -71,7 +71,7 @@ local ADDON_LOADED = function(self, event, addon)
 					self:RegisterFilterOnPipe(pipe, filter)
 				end
 			end
-			self:UpdateAllPipes()
+			--self:UpdateAllPipes()
 		elseif SyLevelDB and SyLevelDB.version ~= _VERSION then
 			updateDB(SyLevelDB)
 			SyLevelDB.version = _VERSION
@@ -89,15 +89,15 @@ end
 --[[ General API ]]
 
 function SyLevel:CallFilters(pipe, frame, ...)
-	argcheck(pipe, 2, 'string')
+	argcheck(pipe, 2, "string")
 
-	if(not pipesTable[pipe]) then return nil, 'Pipe does not exist.' end
+	if(not pipesTable[pipe]) then return nil, "Pipe does not exist." end
 
 	local ref = activeFilters[pipe]
 	if(ref) then
 		for display, filters in next, ref do
 			-- TODO: Move this check out of the loop.
-			if(not displaysTable[display]) then return nil, 'Display does not exist.' end
+			if(not displaysTable[display]) then return nil, "Display does not exist." end
 
 			for i=1,#filters do
 				local func = filters[i][2]
@@ -114,27 +114,27 @@ function SyLevel:RegisterAllPipesAndFilters()
 		if SyLevelDB.EnabledPipes[pipe] then
 			self:EnablePipe(pipe)
 			for filter, enabledPipes in next, SyLevelDB.EnabledFilters do
-				if(enabledPipes[pipe]) then
+				if (enabledPipes[pipe]) then
 					self:RegisterFilterOnPipe(pipe, filter)
 					break
 				end
 			end
 		end
 	end
-	self:UpdateAllPipes()
+	--self:UpdateAllPipes()
 end
 
 function SyLevel:UpdateAllPipes()
 	SyLevel:CallOptionCallbacks()
 	for pipe, active, name, desc in SyLevel.IteratePipes() do
-		if(active) then
+		if (active) then
 			SyLevel:UpdatePipe(pipe)
 		end
 	end	
 end
 
 function SyLevel:RegisterOptionCallback(func)
-	argcheck(func, 2, 'function')
+	argcheck(func, 2, "function")
 
 	table.insert(optionCallbacks, func)
 end
@@ -145,7 +145,7 @@ function SyLevel:CallOptionCallbacks()
 	end
 end
 
-SyLevel:RegisterEvent('ADDON_LOADED', ADDON_LOADED)
+SyLevel:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
 
 SyLevel.argcheck = argcheck
 
