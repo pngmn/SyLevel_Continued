@@ -1,18 +1,18 @@
 
 local _E
 
-local function update()
-    if (not IsAddOnLoaded("Blizzard_ScrappingMachineUI")) then return end
-    if (not ScrappingMachineFrame:IsShown()) then return end
-    for button in pairs(ScrappingMachineFrame.ItemSlots.scrapButtons.activeObjects) do
-        SyLevel:TextDisplayHide(button.Icon)
-        local pending = C_ScrappingMachineUI.GetCurrentPendingScrapItemLocationByIndex(button.SlotNumber)
-        if pending then
-            local bag = pending.bagID
-            local slot = pending.slotIndex
-            local itemLink = GetContainerItemLink(bag, slot)
-            local slotFrame = button.Icon
-            SyLevel:CallFilters("scrapper", slotFrame, _E and itemLink)
+local function update(self)
+    if (ScrappingMachineFrame and ScrappingMachineFrame:IsShown()) then
+        for button in pairs(ScrappingMachineFrame.ItemSlots.scrapButtons.activeObjects) do
+            SyLevel:TextDisplayHide(button.Icon)
+            local pending = C_ScrappingMachineUI.GetCurrentPendingScrapItemLocationByIndex(button.SlotNumber)
+            if pending then
+                local bag = pending.bagID
+                local slot = pending.slotIndex
+                local itemLink = GetContainerItemLink(bag, slot)
+                local slotFrame = button.Icon
+                SyLevel:CallFilters("scrapper", slotFrame, _E and itemLink)
+            end
         end
     end
 end
@@ -24,7 +24,7 @@ local function ADDON_LOADED(self, event, addon)
     end
 end
 
-local function enable()
+local function enable(self)
 	_E = true
     
     if IsAddOnLoaded("Blizzard_ScrappingMachineUI") then
@@ -34,7 +34,7 @@ local function enable()
     end
 end
 
-local function disable()
+local function disable(self)
     _E = nil
     SyLevel:UnregisterEvent("SCRAPPING_MACHINE_PENDING_ITEM_CHANGED", update)
 end

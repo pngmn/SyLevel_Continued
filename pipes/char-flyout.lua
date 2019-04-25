@@ -38,11 +38,8 @@ local function enable(self)
 	_E = true
 
 	if (not hook) then
-		hook = function(...)
-			if (_E) then return pipe(...) end
-		end
-
-		hooksecurefunc("EquipmentFlyout_DisplayButton", hook)
+		hooksecurefunc("EquipmentFlyout_DisplayButton", pipe)
+		hook = true
 	end
 end
 

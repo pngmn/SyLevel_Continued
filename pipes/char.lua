@@ -1,7 +1,7 @@
 -- TODO:
 --  - Write a description.
 
-if(select(4, GetAddOnInfo("Fizzle"))) then return end
+if (select(4, GetAddOnInfo("Fizzle"))) then return end
 
 local _E
 local hook
@@ -11,39 +11,36 @@ local slots = {
 	"SecondaryHand", [19] = "Tabard",
 }
 
-local update = function(self)
-	if(CharacterFrame:IsShown()) then
+local function update(self)
+	if (CharacterFrame:IsShown()) then
 		for key, slotName in pairs(slots) do
-			local slotFrame = _G['Character' .. slotName .. 'Slot']
-			local slotLink = GetInventoryItemLink('player', key)
-			SyLevel:CallFilters('char', slotFrame, _E and slotLink)
+			local slotFrame = _G["Character"..slotName.."Slot"]
+			local slotLink = GetInventoryItemLink("player", key)
+			SyLevel:CallFilters("char", slotFrame, _E and slotLink)
 		end
 	end
 end
 
-local UNIT_INVENTORY_CHANGED = function(self, event, unit)
-	if(unit == 'player') then
+local function UNIT_INVENTORY_CHANGED(self, event, unit)
+	if (unit == "player") then
 		update(self)
 	end
 end
 
-local enable = function(self)
+local function enable(self)
 	_E = true
 
-	self:RegisterEvent('UNIT_INVENTORY_CHANGED', UNIT_INVENTORY_CHANGED)
+	self:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
 
-	if(not hook) then
-		hook = function(...)
-			if(_E) then return update(...) end
-		end
-
-		CharacterFrame:HookScript('OnShow', hook)
+	if (not hook) then
+		CharacterFrame:HookScript("OnShow", update)
+		hook = true	
 	end
 end
 
-local disable = function(self)
+local function disable(self)
 	_E = nil
-	self:UnregisterEvent('UNIT_INVENTORY_CHANGED', UNIT_INVENTORY_CHANGED)
+	self:UnregisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
 end
 
-SyLevel:RegisterPipe('char', enable, disable, update, 'Character', nil)
+SyLevel:RegisterPipe("char", enable, disable, update, "Character", nil)

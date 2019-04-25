@@ -4,44 +4,43 @@
 local _E
 local hook
 
-local update = function()
-	if(MerchantFrame:IsShown()) then
-		if(MerchantFrame.selectedTab == 1) then
+local function update()
+	if (MerchantFrame:IsShown()) then
+		if (MerchantFrame.selectedTab == 1) then
 			for i=1, MERCHANT_ITEMS_PER_PAGE do
 				local index = (((MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE) + i)
 				local itemLink = GetMerchantItemLink(index)
-				local slotFrame = _G['MerchantItem' .. i .. 'ItemButton']
+				local slotFrame = _G["MerchantItem"..i.."ItemButton"]
 
-				SyLevel:CallFilters('merchant', slotFrame, _E and itemLink)
+				SyLevel:CallFilters("merchant", slotFrame, _E and itemLink)
 			end
 
 			local buyBackLink = GetBuybackItemLink(GetNumBuybackItems())
-			SyLevel:CallFilters('merchant', MerchantBuyBackItemItemButton, _E and buyBackLink)
+			SyLevel:CallFilters("merchant", MerchantBuyBackItemItemButton, _E and buyBackLink)
 		else
 			for i=1, BUYBACK_ITEMS_PER_PAGE do
 				local itemLink = GetBuybackItemLink(i)
-				local slotFrame = _G['MerchantItem' .. i .. 'ItemButton']
+				local slotFrame = _G["MerchantItem"..i.."ItemButton"]
 
-				SyLevel:CallFilters('merchant', slotFrame, _E and itemLink)
+				SyLevel:CallFilters("merchant", slotFrame, _E and itemLink)
 			end
 		end
 	end
 end
 
-local enable = function(self)
+local function enable(self)
 	_E = true
 
-	if(not hook) then
+	if (not hook) then
 		hook = function(...)
-			if(_E) then return update(...) end
+			if (_E) then return update(...) end
 		end
-
-		hooksecurefunc('MerchantFrame_Update', hook)
+		hooksecurefunc("MerchantFrame_Update", hook)
 	end
 end
 
-local disable = function(self)
+local function disable(self)
 	_E = nil
 end
 
-SyLevel:RegisterPipe('merchant', enable, disable, update, 'Merchant Window', nil)
+SyLevel:RegisterPipe("merchant", enable, disable, update, "Merchant Window", nil)

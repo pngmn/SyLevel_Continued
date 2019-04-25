@@ -2,101 +2,71 @@
 local _E
 local hook
 
-local function update(self)
-    if (QuestChoiceFrame and QuestChoiceFrame:IsShown()) then
-        for i=1, self.numActiveOptionFrames do
-            local rewardFrame = self["Option"..i].Rewards
-            local slotFrame = rewardFrame.Item
-            local _, _, _, _, _, numItems = GetQuestChoiceRewardInfo(i)
+local function update()
+    if (not QuestInfoRewardsFrame or not QuestInfoRewardsFrame:IsShown()) then return end
+	-- Now, get information about this quest.
+	local StaticRewards, RewardChoices
+	local GetLinkFunction, GetRewardInfoFunction
+	if QuestInfoFrame.questLog then
+		StaticRewards = GetNumQuestLogRewards()
+		RewardChoices = GetNumQuestLogChoices()
+		GetLinkFunction = GetQuestLogItemLink
+	else
+		StaticRewards = GetNumQuestRewards()
+		RewardChoices = GetNumQuestChoices()
+		GetLinkFunction = GetQuestItemLink
+	end
+	-- BUG: In 7.0, sometimes when turning in a quest (the "else" case above), these numbers are still 0 by the time that this is called.  Calling GetNumQuest*() too early apparently prevents the reward from getting shown at all...?
+	if StaticRewards + RewardChoices == 0 then return end
+	if not QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, 1) then
+		return
+	end
 
-            if numItems ~= 0 then
-                local _, _, _, _, _, itemLink = GetQuestChoiceRewardItem(i, 1) --for now there is only ever 1 item by design
-                if itemLink then
-                    SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
-                end
-            end
-        end
+	for i = 1, StaticRewards do
+        local itemLink = GetLinkFunction("reward", i)
+        if itemLink then
+            local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
+            local slotFrame = questItem.IconBorder
+			SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
+		end
     end
-end
-
-local function ADDON_LOADED(self, event, addon)
-    if (addon == "Blizzard_QuestChoice") then
-        if (not hook) then
-            hooksecurefunc(QuestChoiceFrame, "ShowRewards", update)
-            -- hookesecurefunc("QuestInfo_ShowRewards", update)
-            hook = true
-        end
-        SyLevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
-    end
-end
-
--- local function update()
-    -- local numQuestRewards = 0
-    -- local numQuestChoices = 0
-    -- local rewardsFrame = QuestInfoFrame.rewardsFrame
-
-    -- if QuestInfoFrame.questLog then
-        -- local questID = select(8, GetQuestLogTitle(GetQuestLogSelection()))
-        -- if C_QuestLog.ShouldShowQuestRewards(questID) then
-            -- numQuestRewards = GetNumQuestLogRewards()
-            -- numQuestChoices = GetNumQuestLogChoices()
-        -- end
-    -- else
-        -- numQuestRewards = GetNumQuestRewards()
-        -- numQuestChoices = GetNumQuestChoices()
-    -- end
-
-    -- local questItem
-    -- local rewardsCount = 0
-
-    -- if numQuestChoices > 0 then
-        -- local index
-        -- local baseIndex = rewardsCount
-        -- for i = 1, numQuestChoices do
-            -- index = i + baseIndex
-            -- questItem = QuestInfo_GetRewardButton(rewardsFrame, index)
-            -- if QuestInfoFrame.questLog then
-                -- SyLevel:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
-            -- else
-                -- SyLevel:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
-            -- end
-            -- rewardsCount = rewardsCount + 1
-        -- end
-    -- end
- 
-    -- if numQuestRewards > 0 then
-        -- local index
-        -- local baseIndex = rewardsCount
-        -- for i = 1, numQuestRewards, 1 do
-            -- index = i + baseIndex
-            -- questItem = QuestInfo_GetRewardButton(rewardsFrame, index)
-            -- if QuestInfoFrame.questLog then
-                -- SyLevel:CallFilters("questreward", questItem, _E and GetQuestLogItemLink(questItem.type, i))
-            -- else
-                -- SyLevel:CallFilters("questreward", questItem, _E and GetQuestItemLink(questItem.type, i))
-            -- end
-            -- rewardsCount = rewardsCount + 1
-        -- end
-    -- end
--- end
-
-
-
-local function enable()
-	_E = true
     
-    if IsAddOnLoaded("Blizzard_GarrisonUI") then
-        if (not hook) then
-            hooksecurefunc(QuestChoiceFrame, "ShowRewards", update)
-            -- hookesecurefunc("QuestInfo_ShowRewards", update)
-            hook = true
+	for i = 1, RewardChoices do
+        local itemLink = GetLinkFunction("choice", i)
+        if itemLink then
+            local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
+            local slotFrame = questItem.IconBorder
+			SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
+		end
+	end
+end
+
+local function OnQuestInfo_Display(template)
+	-- There are a variety of QUEST_TEMPLATE_* tables in QuestInfo.lua.  Instead of hooking QuestInfo_ShowRewards directly,
+	-- wait until after QuestInfo_Display is finished, and then call our QuestInfo_ShowRewards hook if QuestInfo_ShowRewards
+	-- was ever called.  (I don't remember why...) 
+	local i = 1
+	while template.elements[i] do
+		if template.elements[i] == QuestInfo_ShowRewards then update() return end
+		i = i + 3
+	end
+end
+
+local function doHook()
+    if (not hook) then 
+        hook = function(...)
+            if _E then return OnQuestInfo_Display(...) end
         end
-    else
-        SyLevel:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+        hooksecurefunc("QuestInfo_Display", OnQuestInfo_Display)
     end
 end
 
-local function disable()
+local function enable(self)
+	_E = true
+    doHook()
+end
+
+local function disable(self)
     _E = nil
 end
 

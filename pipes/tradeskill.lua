@@ -5,14 +5,14 @@ local _E
 local hook
 local selectedRecipeID
 
-local pipe = function(self, ...)
+local function pipe(self)
 	local recipeID = self.RecipeList:GetSelectedRecipeID()
 	selectedRecipeID = recipeID and recipeID or nil
 	if not selectedRecipeID then return end
 
 	local itemLink = C_TradeSkillUI.GetRecipeItemLink(selectedRecipeID)
-	if(itemLink) then
-		SyLevel:CallFilters('tradeskill', TradeSkillFrame.DetailsFrame.Contents.ResultIcon, _E and itemLink)
+	if (itemLink) then
+		SyLevel:CallFilters("tradeskill", TradeSkillFrame.DetailsFrame.Contents.ResultIcon, _E and itemLink)
 	end
 
 	local numReagents = C_TradeSkillUI.GetRecipeNumReagents(selectedRecipeID)
@@ -20,47 +20,46 @@ local pipe = function(self, ...)
 		local reagentFrame = TradeSkillFrame.DetailsFrame.Contents.Reagents[reagentIndex]
 		local reagentLink = C_TradeSkillUI.GetRecipeReagentItemLink(selectedRecipeID, reagentIndex)
 
-		SyLevel:CallFilters('tradeskill', reagentFrame, _E and reagentLink)
+		SyLevel:CallFilters("tradeskill", reagentFrame, _E and reagentLink)
 	end
 end
 
-local doHook = function()
-	if(not hook) then
+local function doHook()
+	if (not hook) then
 		hook = function(...)
-			if(_E) then return pipe(...) end
+			if (_E) then return pipe(...) end
 		end
 
-		hooksecurefunc(TradeSkillFrame, 'OnRecipeChanged', hook)
+		hooksecurefunc(TradeSkillFrame, "OnRecipeChanged", hook)
 	end
 end
 
 local function ADDON_LOADED(self, event, addon)
-	if(addon == 'Blizzard_TradeSkillUI') then
+	if (addon == "Blizzard_TradeSkillUI") then
 		doHook()
 		self:UnregisterEvent(event, ADDON_LOADED)
 	end
 end
 
-local update = function(self)
-	if(selectedRecipeID and IsAddOnLoaded('Blizzard_TradeSkillUI')) then
+local function update(self)
+	if (selectedRecipeID and IsAddOnLoaded("Blizzard_TradeSkillUI")) then
 		return pipe(self, selectedRecipeID)
 	end
 end
 
-local enable = function(self)
+local function enable(self)
 	_E = true
 
-	if(IsAddOnLoaded("Blizzard_TradeSkillUI")) then
+	if (IsAddOnLoaded("Blizzard_TradeSkillUI")) then
 		doHook()
 	else
 		self:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
 	end
 end
 
-local disable = function(self)
+local function disable(self)
 	_E = nil
-
-	self:UnregisterEvent('ADDON_LOADED', ADDON_LOADED)
+	self:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
 end
 
-SyLevel:RegisterPipe('tradeskill', enable, disable, update, 'Profession Window', nil)
+SyLevel:RegisterPipe("tradeskill", enable, disable, update, "Profession Window", nil)

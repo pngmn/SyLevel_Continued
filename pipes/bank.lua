@@ -3,7 +3,7 @@
 
 local _E
 
-local update = function(self)
+local function update(self)
 	if (BankFrame:IsShown()) then
 		for i=1, NUM_BANKGENERIC_SLOTS or 28 do
 			local slotFrame = _G["BankFrameItem"..i]
@@ -14,14 +14,14 @@ local update = function(self)
 	end
 end
 
-local enable = function(self)
+local function enable(self)
 	_E = true
 
 	self:RegisterEvent("BANKFRAME_OPENED", update)
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED", update)
 end
 
-local disable = function(self)
+local function disable(self)
 	_E = nil
 
 	self:UnregisterEvent("BANKFRAME_OPENED", update)

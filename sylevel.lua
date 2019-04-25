@@ -70,7 +70,7 @@ local function ADDON_LOADED(self, event, addon)
 					self:RegisterFilterOnPipe(pipe, filter)
 				end
 			end
-			self:UpdateAllPipes()
+			--self:UpdateAllPipes()
 		elseif SyLevelDB and SyLevelDB.version ~= _VERSION then
 			updateDB(SyLevelDB)
 			SyLevelDB.version = _VERSION
@@ -93,7 +93,7 @@ function SyLevel:CallFilters(pipe, frame, ...)
 	if (not pipesTable[pipe]) then return nil, "Pipe does not exist." end
 	
 	local ref = activeFilters[pipe]
-	-- print(ref)
+
 	if (ref) then
 		for display, filters in next, ref do
 			-- TODO: Move this check out of the loop.
@@ -101,8 +101,8 @@ function SyLevel:CallFilters(pipe, frame, ...)
 
 			for i=1,#filters do
 				local func = filters[i][2]
-
 				-- drop out of the loop if we actually do something nifty on a frame.
+				
 				if (displaysTable[display](frame, func(...))) then break end
 			end
 		end
@@ -121,7 +121,7 @@ function SyLevel:RegisterAllPipesAndFilters()
 			end
 		end
 	end
-	self:UpdateAllPipes()
+	--self:UpdateAllPipes()
 end
 
 function SyLevel:UpdateAllPipes()

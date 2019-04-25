@@ -6,7 +6,7 @@ local hook
 local _E
 
 local function update(self)
-    if ContainerFrame1:IsShown() then
+    if (ContainerFrame1:IsShown()) then
         local id = self:GetID()
         local name = self:GetName()
         local size = self.size

@@ -27,7 +27,7 @@ local function UpdateColorFunc()
 	colorFunc = SyLevel:GetColorFunc()
 end
 
-local function textDisplay(frame, value)
+local function textDisplay(frame, value, valueString, quality)
 	if not frame then return end
 	if value then
 		local tc = createText(frame)
@@ -37,8 +37,8 @@ local function textDisplay(frame, value)
 		tc:SetJustifyH("CENTER")
 		tc:SetTextColor(1, 1, 1, 1)
 		tc:SetPoint(align, frame, reference, offsetx, offsety)
-		tc:SetTextColor(colorFunc(value))
-		tc:SetText(value)
+		tc:SetTextColor(colorFunc(value, quality))
+		tc:SetText(valueString)
 		tc:Show()		
 	elseif (frame.SyLevelText) then
 		frame.SyLevelText:Hide()

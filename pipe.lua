@@ -28,7 +28,6 @@ function SyLevel:RegisterPipe(pipe, enable, disable, update, name, desc)
 			desc = desc;
 		}
 	end
-
 	return true
 end
 
@@ -55,7 +54,6 @@ function SyLevel:EnablePipe(pipe)
 		ref.isActive = true
 
 		SyLevelDB.EnabledPipes[pipe] = true
-
 		return true
 	end
 end

@@ -1,20 +1,16 @@
 local threshold
 
-local function ilevel(...)
+local function ilevel(itemLink, id, i)
 	local ilevel = -1
-	for i=1, select("#", ...) do
-		local itemLink = select(i, ...)
-
-		if (itemLink) then
-			ilevel = SyLevel:GetUpgradedItemLevel(itemLink)
-			if not ilevel then
-				ilevel = -1
-			end
+	if (itemLink) then
+		ilevel, ilevelString, ilevelQuality = SyLevel:GetUpgradedItemLevel(itemLink, id, i)
+		if not ilevel then
+			ilevel = -1
 		end
 	end
 
 	if ilevel and (ilevel >= threshold) then
-		return ilevel
+		return ilevel, ilevelString, ilevelQuality
 	end
 end
 

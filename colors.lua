@@ -93,8 +93,8 @@ function CS:GetSmudgeColorRGB(lc, hc, perc)
 	local s3 = s1-(s1-s2)*perc
 	local v3 = v1-(v1-v2)*perc
 	self:SetColorHSV(h3, s3, v3)
-	local r,g,b = self:GetColorRGB()
-	return r,g,b
+	local r, g, b = self:GetColorRGB()
+	return r, g, b
 end
 
 local function ColorFunction(l, h, lc, hc, ilvl)
@@ -110,9 +110,9 @@ end
 
 local colorFunctions = {
 	[1] = function(ilvl)
-		argcheck(ilvl,2,'number')
+		argcheck(ilvl, 2, "number")
 		ilvl = (ilvl / 795)
-		local r,g,b
+		local r, g, b
 		if ilvl < .5 then
 			r = ilvl*2
 			g = 1
@@ -125,9 +125,9 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[2] = function(ilvl)
-		argcheck(ilvl,2,'number')
+		argcheck(ilvl, 2, "number")
 		ilvl = (ilvl / 795)
-		local r,g,b
+		local r, g, b
 		if ilvl < .5 then
 			r = 1
 			g = ilvl*2
@@ -140,22 +140,22 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[3] = function(ilvl)
-		argcheck(ilvl,2,'number')
+		argcheck(ilvl, 2, "number")
 		for i=1,#ilvls do
 			if ilvl >= ilvls[i] then
-				return unpack(colors[i] or {0.3,0.3,0.3})
+				return unpack(colors[i] or {0.3, 0.3, 0.3})
 			end
 		end		
 	end,
 	[4] = function(ilvl)
-		argcheck(ilvl,2,'number')
+		argcheck(ilvl, 2, "number")
 		local o, e = GetAverageItemLevel()
 		local relative = BuildRelative(e)
-		return ColorFunction(relative[12],relative[1],PINK,YELLOW,ilvl)
+		return ColorFunction(relative[12], relative[1], PINK, YELLOW, ilvl)
 	end,
 	[5] = function(ilvl)
-		argcheck(ilvl,2,'number')
-		local r,g,b
+		argcheck(ilvl, 2, "number")
+		local r, g, b
 		if ilvl <= 450 then
 			r = 0.55
 			g = 0.55
@@ -176,8 +176,8 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[6] = function(ilvl)
-		argcheck(ilvl,2,'number')
-		local r,g,b
+		argcheck(ilvl,2,"number")
+		local r, g, b
 		if ilvl <= 450 then
 			r = 0.55
 			g = 0.55
@@ -200,14 +200,12 @@ local colorFunctions = {
 		local cColors = RAID_CLASS_COLORS[select(2,UnitClass("player"))]
 		return cColors.r, cColors.g, cColors.b
 	end,
-	[8] = function(_, quality)
+	[8] = function(ilvl, quality)
 		if not quality then return 1, 1, 1 end
-		local cColors = GetItemQualityColor(quality)
-		return cColors.r, cColors.g, cColors.b
+		local r, g, b = GetItemQualityColor(quality)
+		return r, g, b
 	end
 }
-
-
 
 function SyLevel:SetColorFunc(index)
 	SyLevelDB.ColorFunc = index

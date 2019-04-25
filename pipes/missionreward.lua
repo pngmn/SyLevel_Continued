@@ -10,24 +10,26 @@ local function update(self)
     end
 end
 
+local function doHook()
+    if (not hook) then
+		hook = function(...)
+			if (_E) then return update(...) end
+		end
+		hooksecurefunc("GarrisonMissionFrame_SetItemRewardDetails", update)
+	end
+end
+
 local function ADDON_LOADED(self, event, addon)
     if (addon == "Blizzard_GarrisonUI") then
-        if (not hook) then
-            hooksecurefunc("GarrisonMissionFrame_SetItemRewardDetails", update)
-            hook = true
-        end
+        doHook()
         SyLevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
     end
 end
 
 local function enable()
 	_E = true
-    
     if IsAddOnLoaded("Blizzard_GarrisonUI") then
-        if (not hook) then
-            hooksecurefunc("GarrisonMissionFrame_SetItemRewardDetails", update)
-            hook = true
-        end
+        doHook()
     else
         SyLevel:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
     end

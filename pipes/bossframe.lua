@@ -3,13 +3,14 @@ local _E
 local hook
 
 local function update(self, data)
-    if not data then return end
-    local itemLink = data.itemLink
-    local slotFrame = self.IconHitBox
-    Sylevel:CallFilters("bossframe", slotFrame, _E and itemLink)
+    if data then
+        local itemLink = data.itemLink
+        local slotFrame = self.IconHitBox
+        Sylevel:CallFilters("bossframe", slotFrame, _E and itemLink)
+    end
 end
 
-local function enable()
+local function enable(self)
 	_E = true
     
     if (not hook) then
@@ -18,7 +19,7 @@ local function enable()
     end
 end
 
-local function disable()
+local function disable(self)
     _E = nil
 end
 

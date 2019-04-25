@@ -3,19 +3,24 @@ local hook
 
 local function update(self)
     if (EncounterJournal and EncounterJournal:IsShown()) then
-        local name = self:GetName()
         local itemLink = self.link
-        local slotFrame = self.IconBorder --_G[name.."Icon"]
+        local slotFrame = self.IconBorder
         SyLevel:CallFilters("adventureguide", slotFrame, _E and itemLink)
     end
 end
 
+local function doHook()
+    if (not hook) then
+		hook = function(...)
+			if (_E) then return update(...) end
+		end
+		hooksecurefunc("EncounterJournal_SetLootButton", update)
+	end
+end
+
 local function ADDON_LOADED(self, event, addon)
     if (addon == "Blizzard_EncounterJournal") then
-        if (not hook) then
-            hooksecurefunc("EncounterJournal_SetLootButton", update)
-            hook = true
-        end
+        doHook()
         SyLevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
     end
 end
@@ -23,10 +28,7 @@ end
 local function enable(self)
     _E = true
 	if IsAddOnLoaded("Blizzard_EncounterJournal") then
-        if (not hook) then
-            hooksecurefunc("EncounterJournal_SetLootButton", update)
-            hook = true
-        end
+        doHook()
     else
         SyLevel:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
     end

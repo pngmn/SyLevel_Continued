@@ -43,7 +43,7 @@ local scanningTooltip, anchor
 local itemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+).?%%(?(%%d*)%%)?')
 local minItemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+%%+?).?%%(?(%%d*)%%)?')
 
-local function ScanTip(itemLink, id, slot)    
+local function ScanTip(itemLink, id, slot)
     if type(itemLink) == "number" then
 		itemLink = CachedGetItemInfo(itemLink, 2)
 		if not itemLink then return emptytable end
@@ -140,13 +140,13 @@ end
 function SyLevel:GetUpgradedItemLevel(itemString, id, slot)
 	local ilvl, ilvlText, quality, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
     if isTrue then
-        return ilvl
+        return ilvl, ilvlText, quality
     end
 end
 
 function SyLevel:CheckGear(itemString)
-    local _, _, _, _, _, itemClass = GetItemInfoInstant(itemString)
-    if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR then
+    local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemString)
+    if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR or itemSubClass == LE_ITEM_ARMOR_RELIC then
         return true 
     else 
         return false
