@@ -1,0 +1,18 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Include file="libs\load_libs.xml"/>
+    <Script file="init.lua"/>
+    <Script file="media.lua"/>
+    <Script file="event.lua"/>
+    <Script file="pipe.lua"/>
+    <Script file="filter.lua"/>
+    <Script file="display.lua"/>
+    <Script file="colors.lua"/>
+    <Script file="fonts.lua"/>
+    <Script file="sylevel.lua"/>
+    <Script file="itemlevel.lua"/>
+    <Include file="ui\load_ui.xml"/>
+    <Include file="pipes\load_pipes.xml"/>
+    <Include file="pipes\addons\load_addons.xml"/>
+    <Include file="displays\load_displays.xml"/>
+    <Include file="filters\load_filters.xml"/>
+</Ui>

@@ -17,8 +17,7 @@ local numFilters = 0
 local optionCallbacks = {}
 local activeFilters = ns.activeFilters
 
-local copyTable
-copyTable = function(initial)
+local function copyTable(initial)
 	local endTable = {}
 	for k,v in pairs(initial) do
 		if v and type(v) == "table" then
@@ -36,18 +35,18 @@ local defaults = {
 	EnabledFilters = {},
 	FontSettings = {
 		typeface = "Friz Quadrata TT",
-		size = 14,
-		align = "TOPLEFT",
-		reference = "TOPLEFT",
-		offsetx = -1,
-		offsety = 3,
+		size = 13,
+		align = "BOTTOM",
+		reference = "BOTTOM",
+		offsetx = 2,
+		offsety = 0,
 		flags = "OUTLINE"
 	},
 	FilterSettings = {},
 	ColorFunc = 4
 }
 
-local updateDB = function(db)
+local function updateDB(db)
 	for k,v in pairs(defaults) do
 		if not db[k] then
 			if type(v) == "table" then
@@ -59,7 +58,7 @@ local updateDB = function(db)
 	end
 end
 
-local ADDON_LOADED = function(self, event, addon)
+local function ADDON_LOADED(self, event, addon)
 	if (addon == "PingumaniaItemlevel") then
 		if (not SyLevelDB) then
 			SyLevelDB = {}
@@ -71,7 +70,7 @@ local ADDON_LOADED = function(self, event, addon)
 					self:RegisterFilterOnPipe(pipe, filter)
 				end
 			end
-			--self:UpdateAllPipes()
+			self:UpdateAllPipes()
 		elseif SyLevelDB and SyLevelDB.version ~= _VERSION then
 			updateDB(SyLevelDB)
 			SyLevelDB.version = _VERSION
@@ -91,19 +90,20 @@ end
 function SyLevel:CallFilters(pipe, frame, ...)
 	argcheck(pipe, 2, "string")
 
-	if(not pipesTable[pipe]) then return nil, "Pipe does not exist." end
-
+	if (not pipesTable[pipe]) then return nil, "Pipe does not exist." end
+	
 	local ref = activeFilters[pipe]
-	if(ref) then
+	-- print(ref)
+	if (ref) then
 		for display, filters in next, ref do
 			-- TODO: Move this check out of the loop.
-			if(not displaysTable[display]) then return nil, "Display does not exist." end
+			if (not displaysTable[display]) then return nil, "Display does not exist." end
 
 			for i=1,#filters do
 				local func = filters[i][2]
 
 				-- drop out of the loop if we actually do something nifty on a frame.
-				if(displaysTable[display](frame, func(...))) then break end
+				if (displaysTable[display](frame, func(...))) then break end
 			end
 		end
 	end
@@ -121,7 +121,7 @@ function SyLevel:RegisterAllPipesAndFilters()
 			end
 		end
 	end
-	--self:UpdateAllPipes()
+	self:UpdateAllPipes()
 end
 
 function SyLevel:UpdateAllPipes()

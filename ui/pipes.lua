@@ -1,13 +1,13 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local frame = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
-frame.name = 'SyLevel'
+local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
+frame.name = "SyLevel"
 frame:Hide()
 
-frame:SetScript('OnShow', function(self)
+frame:SetScript("OnShow", function(self)
 	self:CreateOptions()
-	self:SetScript('OnShow', nil)
+	self:SetScript("OnShow", nil)
 end)
 
 local _BACKDROP = {
@@ -18,7 +18,7 @@ local _BACKDROP = {
 }
 
 local createCheckBox = function(parent)
-	local check = CreateFrame('CheckButton', nil, parent)
+	local check = CreateFrame("CheckButton", nil, parent)
 	check:SetSize(16, 16)
 
 	check:SetNormalTexture[[Interface\Buttons\UI-CheckBox-Up]]
@@ -30,17 +30,17 @@ local createCheckBox = function(parent)
 end
 
 function frame:CreateOptions()
-	local title = ns.createFontString(self, 'GameFontNormalLarge')
-	title:SetPoint('TOPLEFT', 16, -16)
-	title:SetText'SyLevel'
+	local title = ns.createFontString(self, "GameFontNormalLarge")
+	title:SetPoint("TOPLEFT", 16, -16)
+	title:SetText("SyLevel")
 
 	local subtitle = ns.createFontString(self)
-	subtitle:SetPoint('TOPLEFT', title, 'BOTTOMLEFT', 0, -8)
-	subtitle:SetPoint('RIGHT', self, -32, 0)
-	subtitle:SetText'Select your display locations!'
+	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
+	subtitle:SetPoint("RIGHT", self, -32, 0)
+	subtitle:SetText"Select your display locations!"
 
 	local scroll = CreateFrame("ScrollFrame", nil, self)
-	scroll:SetPoint('TOPLEFT', subtitle, 'BOTTOMLEFT', 0, -8)
+	scroll:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -8)
 	scroll:SetPoint("BOTTOMRIGHT", 0, 4)
 
 	local scrollchild = CreateFrame("Frame", nil, self)
@@ -51,7 +51,7 @@ function frame:CreateOptions()
 	scrollchild:SetWidth(scroll:GetWidth() -16)
 	self.scrollchild = scrollchild
 
-	local filterFrame = CreateFrame('Frame', nil, self)
+	local filterFrame = CreateFrame("Frame", nil, self)
 	filterFrame.rows = {}
 	self.filterFrame = filterFrame
 
@@ -61,15 +61,15 @@ function frame:CreateOptions()
 
 	scroll.value = 0
 	scroll:SetVerticalScroll(0)
-	scrollchild:SetPoint('TOP', 0, 0)
+	scrollchild:SetPoint("TOP", 0, 0)
 
 	self:refresh()
 end
 
 do
-	local CheckBox_OnClick = function(self)
+	local function CheckBox_OnClick(self)
 		local pipe = self:GetParent().pipe
-		if(self:GetChecked()) then
+		if (self:GetChecked()) then
 			SyLevel:EnablePipe(pipe)
 		else
 			SyLevel:DisablePipe(pipe)
@@ -78,9 +78,9 @@ do
 		SyLevel:UpdatePipe(pipe)
 	end
 
-	local Filter_OnClick = function(self)
+	local function Filter_OnClick(self)
 		local pipe = self:GetParent().pipe
-		if(self:GetChecked()) then
+		if (self:GetChecked()) then
 			SyLevel:RegisterFilterOnPipe(pipe, self.name)
 		else
 			SyLevel:UnregisterFilterOnPipe(pipe, self.name)
@@ -89,7 +89,7 @@ do
 		SyLevel:UpdatePipe(pipe)
 	end
 
-	local Row_OnClick = function(self)
+	local function Row_OnClick(self)
 		self.owner.active = self
 
 		local filterFrame = self.owner.filterFrame
@@ -99,9 +99,9 @@ do
 		filterFrame:SetParent(self)
 
 		filterFrame:ClearAllPoints()
-		filterFrame:SetPoint('TOP', self.check, 'BOTTOM')
-		filterFrame:SetPoint('LEFT', 16, 0)
-		filterFrame:SetPoint('RIGHT', -16, 0)
+		filterFrame:SetPoint("TOP", self.check, "BOTTOM")
+		filterFrame:SetPoint("LEFT", 16, 0)
+		filterFrame:SetPoint("RIGHT", -16, 0)
 
 		self:SetHeight(filterFrame:GetHeight())
 
@@ -117,8 +117,8 @@ do
 			local rows = self.owner.scrollchild.rows
 			local n = 1
 			local row = rows[n]
-			while(row) do
-				if(row ~= self.owner.active) then
+			while (row) do
+				if (row ~= self.owner.active) then
 					row:SetBackdropBorderColor(.3, .3, .3)
 					row:SetHeight(24)
 				end
@@ -129,50 +129,50 @@ do
 		end
 	end
 
-	local Row_OnEnter = function(self)
+	local function Row_OnEnter(self)
 		self:SetBackdropBorderColor(.5, .9, .06)
 
 		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
 		GameTooltip:SetText"Click for additional settings."
 	end
 
-	local Row_OnLeave = function(self)
-		if(self ~= self.owner.active) then
+	local function Row_OnLeave(self)
+		if (self ~= self.owner.active) then
 			self:SetBackdropBorderColor(.3, .3, .3)
 		end
 
 		GameTooltip_Hide()
 	end
 
-	local createRow = function(parent, i)
-		local row = CreateFrame('Button', nil, parent)
+	local function createRow(parent, i)
+		local row = CreateFrame("Button", nil, parent)
 
 		row:SetBackdrop(_BACKDROP)
 		row:SetBackdropColor(.1, .1, .1, .5)
 		row:SetBackdropBorderColor(.3, .3, .3)
 
-		if(i == 1) then
-			row:SetPoint('TOP', 0, -8)
+		if (i == 1) then
+			row:SetPoint("TOP", 0, -8)
 		else
-			row:SetPoint('TOP', parent.rows[i - 1], 'BOTTOM')
+			row:SetPoint("TOP", parent.rows[i - 1], "BOTTOM")
 		end
 
-		row:SetPoint('LEFT', 6, 0)
-		row:SetPoint('RIGHT', -6, 0)
+		row:SetPoint("LEFT", 6, 0)
+		row:SetPoint("RIGHT", -6, 0)
 		row:SetHeight(24)
 
-		row:SetScript('OnEnter', Row_OnEnter)
-		row:SetScript('OnLeave', Row_OnLeave)
-		row:SetScript('OnClick', Row_OnClick)
+		row:SetScript("OnEnter", Row_OnEnter)
+		row:SetScript("OnLeave", Row_OnLeave)
+		row:SetScript("OnClick", Row_OnClick)
 
 		local check = createCheckBox(row)
-		check:SetPoint('LEFT', 10, 0)
-		check:SetPoint('TOP', 0, -4)
-		check:SetScript('OnClick', CheckBox_OnClick)
+		check:SetPoint("LEFT", 10, 0)
+		check:SetPoint("TOP", 0, -4)
+		check:SetScript("OnClick", CheckBox_OnClick)
 		row.check = check
 
 		local label = ns.createFontString(row)
-		label:SetPoint('LEFT', check, 'RIGHT', 5, -1)
+		label:SetPoint("LEFT", check, "RIGHT", 5, -1)
 		row.label = label
 
 		table.insert(parent.rows, row)
@@ -191,7 +191,7 @@ do
 
 		local numFilters = #filters
 		local split = 2
-		if(numFilters > 1) then
+		if (numFilters > 1) then
 			-- You know.. after writing this.. I considered that I could just forget
 			-- about how the items had been ordered, and just do:
 			-- Item 1 <space> Item 2
@@ -200,37 +200,37 @@ do
 			-- But no! I had to do it like this... Ironically the filter order is...
 			-- UNDEFINED :D
 			--
-			-- Yes I almost fell of my chair when I discovered that :3 I'll just leave
+			-- Yes I almost fell of my chair when I discovered that :3 I"ll just leave
 			-- this here as an reminder of the torment that was figuring out an integer
 			-- sequence that would satisfy my OCD.
 			--
-			-- Hopefully I'll get use for this later in some obscure scenario!
+			-- Hopefully I"ll get use for this later in some obscure scenario!
 			split = math.floor(numFilters / 2) + (numFilters % 2) + 1
 		end
 
 		for i=1, numFilters do
 			local filter = filters[i]
 			local check = filterFrame[i]
-			if(not check) then
+			if (not check) then
 				check = createCheckBox(filterFrame)
 				filterFrame[i] = check
 			end
 
 			check:ClearAllPoints()
-			if(i == 1) then
-				check:SetPoint('TOPLEFT', 16, -2)
-			elseif(i == split) then
-				check:SetPoint('TOP', 16, -2)
+			if (i == 1) then
+				check:SetPoint("TOPLEFT", 16, -2)
+			elseif (i == split) then
+				check:SetPoint("TOP", 16, -2)
 			else
-				check:SetPoint('TOP', filterFrame[i - 1], 'BOTTOM')
+				check:SetPoint("TOP", filterFrame[i - 1], "BOTTOM")
 			end
 
-			check:SetScript('OnClick', Filter_OnClick)
+			check:SetScript("OnClick", Filter_OnClick)
 
 			local label = check.label
-			if(not label) then
+			if (not label) then
 				label =  ns.createFontString(check)
-				label:SetPoint('LEFT', check, 'RIGHT', 5, -1)
+				label:SetPoint("LEFT", check, "RIGHT", 5, -1)
 				check.label = label
 			end
 			label:SetText(filter.name)
@@ -302,7 +302,7 @@ end
 
 InterfaceOptions_AddCategory(frame)
 
-SLASH_SyLevel_UI1 = '/SyLevel'
-SlashCmdList['SyLevel_UI'] = function()
-	InterfaceOptionsFrame_OpenToCategory'SyLevel'
+SLASH_SyLevel_UI1 = "/SyLevel"
+SlashCmdList["SyLevel_UI"] = function()
+	InterfaceOptionsFrame_OpenToCategory("SyLevel")
 end

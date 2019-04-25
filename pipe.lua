@@ -49,6 +49,7 @@ function SyLevel:EnablePipe(pipe)
 	argcheck(pipe, 2, "string")
 
 	local ref = pipesTable[pipe]
+	
 	if (ref and not ref.isActive) then
 		ref.enable(self)
 		ref.isActive = true

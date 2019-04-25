@@ -3,59 +3,59 @@ local SyLevel = ns.SyLevel
 
 local colorTable = ns.colorTable
 
-local frame = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
-frame.name = 'Filters'
-frame.parent = 'SyLevel'
+frame.name = "Filters"
+frame.parent = "SyLevel"
 
-frame:SetScript('OnShow', function(self)
+frame:SetScript("OnShow", function(self)
 	self:CreateOptions()
-	self:SetScript('OnShow', nil)
+	self:SetScript("OnShow", nil)
 end)
 
 function frame:CreateOptions()
-	local title = ns.createFontString(self, 'GameFontNormalLarge')
-	title:SetPoint('TOPLEFT', 16, -16)
-	title:SetText'SyLevel: Filters'
+	local title = ns.createFontString(self, "GameFontNormalLarge")
+	title:SetPoint("TOPLEFT", 16, -16)
+	title:SetText("SyLevel: Filters")
 
-	local thresLabel = ns.createFontString(self, 'GameFontNormalSmall')
-	thresLabel:SetPoint('TOPLEFT', title, 'BOTTOMLEFT', 0, -16)
-	--thresLabel:SetText('')
+	local thresLabel = ns.createFontString(self, "GameFontNormalSmall")
+	thresLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
+	--thresLabel:SetText("")
 	
 	local s1 = ns.createSlider(self, "ItemLevelThreshold",1,795,1)
-	s1:SetPoint('TOPLEFT', thresLabel, 'BOTTOMLEFT', 0, 0)
+	s1:SetPoint("TOPLEFT", thresLabel, "BOTTOMLEFT", 0, 0)
 	
 	local e1 = ns.createEditBox(self,"ItemLevelThreshold",40,20,true,3)
-	e1:SetPoint('TOP', s1, 'BOTTOM',0,-6)
+	e1:SetPoint("TOP", s1, "BOTTOM",0,-6)
 	
 	do -- After Variables Loaded?
-		local UpdateSlider = function(self)
+		local function UpdateSlider(self)
 			local filters = SyLevelDB.FilterSettings
 			local threshold = 1
-			if(filters and filters.ilevel) then
+			if (filters and filters.ilevel) then
 				threshold = filters.ilevel
 			end	
 			s1:SetValue(threshold)
 		end
 		
-		local UpdateEditbox = function(self)
+		local function UpdateEditbox(self)
 			local filters = SyLevelDB.FilterSettings
 			local threshold = 1
-			if(filters and filters.ilevel) then
+			if (filters and filters.ilevel) then
 				threshold = filters.ilevel
 			end	
 			e1:SetNumber(threshold)
 			e1:ClearFocus()
 		end
 		
-		s1:SetScript("OnValueChanged",function(self,value)
+		s1:SetScript("OnValueChanged", function(self,value)
 			SyLevelDB.FilterSettings.ilevel = value
 			SyLevel:UpdateAllPipes()
 			UpdateSlider()
 			UpdateEditbox()
 		end)
 		
-		e1:SetScript("OnEnterPressed",function(self)
+		e1:SetScript("OnEnterPressed", function(self)
 			local value = tonumber(self:GetText())
 			if not value or value < 1 then
 				value = 1

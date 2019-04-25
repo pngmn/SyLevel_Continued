@@ -1,6 +1,6 @@
 local threshold
 
-local ilevel = function(...)
+local function ilevel(...)
 	local ilevel = -1
 	for i=1, select("#", ...) do
 		local itemLink = select(i, ...)

@@ -4,20 +4,20 @@ local SyLevel = ns.SyLevel
 local colorTable = ns.colorTable
 local colorFunc = ns.colorFunc
 
-local frame = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
-frame.name = 'Colors'
-frame.parent = 'SyLevel'
+frame.name = "Colors"
+frame.parent = "SyLevel"
 
-frame:SetScript('OnShow', function(self)
+frame:SetScript("OnShow", function(self)
 	self:CreateOptions()
-	self:SetScript('OnShow', nil)
+	self:SetScript("OnShow", nil)
 end)
 
 function frame:CreateOptions()
-	local title = ns.createFontString(self, 'GameFontNormalLarge')
-	title:SetPoint('TOPLEFT', 16, -16)
-	title:SetText'SyLevel: Colors'
+	local title = ns.createFontString(self, "GameFontNormalLarge")
+	title:SetPoint("TOPLEFT", 16, -16)
+	title:SetText("SyLevel: Colors")
 
 	local backdrop = {
 		bgFile = [[Interface\ChatFrame\ChatFrameBackground]], tile = true, tileSize = 16,
@@ -36,12 +36,12 @@ function frame:CreateOptions()
 		"Quality Coloring"
 	}
 	
-	local colorDropdown = CreateFrame('Button', 'SyLevelOptFColorDropdown', self, 'UIDropDownMenuTemplate')
-	colorDropdown:SetPoint('TOPLEFT', title, 'BOTTOMLEFT', -16, -6)
-	UIDropDownMenu_SetWidth(colorDropdown,200,2)
+	local colorDropdown = CreateFrame("Button", "SyLevelOptFColorDropdown", self, "UIDropDownMenuTemplate")
+	colorDropdown:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -16, -6)
+	UIDropDownMenu_SetWidth(colorDropdown, 200, 2)
 
 	do
-		local DropDown_OnClick = function(self)
+		local function DropDown_OnClick(self)
 			SyLevelDB.FilterSettings.colorFunc = self.value
 			SyLevel:CallOptionCallbacks()
 			
@@ -49,18 +49,18 @@ function frame:CreateOptions()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
 
-		local DropDown_OnEnter = function(self)
-			GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT')
-			GameTooltip:SetText('Sets the mode of coloring.', nil, nil, nil, nil, 1)
+		local function DropDown_OnEnter(self)
+			GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
+			GameTooltip:SetText("Sets the mode of coloring.", nil, nil, nil, nil, 1)
 		end
 
 		local DropDown_OnLeave = GameTooltip_Hide
 
-		local UpdateSelected = function(self)
+		local function UpdateSelected(self)
 			UIDropDownMenu_SetSelectedID(colorDropdown, SyLevelDB.ColorFunc)
 		end
 
-		local DropDown_init = function(self)
+		local function DropDown_init(self)
 			local info
 
 			for i=1,#methods do
@@ -73,8 +73,8 @@ function frame:CreateOptions()
 			end
 		end
 
-		colorDropdown:SetScript('OnEnter', DropDown_OnEnter)
-		colorDropdown:SetScript('OnLeave', DropDown_OnLeave)
+		colorDropdown:SetScript("OnEnter", DropDown_OnEnter)
+		colorDropdown:SetScript("OnLeave", DropDown_OnLeave)
 
 		function frame:refresh()
 			UIDropDownMenu_Initialize(colorDropdown, DropDown_init)
@@ -84,39 +84,39 @@ function frame:CreateOptions()
 	end
 	 
 	--[[
-	local box = CreateFrame('Frame', nil, self)
+	local box = CreateFrame("Frame", nil, self)
 	box:SetBackdrop(backdrop)
 	box:SetBackdropColor(.1, .1, .1, .5)
 	box:SetBackdropBorderColor(.3, .3, .3, 1)
 
-	box:SetPoint('TOPLEFT', title, 0, -32)
-	box:SetPoint'LEFT'
-	box:SetPoint('RIGHT', -30, 0)
+	box:SetPoint("TOPLEFT", title, 0, -32)
+	box:SetPoint"LEFT"
+	box:SetPoint("RIGHT", -30, 0)
 
 	local title = ns.createFontString(self)
-	title:SetPoint('BOTTOMLEFT', box, 'TOPLEFT', 8, 0)
-	title:SetText('Item colors')
+	title:SetPoint("BOTTOMLEFT", box, "TOPLEFT", 8, 0)
+	title:SetText("Item colors")
 	box.title = title
 
 	local bTitle = ns.createFontString(self)
-	bTitle:SetPoint('BOTTOMRIGHT', box, 'TOPRIGHT', -35 - 16 - 5, 0)
+	bTitle:SetPoint("BOTTOMRIGHT", box, "TOPRIGHT", -35 - 16 - 5, 0)
 	bTitle:SetWidth(40)
-	bTitle:SetText'Blue'
-	bTitle:SetJustifyH'CENTER'
+	bTitle:SetText"Blue"
+	bTitle:SetJustifyH"CENTER"
 	box.bTitle = bTitle
 
 	local gTitle = ns.createFontString(self)
-	gTitle:SetPoint('RIGHT', bTitle, 'LEFT', -5, 0)
+	gTitle:SetPoint("RIGHT", bTitle, "LEFT", -5, 0)
 	gTitle:SetWidth(40)
-	gTitle:SetText'Green'
-	gTitle:SetJustifyH'CENTER'
+	gTitle:SetText"Green"
+	gTitle:SetJustifyH"CENTER"
 	box.gTitle = gTitle
 
 	local rTitle = ns.createFontString(self)
-	rTitle:SetPoint('RIGHT', gTitle, 'LEFT', -5, 0)
+	rTitle:SetPoint("RIGHT", gTitle, "LEFT", -5, 0)
 	rTitle:SetWidth(40)
-	rTitle:SetText'Red'
-	rTitle:SetJustifyH'CENTER'
+	rTitle:SetText"Red"
+	rTitle:SetJustifyH"CENTER"
 	box.rTitle = rTitle
 
 	local Swatch_Update = function(self, update, r, g, b)
@@ -181,23 +181,23 @@ function frame:CreateOptions()
 
 	local rows = {}
 	for i=0, 7 do
-		local row = CreateFrame('Button', nil, box)
+		local row = CreateFrame("Button", nil, box)
 
 		row:SetBackdrop(backdrop)
 		row:SetBackdropBorderColor(.3, .3, .3)
 		row:SetBackdropColor(.1, .1, .1, .5)
 
 		if(i == 0) then
-			row:SetPoint('TOP', 0, -8)
+			row:SetPoint("TOP", 0, -8)
 		else
-			row:SetPoint('TOP', rows[i-1], 'BOTTOM')
+			row:SetPoint("TOP", rows[i-1], "BOTTOM")
 		end
-		row:SetPoint('LEFT', 6, 0)
-		row:SetPoint('RIGHT', -25, 0)
+		row:SetPoint("LEFT", 6, 0)
+		row:SetPoint("RIGHT", -25, 0)
 		row:SetHeight(24)
 
 		local swatch = ns.createColorSwatch(row)
-		swatch:SetPoint('RIGHT', -10, 0)
+		swatch:SetPoint("RIGHT", -10, 0)
 
 		swatch.swatchFunc = Swatch_Ok
 		swatch.cancelFunc = Swatch_Cancel
@@ -205,8 +205,8 @@ function frame:CreateOptions()
 		row.swatch = swatch
 
 		local blueLabel = ns.createEditBox(row)
-		blueLabel:SetPoint('RIGHT', swatch, 'LEFT', -5, 0)
-		blueLabel:SetJustifyH'CENTER'
+		blueLabel:SetPoint("RIGHT", swatch, "LEFT", -5, 0)
+		blueLabel:SetJustifyH"CENTER"
 
 		blueLabel:SetNumeric(true)
 		blueLabel.update = Label_Update
@@ -215,8 +215,8 @@ function frame:CreateOptions()
 		row.blueLabel = blueLabel
 
 		local greenLabel = ns.createEditBox(row)
-		greenLabel:SetPoint('RIGHT', blueLabel, 'LEFT', -5, 0)
-		greenLabel:SetJustifyH'CENTER'
+		greenLabel:SetPoint("RIGHT", blueLabel, "LEFT", -5, 0)
+		greenLabel:SetJustifyH"CENTER"
 
 		greenLabel:SetNumeric(true)
 		greenLabel.update = Label_Update
@@ -225,8 +225,8 @@ function frame:CreateOptions()
 		row.greenLabel = greenLabel
 
 		local redLabel = ns.createEditBox(row)
-		redLabel:SetPoint('RIGHT', greenLabel, 'LEFT', -5, 0)
-		redLabel:SetJustifyH'CENTER'
+		redLabel:SetPoint("RIGHT", greenLabel, "LEFT", -5, 0)
+		redLabel:SetJustifyH"CENTER"
 
 		redLabel:SetNumeric(true)
 		redLabel.update = Label_Update
@@ -235,15 +235,15 @@ function frame:CreateOptions()
 		row.redLabel = redLabel
 
 		local nameLabel= ns.createFontString(row)
-		nameLabel:SetPoint('LEFT', 10, 0)
-		nameLabel:SetPoint('TOP', 0, -4)
-		nameLabel:SetPoint'BOTTOM'
-		nameLabel:SetJustifyH'LEFT'
+		nameLabel:SetPoint("LEFT", 10, 0)
+		nameLabel:SetPoint("TOP", 0, -4)
+		nameLabel:SetPoint"BOTTOM"
+		nameLabel:SetJustifyH"LEFT"
 		row.nameLabel = nameLabel
 
 		local reset = CreateFrame("Button", nil, row)
 		reset:SetSize(16, 16)
-		reset:SetPoint('LEFT', row, 'RIGHT')
+		reset:SetPoint("LEFT", row, "RIGHT")
 
 		reset:SetNormalTexture]]--[[Interface\Buttons\UI-Panel-MinimizeButton-Up]]--[[
 		reset:SetPushedTexture]]--[[Interface\Buttons\UI-Panel-MinimizeButton-Down]]--[[
@@ -264,7 +264,7 @@ function frame:CreateOptions()
 		for i=0, 7 do
 			local r, g, b = unpack(colorTable[i])
 			local row = rows[i]
-			row.nameLabel:SetText(_G['ITEM_QUALITY' .. i .. '_DESC'])
+			row.nameLabel:SetText(_G["ITEM_QUALITY" .. i .. "_DESC"])
 			Swatch_Update(row.swatch, false, r, g, b)
 		end
 	end

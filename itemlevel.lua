@@ -140,7 +140,7 @@ end
 function SyLevel:GetUpgradedItemLevel(itemString, id, slot)
 	local ilvl, ilvlText, quality, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
     if isTrue then
-        return ilvl, quality
+        return ilvl
     end
 end
 
