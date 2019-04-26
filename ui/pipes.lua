@@ -2,7 +2,7 @@ local _, ns = ...
 local SyLevel = ns.SyLevel
 
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
-frame.name = "SyLevel"
+frame.name = ns.Name
 frame:Hide()
 
 frame:SetScript("OnShow", function(self)
@@ -10,14 +10,7 @@ frame:SetScript("OnShow", function(self)
 	self:SetScript("OnShow", nil)
 end)
 
-local _BACKDROP = {
-	bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
-	edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
-	tile = true, tileSize = 8, edgeSize = 16,
-	insets = {left = 2, right = 2, top = 2, bottom = 2}
-}
-
-local createCheckBox = function(parent)
+local function createCheckBox(parent)
 	local check = CreateFrame("CheckButton", nil, parent)
 	check:SetSize(16, 16)
 
@@ -32,12 +25,12 @@ end
 function frame:CreateOptions()
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText("SyLevel")
+	title:SetText(ns.Name)
 
 	local subtitle = ns.createFontString(self)
 	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
 	subtitle:SetPoint("RIGHT", self, -32, 0)
-	subtitle:SetText"Select your display locations!"
+	subtitle:SetText("Select your display locations!")
 
 	local scroll = CreateFrame("ScrollFrame", nil, self)
 	scroll:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -8)
@@ -133,7 +126,7 @@ do
 		self:SetBackdropBorderColor(.5, .9, .06)
 
 		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
-		GameTooltip:SetText"Click for additional settings."
+		GameTooltip:SetText("Click for additional settings.")
 	end
 
 	local function Row_OnLeave(self)
@@ -147,7 +140,7 @@ do
 	local function createRow(parent, i)
 		local row = CreateFrame("Button", nil, parent)
 
-		row:SetBackdrop(_BACKDROP)
+		row:SetBackdrop(ns.Backdrop)
 		row:SetBackdropColor(.1, .1, .1, .5)
 		row:SetBackdropBorderColor(.3, .3, .3)
 
@@ -303,6 +296,6 @@ end
 InterfaceOptions_AddCategory(frame)
 
 SLASH_SyLevel_UI1 = "/SyLevel"
-SlashCmdList["SyLevel_UI"] = function()
-	InterfaceOptionsFrame_OpenToCategory("SyLevel")
+SlashCmdList[ns.Name.."_UI"] = function()
+	InterfaceOptionsFrame_OpenToCategory(ns.Name)
 end

@@ -1,9 +1,9 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-ns.createFontString = function(parent, template)
-	local label = parent:CreateFontString(nil, nil, template or 'GameFontHighlight')
-	label:SetJustifyH'LEFT'
+function ns.createFontString(parent, template)
+	local label = parent:CreateFontString(nil, nil, template or "GameFontHighlight")
+	label:SetJustifyH("LEFT")
 
 	return label
 end
@@ -17,13 +17,18 @@ ns.FontStyle = {
 	["THICKOUTLINE, MONOCHROME"] = "Thick Outline, Monochrome"
 }
 
+ns.Backdrop = {
+	bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
+	edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
+	tile = true, tileSize = 8, edgeSize = 16,
+	insets = {left = 2, right = 2, top = 2, bottom = 2}
+}
 
 ns.FullAlign = {TOPLEFT = "TOPLEFT",TOP = "TOP",TOPRIGHT = "TOPRIGHT",LEFT = "LEFT",CENTER = "CENTER",RIGHT = "RIGHT",BOTTOMLEFT = "BOTTOMLEFT",BOTTOM = "BOTTOM",BOTTOMRIGHT = "BOTTOMRIGHT"}
 
-
-ns.Hex = function(r, g, b)
-	if(type(r) == "table") then
-		if(r.r) then
+function ns.Hex(r, g, b)
+	if (type(r) == "table") then
+		if (r.r) then
 			r, g, b = r.r, r.g, r.b
 		else
 			r, g, b = unpack(r)
@@ -34,7 +39,7 @@ ns.Hex = function(r, g, b)
 end
 
 do
-	local OnEscapePressed = function(self)
+	local function OnEscapePressed(self)
 		self:SetText(self.oldText)
 		self:ClearFocus()
 		if self.update then
@@ -42,7 +47,7 @@ do
 		end
 	end
 
-	local OnEnterPressed = function(self)
+	local function OnEnterPressed(self)
 		local text = self:GetText()
 		self:ClearFocus()
 		if self.update then
@@ -50,20 +55,20 @@ do
 		end
 	end
 
-	local OnEditFocusGained = function(self)
+	local function OnEditFocusGained(self)
 		self.oldText = self:GetText()
 
 		self:SetText(self.oldText)
 		self.newText = nil
 	end
 
-	local OnEditFocusLost = function(self)
+	local function OnEditFocusLost(self)
 		self.newText = nil
 		self.oldText = nil
 	end
 
-	local OnTextChanged = function(self, userInput)
-		if(userInput) then
+	local function OnTextChanged(self, userInput)
+		if (userInput) then
 			self.newText = self:GetText()
 			if self.update then
 				self:update()
@@ -71,9 +76,9 @@ do
 		end
 	end
 
-	local OnChar = function(self, key)
+	local function OnChar(self, key)
 		local text = self:GetText()
-		if(self.validate and not self:validate(text)) then
+		if (self.validate and not self:validate(text)) then
 			local pos = self:GetCursorPosition() - 1
 			self:SetText(self.newText or self.oldText)
 			self:SetCursorPosition(pos)
@@ -82,8 +87,8 @@ do
 		self.newText = self:GetText()
 	end
 
-	ns.createEditBox = function(self,name,width,height,type,max)
-		local editbox = CreateFrame('EditBox', "SyLevel_Editbox_"..name, self)
+	function ns.createEditBox(self, name, width, height, type, max)
+		local editbox = CreateFrame("EditBox", ns.Name.."_Editbox_"..name, self)
 		if type then
 			editbox:SetNumeric()
 		end
@@ -92,19 +97,19 @@ do
 		editbox:SetHeight(height)
 		editbox:SetMaxLetters(max)
 		editbox:SetAutoFocus(false)
-		editbox:SetJustifyH('CENTER')
-		editbox:SetScript('OnEscapePressed', OnEscapePressed)
-		editbox:SetScript('OnEnterPressed', OnEnterPressed)
-		editbox:SetScript('OnEditFocusGained', OnEditFocusGained)
-		editbox:SetScript('OnEditFocusLost', OnEditFocusLost)
-		editbox:SetScript('OnTextChanged', OnTextChanged)
-		editbox:SetScript('OnChar', OnChar)
+		editbox:SetJustifyH("CENTER")
+		editbox:SetScript("OnEscapePressed", OnEscapePressed)
+		editbox:SetScript("OnEnterPressed", OnEnterPressed)
+		editbox:SetScript("OnEditFocusGained", OnEditFocusGained)
+		editbox:SetScript("OnEditFocusLost", OnEditFocusLost)
+		editbox:SetScript("OnTextChanged", OnTextChanged)
+		editbox:SetScript("OnChar", OnChar)
 
-		local background = editbox:CreateTexture(nil, 'BACKGROUND')
-		background:SetPoint('TOP', 0, -1)
-		background:SetPoint'LEFT'
-		background:SetPoint'RIGHT'
-		background:SetPoint('BOTTOM', 0, 4)
+		local background = editbox:CreateTexture(nil, "BACKGROUND")
+		background:SetPoint("TOP", 0, -1)
+		background:SetPoint("LEFT")
+		background:SetPoint("RIGHT")
+		background:SetPoint("BOTTOM", 0, 4)
 		background:SetColorTexture(1, 1, 1, .05)
 		
 		return editbox
@@ -112,8 +117,8 @@ do
 end
 
 do
-	ns.createSlider = function(self, name, minv, maxv, step)
-		local slider = CreateFrame('Slider', name, self, 'OptionsSliderTemplate')
+	function ns.createSlider(self, name, minv, maxv, step)
+		local slider = CreateFrame("Slider", name, self, "OptionsSliderTemplate")
 		slider:SetMinMaxValues(minv, maxv)
 		slider:SetOrientation("HORIZONTAL")
 		slider:SetValueStep(1)	
@@ -125,23 +130,23 @@ do
 end
 
 do
-	local OnClick = function(self, button, down)
+	local function OnClick(self, button, down)
 		self:GetParent():GetParent().colorPicker = self
 		OpenColorPicker(self)
 	end
 
-	ns.createColorSwatch = function(self)
-		local swatch = CreateFrame('Button', nil, self)
+	function ns.createColorSwatch(self)
+		local swatch = CreateFrame("Button", nil, self)
 		swatch:SetSize(16, 16)
 
-		local background = swatch:CreateTexture(nil, 'BACKGROUND')
+		local background = swatch:CreateTexture(nil, "BACKGROUND")
 		background:SetSize(14, 14)
-		background:SetPoint'CENTER'
+		background:SetPoint("CENTER")
 		background:SetTexture(.3, .3, .3)
 
 		swatch:SetNormalTexture[[Interface\ChatFrame\ChatFrameColorSwatch]]
 
-		swatch:SetScript('OnClick', OnClick)
+		swatch:SetScript("OnClick", OnClick)
 
 		return swatch
 	end

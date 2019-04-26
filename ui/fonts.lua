@@ -7,7 +7,7 @@ local pendingConfig
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
 frame.name = "Font Settings"
-frame.parent = "SyLevel"
+frame.parent = ns.Name
 
 frame:SetScript("OnShow", function(self) 	
 	self:CreateOptions()
@@ -40,13 +40,13 @@ function frame:CreateOptions()
 	
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText"SyLevel: Font Settings"
+	title:SetText(ns.Name..": Font Settings")
 	
 	local fontsLabel = ns.createFontString(self, "GameFontNormalSmall")
 	fontsLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
 	fontsLabel:SetText("Typeface")
 	
-	local fontsDDown = CreateFrame("Button", "SyLevel_FontsDropdown", self, "UIDropDownMenuTemplate")
+	local fontsDDown = CreateFrame("Button", ns.Name"_FontsDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDown:SetPoint("TOPLEFT", fontsLabel, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDown, 200)
 
@@ -54,7 +54,7 @@ function frame:CreateOptions()
 	fontsLabelAlign:SetPoint("TOPLEFT", fontsLabel, "BOTTOMLEFT", 0, -48)
 	fontsLabelAlign:SetText("Align")
 	
-	local fontsDDownAlign = CreateFrame("Button", "SyLevel_AlignDropdown", self, "UIDropDownMenuTemplate")
+	local fontsDDownAlign = CreateFrame("Button", ns.Name.."_AlignDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDownAlign:SetPoint("TOPLEFT", fontsLabelAlign, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDownAlign, 200)
 
@@ -62,7 +62,7 @@ function frame:CreateOptions()
 	fontsLabelRef:SetPoint("TOPLEFT", fontsLabelAlign, "BOTTOMLEFT", 0, -48)
 	fontsLabelRef:SetText("Reference")
 	
-	local fontsDDownRef = CreateFrame("Button", "SyLevel_ReferenceDropdown", self, "UIDropDownMenuTemplate")
+	local fontsDDownRef = CreateFrame("Button", ns.Name.."_ReferenceDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDownRef:SetPoint("TOPLEFT", fontsLabelRef, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDownRef, 200)
 

@@ -3,20 +3,25 @@ local SyLevel = ns.SyLevel
 
 local argcheck = SyLevel.argcheck
 
-local GREY = {0.55,0.55,0.55}
-local RED = {1,0,0}
-local ORANGE = {1,0.7,0}
-local YELLOW = {1,1,0}
-local GREEN = {0,1,0}
-local LIGHTBLUE = {0,1,1}
-local BLUE = {0.2,0.2,1}
-local DARKBLUE = {0,0.5,1}
-local PURPLE = {0.7,0,1}
-local PINK = {1,0,1}
-local WHITE = {1,1,1}
+local GREY = {0.55, 0.55, 0.55}
+local RED = {1, 0, 0}
+local ORANGE = {1, 0.7, 0}
+local YELLOW = {1, 1, 0}
+local GREEN = {0, 1, 0}
+local LIGHTBLUE = {0, 1, 1}
+local BLUE = {0.2, 0.2, 1}
+local DARKBLUE = {0, 0.5, 1}
+local PURPLE = {0.7, 0, 1}
+local PINK = {1, 0, 1}
+local WHITE = {1, 1, 1}
 local HEIRLOOM = {0.9, 0.8, 0.5}
 local UnitClass = UnitClass
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+
+-- BFA Season 2 = 425
+local MAX_ITEM_LEVEL = 425
+SyLevel.MAX_ITEM_LEVEL = MAX_ITEM_LEVEL
+
 --[[ Do not edit beyond this point ]]-- 
 
 local colors = {
@@ -36,18 +41,18 @@ local colors = {
 }
 
 local ilvls = {
-	750, -- 1
-	720, -- 2
-	700, -- 3
-	650, -- 4
-	600, -- 5
-	550, -- 6
-	500, -- 7
-	450, -- 8
-	400, -- 9
-	350, -- 10
-	300, -- 11
-	250, -- 12
+	395, -- 1
+	380, -- 2
+	365, -- 3
+	350, -- 4
+	335, -- 5
+	320, -- 6
+	305, -- 7
+	250, -- 8
+	200, -- 9
+	150, -- 10
+	100, -- 11
+	50, -- 12
 	1 -- 13	
 }
 
@@ -71,9 +76,9 @@ end
 local CS = CreateFrame("ColorSelect")
 
 function CS:GetSmudgeColorRGB(lc, hc, perc)
-	self:SetColorRGB(lc[1],lc[2],lc[3])
+	self:SetColorRGB(lc[1], lc[2], lc[3])
 	local h1, s1, v1 = self:GetColorHSV()
-	self:SetColorRGB(hc[1],hc[2],hc[3])
+	self:SetColorRGB(hc[1], hc[2], hc[3])
 	local h2, s2, v2 = self:GetColorHSV()
 	local h3 = floor(h1-(h1-h2)*perc)
 	if abs(h1-h2) > 180 then
@@ -104,14 +109,14 @@ local function ColorFunction(l, h, lc, hc, ilvl)
 		return unpack(WHITE)
 	else
 		local p = (ilvl-l)/(h-l)
-		return CS:GetSmudgeColorRGB(lc,hc,p)
+		return CS:GetSmudgeColorRGB(lc, hc, p)
 	end
 end
 
 local colorFunctions = {
 	[1] = function(ilvl)
 		argcheck(ilvl, 2, "number")
-		ilvl = (ilvl / 795)
+		ilvl = (ilvl / MAX_ITEM_LEVEL)
 		local r, g, b
 		if ilvl < .5 then
 			r = ilvl*2
@@ -126,7 +131,7 @@ local colorFunctions = {
 	end,
 	[2] = function(ilvl)
 		argcheck(ilvl, 2, "number")
-		ilvl = (ilvl / 795)
+		ilvl = (ilvl / MAX_ITEM_LEVEL)
 		local r, g, b
 		if ilvl < .5 then
 			r = 1
@@ -176,7 +181,7 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[6] = function(ilvl)
-		argcheck(ilvl,2,"number")
+		argcheck(ilvl, 2, "number")
 		local r, g, b
 		if ilvl <= 450 then
 			r = 0.55
@@ -197,7 +202,7 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[7] = function()
-		local cColors = RAID_CLASS_COLORS[select(2,UnitClass("player"))]
+		local cColors = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
 		return cColors.r, cColors.g, cColors.b
 	end,
 	[8] = function(ilvl, quality)

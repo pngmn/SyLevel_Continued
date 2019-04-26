@@ -70,7 +70,7 @@ function SyLevel:RegisterFilterOnPipe(pipe, filter)
 	return true
 end
 
-SyLevel.IterateFiltersOnPipe = function(pipe)
+function SyLevel.IterateFiltersOnPipe(pipe)
 	local t = activeFilters[pipe]
 	return coroutine.wrap(function()
 		if (t) then
@@ -87,15 +87,15 @@ function SyLevel:UnregisterFilterOnPipe(pipe, filter)
 	argcheck(pipe, 2, "string")
 	argcheck(filter, 3, "string")
 
-	if(not pipesTable[pipe]) then return nil, "Pipe does not exist." end
-	if(not filtersTable[filter]) then return nil, "Filter does not exist." end
+	if (not pipesTable[pipe]) then return nil, "Pipe does not exist." end
+	if (not filtersTable[filter]) then return nil, "Filter does not exist." end
 
 	--- XXX: Be more defensive here.
 	local filterTable = filtersTable[filter]
 	local ref = activeFilters[pipe][filterTable[1]]
-	if(ref) then
+	if (ref) then
 		for k, func in next, ref do
-			if(func == filterTable) then
+			if (func == filterTable) then
 				table.remove(ref, k)
 				SyLevelDB.EnabledFilters[filter][pipe] = nil
 

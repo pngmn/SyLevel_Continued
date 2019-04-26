@@ -3,8 +3,8 @@ local SyLevel = ns.SyLevel
 
 local argcheck = SyLevel.argcheck
 
-local eventFrame = CreateFrame'Frame'
-eventFrame:SetScript('OnEvent', function(self, event, ...)
+local eventFrame = CreateFrame("Frame")
+eventFrame:SetScript("OnEvent", function(self, event, ...)
 	return SyLevel[event](SyLevel, event, ...)
 end)
 
@@ -17,30 +17,30 @@ local eventMetatable = {
 }
 
 function SyLevel:RegisterEvent(event, func)
-	argcheck(event, 2, 'string')
+	argcheck(event, 2, "string")
 
-	if(type(func) == 'string' and type(self[func]) == 'function') then
+	if (type(func) == "string" and type(self[func]) == "function") then
 		func = self[func]
 	end
 
 	local curev = self[event]
 	local kind = type(curev)
-	if(curev and func) then
-		if(kind == 'function' and curev ~= func) then
+	if (curev and func) then
+		if (kind == "function" and curev ~= func) then
 			self[event] = setmetatable({curev, func}, eventMetatable)
-		elseif(kind == 'table') then
+		elseif (kind == "table") then
 			for _, infunc in next, curev do
-				if(infunc == func) then return end
+				if (infunc == func) then return end
 			end
 
 			table.insert(curev, func)
 		end
-	elseif(eventFrame:IsEventRegistered(event)) then
+	elseif (eventFrame:IsEventRegistered(event)) then
 		return
 	else
-		if(type(func) == 'function') then
+		if (type(func) == "function") then
 			self[event] = func
-		elseif(not self[event]) then
+		elseif (not self[event]) then
 			return error("Handler for event [%s] does not exist.", event)
 		end
 
@@ -53,26 +53,26 @@ function SyLevel:IsEventRegistered(event)
 end
 
 function SyLevel:UnregisterEvent(event, func)
-	argcheck(event, 2, 'string')
+	argcheck(event, 2, "string")
 
 	local curev = self[event]
-	if(type(curev) == 'table' and func) then
+	if (type(curev) == "table" and func) then
 		for k, infunc in next, curev do
-			if(infunc == func) then
+			if (infunc == func) then
 				table.remove(curev, k)
 
 				local n = #curev
-				if(n == 1) then
+				if (n == 1) then
 					local _, handler = next(curev)
 					self[event] = handler
-				elseif(n == 0) then
+				elseif (n == 0) then
 					eventFrame:UnregisterEvent(event)
 				end
 
 				break
 			end
 		end
-	elseif(curev == func) then
+	elseif (curev == func) then
 		self[event] = nil
 		eventFrame:UnregisterEvent(event)
 	end

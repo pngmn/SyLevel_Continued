@@ -1,4 +1,4 @@
-
+-- Credits to 
 local _E
 local hook
 

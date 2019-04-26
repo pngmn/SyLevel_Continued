@@ -78,7 +78,7 @@ local function enable(self)
 	self:RegisterEvent("VOID_STORAGE_OPEN", update)
 end
 
-local disable = function(self)
+local function disable(self)
 	_E = nil
 	self:UnregisterEvent("VOID_STORAGE_UPDATE", updateContents)
 	self:UnregisterEvent("INVENTORY_SEARCH_UPDATE", updateContents)
