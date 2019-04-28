@@ -68,7 +68,8 @@ local function ScanTip(itemLink, id, slot)
     end
 
 	if type(tipCache[itemLink].ilevel) == "nil" then
-		local cacheIt = true
+        local cacheIt = true
+        local skipScan = nil
         local _, quality
                      
 		if not scanningTooltip then
@@ -86,35 +87,45 @@ local function ScanTip(itemLink, id, slot)
         elseif id and type(id) == "number" and slot then
             rc, message = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot) 
             _, _, _, quality = GetContainerItemInfo(id, slot)
+        elseif id then
+            rc = true
+            skipScan = true
+            quality = id:GetItemQuality()
         else
             _, _, quality = GetItemInfo(itemLink)
         end
 		if not rc then return emptytable end
       	
         local c = tipCache[itemLink]
-		for i = 2, 3 do
-			local label, text = _G["GearLevelScanTooltipTextLeft"..i], nil
-			if label then text = label:GetText() end
-			if text then
-                local normal, timewalking
-                if c.ilevel == nil then
-                    normal, timewalking = text:match(itemLevelPattern)
-                    if timewalking ~= "" then
-                        c.ilevel = tonumber(timewalking)
-                    else
-                        c.ilevel = tonumber(normal)
+        if skipScan then
+            c.ilevel = id:GetCurrentItemLevel()
+            c.ilevelString = id:GetCurrentItemLevel()
+        else
+            for i = 2, 3 do
+                local label, text = _G["GearLevelScanTooltipTextLeft"..i], nil
+                if label then text = label:GetText() end
+                if text then
+                    local normal, timewalking
+                    if c.ilevel == nil then
+                        normal, timewalking = text:match(itemLevelPattern)
+                        if timewalking ~= "" then
+                            c.ilevel = tonumber(timewalking)
+                        else
+                            c.ilevel = tonumber(normal)
+                        end
+                    end
+                    if c.ilevelString == nil then
+                        normal, timewalking = text:match(minItemLevelPattern)
+                        if timewalking ~= "" then
+                            c.ilevelString = timewalking
+                        else
+                            c.ilevelString = normal
+                        end
                     end
                 end
-                if c.ilevelString == nil then
-                    normal, timewalking = text:match(minItemLevelPattern)
-                    if timewalking ~= "" then
-                        c.ilevelString = timewalking
-                    else
-                        c.ilevelString = normal
-                    end
-                end
-			end
-		end
+            end
+        end
+        
         c.ilevel = c.ilevel or 1
         c.quality = quality
         scanningTooltip:Hide()

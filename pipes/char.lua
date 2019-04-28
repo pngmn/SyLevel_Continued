@@ -15,8 +15,14 @@ local function update(self)
 	if (CharacterFrame:IsShown()) then
 		for key, slotName in pairs(slots) do
 			local slotFrame = _G["Character"..slotName.."Slot"]
-			local slotLink = GetInventoryItemLink("player", key)
-			SyLevel:CallFilters("char", slotFrame, _E and slotLink)
+			local item = Item:CreateFromEquipmentSlot(key)
+			local itemLoc = ItemLocation:CreateFromEquipmentSlot(key)
+			if C_Item.DoesItemExist(itemLoc) then
+				local slotLink = item:GetItemLink()
+				SyLevel:CallFilters("char", slotFrame, _E and slotLink, item)
+			else
+				SyLevel:CallFilters("char", slotFrame, _E and nil)
+			end
 		end
 	end
 end
@@ -27,15 +33,19 @@ local function UNIT_INVENTORY_CHANGED(self, event, unit)
 	end
 end
 
+local function doHook()
+    if (not hook) then
+		hook = function(...)
+			if (_E) then return update(...) end
+		end
+		CharacterFrame:HookScript("OnShow", update)
+	end
+end
+
 local function enable(self)
 	_E = true
-
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
-
-	if (not hook) then
-		CharacterFrame:HookScript("OnShow", update)
-		hook = true	
-	end
+	doHook()
 end
 
 local function disable(self)
