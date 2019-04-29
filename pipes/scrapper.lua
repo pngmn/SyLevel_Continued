@@ -4,14 +4,15 @@ local _E
 local function update(self)
     if (ScrappingMachineFrame and ScrappingMachineFrame:IsShown()) then
         for button in pairs(ScrappingMachineFrame.ItemSlots.scrapButtons.activeObjects) do
-            SyLevel:TextDisplayHide(button.Icon)
+            local slotFrame = button.Icon
             local pending = C_ScrappingMachineUI.GetCurrentPendingScrapItemLocationByIndex(button.SlotNumber)
             if pending then
                 local bag = pending.bagID
                 local slot = pending.slotIndex
                 local itemLink = GetContainerItemLink(bag, slot)
-                local slotFrame = button.Icon
                 SyLevel:CallFilters("scrapper", slotFrame, _E and itemLink)
+            else
+                SyLevel:CallFilters("scrapper", slotFrame, _E and nil)
             end
         end
     end
