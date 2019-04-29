@@ -20,13 +20,18 @@ local function update(self)
     end
 end
 
+local function doHook()
+    if (not hook) then
+		hook = function(...)
+			if (_E) then return update(...) end
+		end
+		hooksecurefunc("ContainerFrame_Update", update)
+	end
+end
+
 local function enable(self)
 	_E = true
-
-	if (not hook) then
-		hooksecurefunc("ContainerFrame_Update", update)
-		hook = true
-	end
+    doHook()
 end
 
 local function disable(self)
