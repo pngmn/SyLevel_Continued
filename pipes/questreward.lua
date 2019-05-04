@@ -3,7 +3,15 @@ local _E
 local hook
 
 local function update()
-    if (not QuestInfoRewardsFrame or not QuestInfoRewardsFrame:IsShown()) then return end
+	if (not QuestInfoRewardsFrame or not QuestInfoRewardsFrame:IsShown()) then return end
+	
+	local i
+	for i = 1, MAX_NUM_ITEMS do
+		local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
+		local slotFrame = questItem.IconBorder
+		SyLevel:CallFilters("questreward", slotFrame, _E and nil)
+	end
+
 	-- Now, get information about this quest.
 	local StaticRewards, RewardChoices
 	local GetLinkFunction, GetRewardInfoFunction
@@ -17,27 +25,25 @@ local function update()
 		GetLinkFunction = GetQuestItemLink
 	end
 	-- BUG: In 7.0, sometimes when turning in a quest (the "else" case above), these numbers are still 0 by the time that this is called.  Calling GetNumQuest*() too early apparently prevents the reward from getting shown at all...?
-	if StaticRewards + RewardChoices == 0 then return end
+	if StaticRewards + RewardChoices == 0 then 
+		return 
+	end
 	if not QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, 1) then
 		return
 	end
 
 	for i = 1, StaticRewards do
         local itemLink = GetLinkFunction("reward", i)
-        if itemLink then
-            local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
-            local slotFrame = questItem.IconBorder
-			SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
-		end
+		local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
+		local slotFrame = questItem.IconBorder
+		SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
     end
     
 	for i = 1, RewardChoices do
         local itemLink = GetLinkFunction("choice", i)
-        if itemLink then
-            local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
-            local slotFrame = questItem.IconBorder
-			SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
-		end
+		local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
+		local slotFrame = questItem.IconBorder
+		SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
 	end
 end
 
