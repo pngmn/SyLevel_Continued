@@ -46,7 +46,7 @@ function frame:CreateOptions()
 	fontsLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
 	fontsLabel:SetText("Typeface")
 	
-	local fontsDDown = CreateFrame("Button", ns.Name"_FontsDropdown", self, "UIDropDownMenuTemplate")
+	local fontsDDown = CreateFrame("Button", ns.Name.."_FontsDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDown:SetPoint("TOPLEFT", fontsLabel, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDown, 200)
 
