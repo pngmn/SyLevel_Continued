@@ -14,9 +14,8 @@ frame:SetScript("OnShow", function(self)
 	self:SetScript("OnShow", nil)
 end)
 
-function frame:CreateOptions()
-    local db = SyLevelDB.FilterSettings
-    
+function frame:CreateOptions()   
+    local filters = SyLevelDB.FilterSettings
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
 	title:SetText(ns.Name..": Filters")
@@ -41,7 +40,6 @@ function frame:CreateOptions()
     
 	do -- After Variables Loaded?
 		local function UpdateSlider(self)
-			local filters = SyLevelDB.FilterSettings
 			local threshold = 1
 			if (filters and filters.ilevel) then
 				threshold = filters.ilevel
@@ -50,7 +48,6 @@ function frame:CreateOptions()
 		end
 		
 		local function UpdateEditbox(self)
-			local filters = SyLevelDB.FilterSettings
 			local threshold = 1
 			if (filters and filters.ilevel) then
 				threshold = filters.ilevel
@@ -60,7 +57,7 @@ function frame:CreateOptions()
 		end
 		
 		s1:SetScript("OnValueChanged", function(self,value)
-			SyLevelDB.FilterSettings.ilevel = value
+			filters.ilevel = value
 			SyLevel:UpdateAllPipes()
 			UpdateSlider()
 			UpdateEditbox()
@@ -73,7 +70,7 @@ function frame:CreateOptions()
 			elseif value > MAX_ITEM_LEVEL then
 				value = MAX_ITEM_LEVEL
 			end
-			SyLevelDB.FilterSettings.ilevel = value
+			filters.ilevel = value
 			SyLevel:UpdateAllPipes()
 			UpdateSlider()
 			UpdateEditbox()
@@ -83,7 +80,7 @@ function frame:CreateOptions()
         local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
         local function DropDown_OnClick(self)
 			local t = ItemQualityOptions
-			db.quality = t[self:GetID()]
+			filters.quality = t[self:GetID()]
 			SyLevel:UpdateAllPipes()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
@@ -98,7 +95,7 @@ function frame:CreateOptions()
 		local function UpdateSelected(self)
 			local t = ItemQualityOptions
 			for i=1,#t do
-				if db.quality == t[i]:GetID() then
+				if filters.quality == t[i]:GetID() then
 					UIDropDownMenu_SetSelectedID(d1, i)
 				end
 			end
