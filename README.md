@@ -14,6 +14,9 @@ Additional Features:
 - Loot pop-up after Boss kill
 - Text color based on quality
 
+Planned:
+- Item quality filter
+
 
 ## Credits
 
