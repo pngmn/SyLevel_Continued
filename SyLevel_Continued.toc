@@ -1,7 +1,7 @@
 ## Interface: 80100
-## Title: PingumaniaItemlevel
+## Title: SyLevel Continued
 ## Author: Pingumania
-## Version: 1.0.0
+## Version: 1.2
 ## SavedVariables: SyLevelDB
 ## Notes: Displays item level information on your item slots!
 
