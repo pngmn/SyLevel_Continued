@@ -6,7 +6,7 @@ local function update(self, data)
     if data then
         local itemLink = data.itemLink
         local slotFrame = self.IconHitBox
-        Sylevel:CallFilters("bossframe", slotFrame, _E and itemLink)
+        SyLevel:CallFilters("bossframe", slotFrame, _E and itemLink)
     end
 end
 
