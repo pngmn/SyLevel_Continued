@@ -1,0 +1,19 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="adventureguide.lua"/>
+	<Script file="bags.lua"/>
+	<Script file="bank.lua"/>
+	<Script file="bossframe.lua"/>
+	<Script file="char.lua"/>
+	<Script file="char-flyout.lua"/>
+	<Script file="gbank.lua"/>
+	<Script file="inspect.lua"/>
+	<Script file="loot.lua"/>
+	<Script file="mail.lua"/>
+	<Script file="merchant.lua"/>
+	<Script file="missionreward.lua"/>
+	<Script file="questreward.lua"/>
+	<Script file="scrapper.lua"/>
+	<Script file="trade.lua"/>
+	<Script file="tradeskill.lua"/>
+	<Script file="voidstorage.lua"/>
+</Ui>

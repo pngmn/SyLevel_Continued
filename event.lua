@@ -1,22 +1,11 @@
-local P, C = unpack(select(2, ...))
+local name, ns = ...
+local SyLevel = ns.SyLevel
 
-local name = P.Name
-
-local function argcheck(value, num, ...)
-	assert(type(num) == 'number', "Bad argument #2 to 'argcheck' (number expected, got "..type(num)..")")
-
-	for i=1, select("#", ...) do
-		if type(value) == select(i, ...) then return end
-	end
-
-	local types = strjoin(", ", ...)
-	local name = string.match(debugstack(2,2,0), ": in function [`<](.-)['>]")
-	error(("Bad argument #%d to '%s' (%s expected, got %s"):format(num, name, types, type(value)), 3)
-end
+local argcheck = SyLevel.argcheck
 
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
-	return P[event](P, event, ...)
+	return SyLevel[event](SyLevel, event, ...)
 end)
 
 local eventMetatable = {
@@ -27,7 +16,7 @@ local eventMetatable = {
 	end,
 }
 
-function P:RegisterEvent(event, func)
+function SyLevel:RegisterEvent(event, func)
 	argcheck(event, 2, "string")
 
 	if (type(func) == "string" and type(self[func]) == "function") then
@@ -36,7 +25,7 @@ function P:RegisterEvent(event, func)
 
 	local curev = self[event]
 	local kind = type(curev)
-	if(curev and func) then
+	if (curev and func) then
 		if (kind == "function" and curev ~= func) then
 			self[event] = setmetatable({curev, func}, eventMetatable)
 		elseif (kind == "table") then
@@ -59,11 +48,11 @@ function P:RegisterEvent(event, func)
 	end
 end
 
-function P:IsEventRegistered(event)
+function SyLevel:IsEventRegistered(event)
 	return eventFrame:IsEventRegistered(event)
 end
 
-function P:UnregisterEvent(event, func)
+function SyLevel:UnregisterEvent(event, func)
 	argcheck(event, 2, "string")
 
 	local curev = self[event]

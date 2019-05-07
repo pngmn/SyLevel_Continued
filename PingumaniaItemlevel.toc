@@ -1,7 +1,8 @@
 ## Interface: 80100
 ## Title: PingumaniaItemlevel
 ## Author: Pingumania
-## Notes: Display itemlevel of weapons and armour.
-## Version: 1.0
+## Version: 1.0.0
+## SavedVariables: SyLevelDB
+## Notes: Displays item level information on your item slots!
 
 init.xml
