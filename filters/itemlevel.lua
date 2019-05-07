@@ -1,26 +1,31 @@
-local threshold
+local ilevelThreshold, qualityThreshold
 
 local function ilevel(itemLink, id, i)
 	local ilevel = -1
 	if (itemLink) then
-		ilevel, ilevelString, ilevelQuality = SyLevel:GetUpgradedItemLevel(itemLink, id, i)
+		ilevel, ilevelString, itemQuality = SyLevel:GetUpgradedItemLevel(itemLink, id, i)
 		if not ilevel then
 			ilevel = -1
 		end
 	end
 
-	if ilevel and (ilevel >= threshold) then
-		return ilevel, ilevelString, ilevelQuality
+	if ilevel and (ilevel >= ilevelThreshold) and (itemQuality >= qualityThreshold) then
+		return ilevel, ilevelString, itemQuality
 	end
 end
 
 SyLevel:RegisterOptionCallback(function(db)
 	local filters = db.FilterSettings
 	if (filters and filters.ilevel) then
-		threshold = filters.ilevel
+		ilevelThreshold = filters.ilevel
 	else
-		threshold = 1
+		ilevelThreshold = 1
 	end
+    if (filters and filters.quality) then
+        qualityThreshold = filters.quality
+    else
+        qualityThreshold = 0
+    end
 end)
 
 SyLevel:RegisterFilter("Item level text", "Text", ilevel, [[Adds item level text that the items have.]])
