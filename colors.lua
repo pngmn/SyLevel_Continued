@@ -202,13 +202,13 @@ local colorFunctions = {
 		return r, g, b
 	end,
 	[7] = function()
-		local cColors = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
-		return cColors.r, cColors.g, cColors.b
+		local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
+		return color.r, color.g, color.b
 	end,
 	[8] = function(ilvl, quality)
 		if not quality then return 1, 1, 1 end
-		local r, g, b = GetItemQualityColor(quality)
-		return r, g, b
+		local color = ITEM_QUALITY_COLORS[quality]
+		return color.r, color.g, color.b
 	end
 }
 

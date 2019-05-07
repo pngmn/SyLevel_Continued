@@ -108,7 +108,8 @@ function frame:CreateOptions()
 				
 				info = UIDropDownMenu_CreateInfo()
 				info.text = t[i]
-                info.text:SetTextColor(GetItemQualityColor(i))
+                local color = ITEM_QUALITY_COLORS[i]
+                info.text:SetTextColor(color.r, color.g, color.b)
 				info.value = i
 				info.func = DropDown_OnClick
 
