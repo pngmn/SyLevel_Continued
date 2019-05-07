@@ -59,7 +59,7 @@ local function updateDB(db)
 end
 
 local function ADDON_LOADED(self, event, addon)
-	if (addon == "PingumaniaItemlevel") then
+	if (addon == "SyLevel_Continued") then
 		if (not SyLevelDB) then
 			SyLevelDB = {}
 			SyLevelDB = copyTable(defaults)			
