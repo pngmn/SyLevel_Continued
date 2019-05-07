@@ -7,7 +7,7 @@ local pendingConfig
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
 frame.name = "Font Settings"
-frame.parent = ns.Name
+frame.parent = ns.TrivName
 
 frame:SetScript("OnShow", function(self) 	
 	self:CreateOptions()
@@ -40,7 +40,7 @@ function frame:CreateOptions()
 	
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText(ns.Name..": Font Settings")
+	title:SetText(ns.TrivName..": Font Settings")
 	
 	local fontsLabel = ns.createFontString(self, "GameFontNormalSmall")
 	fontsLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)

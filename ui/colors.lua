@@ -7,7 +7,7 @@ local colorFunc = ns.colorFunc
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
 frame.name = "Colors"
-frame.parent = ns.Name
+frame.parent = ns.TrivName
 
 frame:SetScript("OnShow", function(self)
 	self:CreateOptions()
@@ -17,7 +17,7 @@ end)
 function frame:CreateOptions()
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText(ns.Name..": Colors")
+	title:SetText(ns.TrivName..": Colors")
 	
 	local methods = {
 		"Low Green, Yellow, Red High",

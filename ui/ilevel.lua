@@ -7,7 +7,7 @@ local MAX_ITEM_LEVEL = SyLevel.MAX_ITEM_LEVEL
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
 frame.name = "Filters"
-frame.parent = ns.Name
+frame.parent = ns.TrivName
 
 frame:SetScript("OnShow", function(self)
 	self:CreateOptions()
@@ -18,21 +18,20 @@ function frame:CreateOptions()
     local filters = SyLevelDB.FilterSettings
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText(ns.Name..": Filters")
+	title:SetText(ns.TrivName..": Filters")
 
 	local ilevelThresLabel = ns.createFontString(self, "GameFontNormalSmall")
 	ilevelThresLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
-	--ilevelThresLabel:SetText("")
 	
-	local s1 = ns.createSlider(self, "ItemLevelThreshold", 1, MAX_ITEM_LEVEL, 1)
-	s1:SetPoint("TOPLEFT", ilevelThresLabel, "BOTTOMLEFT", 0, 0)
+	local s1 = ns.createSlider(self, "Item Level Threshold", 1, MAX_ITEM_LEVEL, 1)
+	s1:SetPoint("TOPLEFT", ilevelThresLabel, "BOTTOMLEFT", 0, -16)
 	
-	local e1 = ns.createEditBox(self,"ItemLevelThreshold", 40, 20, true, 3)
+	local e1 = ns.createEditBox(self, "ItemLevelThreshold", 40, 20, true, 3)
 	e1:SetPoint("TOP", s1, "BOTTOM", 0, -6)
 	
     local qualityThresLabel = ns.createFontString(self, "GameFontNormalSmall")
-	qualityThresLabel:SetPoint("TOPLEFT", e1, "BOTTOMLEFT", 0, -48)
-	qualityThresLabel:SetText("Reference")
+	qualityThresLabel:SetPoint("TOPLEFT", s1, "BOTTOMLEFT", 0, -48)
+	qualityThresLabel:SetText("Item Quality Threshold")
 	
 	local d1 = CreateFrame("Button", ns.Name.."_QualityThresholdDropdown", self, "UIDropDownMenuTemplate")
 	d1:SetPoint("TOPLEFT", qualityThresLabel, "BOTTOMLEFT", -6, -4)
@@ -80,7 +79,7 @@ function frame:CreateOptions()
         local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
         local function DropDown_OnClick(self)
 			local t = ItemQualityOptions
-			filters.quality = t[self:GetID()]
+			filters.quality = self:GetID()-1
 			SyLevel:UpdateAllPipes()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
@@ -95,7 +94,7 @@ function frame:CreateOptions()
 		local function UpdateSelected(self)
 			local t = ItemQualityOptions
 			for i=1,#t do
-				if filters.quality == t[i]:GetID() then
+				if filters.quality == i-1 then
 					UIDropDownMenu_SetSelectedID(d1, i)
 				end
 			end
@@ -104,13 +103,11 @@ function frame:CreateOptions()
 		local function DropDown_init(self)
 			local info
 			local t = ItemQualityOptions
-			for i=0,#t-1 do
+			for i=1,#t do
 				
 				info = UIDropDownMenu_CreateInfo()
-				info.text = t[i]
-                local color = ITEM_QUALITY_COLORS[i]
-                info.text:SetTextColor(color.r, color.g, color.b)
-				info.value = i
+				info.text = ITEM_QUALITY_COLORS[i-1].hex .. t[i] .. "|r"  
+				info.value = i-1
 				info.func = DropDown_OnClick
 
 				UIDropDownMenu_AddButton(info)

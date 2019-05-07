@@ -2,7 +2,7 @@ local _, ns = ...
 local SyLevel = ns.SyLevel
 
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
-frame.name = ns.Name
+frame.name = ns.TrivName
 frame:Hide()
 
 frame:SetScript("OnShow", function(self)
@@ -25,7 +25,7 @@ end
 function frame:CreateOptions()
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
-	title:SetText(ns.Name)
+	title:SetText(ns.TrivName)
 
 	local subtitle = ns.createFontString(self)
 	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
@@ -297,5 +297,5 @@ InterfaceOptions_AddCategory(frame)
 
 SLASH_SyLevel_UI1 = "/SyLevel"
 SlashCmdList[ns.Name.."_UI"] = function()
-	InterfaceOptionsFrame_OpenToCategory(ns.Name)
+	InterfaceOptionsFrame_OpenToCategory(ns.TrivName)
 end

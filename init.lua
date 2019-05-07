@@ -1,6 +1,7 @@
 local addon, ns = ...
 ns.SyLevel = {}
 ns.Name = addon
+ns.TrivName = "SyLevel Continued"
 
 function ns.SyLevel.argcheck(value, num, ...)
 	assert(type(num) == "number", "Bad argument #2 to 'argcheck' (number expected, got "..type(num)..")")
