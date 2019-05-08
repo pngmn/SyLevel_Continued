@@ -11,6 +11,8 @@ local slots = {
 	"SecondaryHand", [19] = "Tabard",
 }
 
+CharacterNeckSlot.RankFrame:SetAlpha(0)
+
 local function update(self)
 	if (CharacterFrame:IsShown()) then
 		for key, slotName in pairs(slots) do

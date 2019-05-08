@@ -66,6 +66,8 @@ function frame:CreateOptions()
 	fontsDDownRef:SetPoint("TOPLEFT", fontsLabelRef, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDownRef, 200)
 
+	local regionPoints = {"TOP", "BOTTOM", "LEFT", "RIGHT", "CENTER", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
+
 	do
 		local function DropDown_OnClick(self)
 			local t = SyLevel.media:List("font")
@@ -75,14 +77,14 @@ function frame:CreateOptions()
 		end
 
 		local function DropDownRef_OnClick(self)
-			local t = {"TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
+			local t = regionPoints
 			font.reference = t[self.value]
 			SyLevel:SetFontSettings()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
 
 		local function DropDownAlign_OnClick(self)
-			local t = {"TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
+			local t = regionPoints
 			font.reference = t[self.value]
 			SyLevel:SetFontSettings()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
@@ -105,7 +107,7 @@ function frame:CreateOptions()
 		end
 
 		local function UpdateSelectedRef(self)
-			local t = {"TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
+			local t = regionPoints
 			for i=1,#t do
 				if font.reference == t[i] then
 					UIDropDownMenu_SetSelectedID(fontsDDownRef, i)
@@ -114,7 +116,7 @@ function frame:CreateOptions()
 		end
 
 		local function UpdateSelectedAlign(self)
-			local t = {"TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
+			local t = regionPoints
 			for i=1,#t do
 				if font.align == t[i] then
 					UIDropDownMenu_SetSelectedID(fontsDDownAlign, i)
@@ -138,7 +140,7 @@ function frame:CreateOptions()
 
 		local function DropDownRef_init(self)
 			local info
-			local t = {"TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
+			local t = regionPoints
 			for i=1,#t do
 				
 				info = UIDropDownMenu_CreateInfo()
@@ -152,7 +154,7 @@ function frame:CreateOptions()
 
 		local function DropDownAlign_init(self)
 			local info
-			local t = {"TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
+			local t = regionPoints
 			for i=1,#t do
 				
 				info = UIDropDownMenu_CreateInfo()

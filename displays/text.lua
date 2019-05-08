@@ -10,9 +10,9 @@ local function createText(self, point)
 	local tc = self.SyLevelText
 	if (not tc) then
 		if (not self:IsObjectType("Frame")) then
-			tc = self:GetParent():CreateFontString(nil,"OVERLAY")
+			tc = self:GetParent():CreateFontString(nil, "OVERLAY")
 		else
-			tc = self:CreateFontString(nil,"OVERLAY")
+			tc = self:CreateFontString(nil, "OVERLAY")
 		end
 		self.SyLevelText = tc
 	end
