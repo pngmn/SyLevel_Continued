@@ -12,6 +12,7 @@ local slots = {
 CharacterNeckSlot.RankFrame:SetAlpha(0)
 
 local function update(self, key, slotFrame)
+	if not key then return end
 	item = Item:CreateFromEquipmentSlot(key)
 	itemLoc = ItemLocation:CreateFromEquipmentSlot(key)
 	if C_Item.DoesItemExist(itemLoc) then
