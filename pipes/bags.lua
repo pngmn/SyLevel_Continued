@@ -1,9 +1,9 @@
--- TODO:
---  - Prevent unnecessary double updates.
---  - Write a description.
-
 local hook
 local _E
+
+if (IsAddOnLoaded("LiteBag")) then return end
+if (IsAddOnLoaded("Bagnon")) then return end
+if (IsAddOnLoaded("Inventorian")) then return end
 
 local function update(self)
     if (ContainerFrame1:IsShown()) then
