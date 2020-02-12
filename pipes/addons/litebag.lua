@@ -3,7 +3,7 @@ local hook
 if (not IsAddOnLoaded("LiteBag")) then return end
 
 local function update(self)
-    if (not LiteBagInventory:IsShown()) then return end
+    if (not (LiteBagInventory:IsShown() or LiteBagBank:IsShown())) then return end
     local i = self:GetID()
     local id = self:GetParent():GetID()
     local name = self:GetName()
