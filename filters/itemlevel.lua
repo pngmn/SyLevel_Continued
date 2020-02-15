@@ -21,11 +21,11 @@ SyLevel:RegisterOptionCallback(function(db)
 	else
 		ilevelThreshold = 1
 	end
-    if (filters and filters.quality) then
-        qualityThreshold = filters.quality
-    else
-        qualityThreshold = 0
-    end
+	if (filters and filters.quality) then
+		qualityThreshold = filters.quality
+	else
+		qualityThreshold = 0
+	end
 end)
 
 SyLevel:RegisterFilter("Item level text", "Text", ilevel, [[Adds item level text that the items have.]])

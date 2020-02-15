@@ -15,7 +15,7 @@ frame:SetScript("OnShow", function(self)
 end)
 
 function frame:CreateOptions()   
-    local filters = SyLevelDB.FilterSettings
+	local filters = SyLevelDB.FilterSettings
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
 	title:SetText(ns.TrivName..": Filters")
@@ -29,14 +29,14 @@ function frame:CreateOptions()
 	local e1 = ns.createEditBox(self, "ItemLevelThreshold", 40, 20, true, 3)
 	e1:SetPoint("TOP", s1, "BOTTOM", 0, -6)
 	
-    local qualityThresLabel = ns.createFontString(self, "GameFontNormalSmall")
+	local qualityThresLabel = ns.createFontString(self, "GameFontNormalSmall")
 	qualityThresLabel:SetPoint("TOPLEFT", s1, "BOTTOMLEFT", 0, -48)
 	qualityThresLabel:SetText("Item Quality Threshold")
 	
 	local d1 = CreateFrame("Button", ns.Name.."_QualityThresholdDropdown", self, "UIDropDownMenuTemplate")
 	d1:SetPoint("TOPLEFT", qualityThresLabel, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(d1, 200)
-    
+	
 	do -- After Variables Loaded?
 		local function UpdateSlider(self)
 			local threshold = 1
@@ -75,9 +75,9 @@ function frame:CreateOptions()
 			UpdateEditbox()
 			self:ClearFocus()
 		end)		
-        
-        local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
-        local function DropDown_OnClick(self)
+		
+		local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
+		local function DropDown_OnClick(self)
 			local t = ItemQualityOptions
 			filters.quality = self:GetID()-1
 			SyLevel:UpdateAllPipes()
@@ -99,7 +99,7 @@ function frame:CreateOptions()
 				end
 			end
 		end
-        
+		
 		local function DropDown_init(self)
 			local info
 			local t = ItemQualityOptions
@@ -118,13 +118,13 @@ function frame:CreateOptions()
 		d1:SetScript("OnLeave", DropDown_OnLeave)
 
 		function frame:refresh()
-            UpdateSlider()
+			UpdateSlider()
 			UpdateEditbox()
 			UIDropDownMenu_Initialize(d1, DropDown_init)
 			UpdateSelected()
 			UIDropDownMenu_Refresh(d1)
 		end		
-        
+		
 		self:refresh()
 	end   
 end

@@ -1,7 +1,3 @@
--- TODO:
---  - Prevent unnecessary double updates.
---  - Write a description.
-
 local hook
 local _E
 

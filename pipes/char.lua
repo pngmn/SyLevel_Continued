@@ -1,6 +1,3 @@
--- TODO:
---  - Write a description.
-
 local _E
 local hook
 local slots = {
@@ -41,7 +38,7 @@ local function PLAYER_EQUIPMENT_CHANGED(self, event, slot)
 end
 
 local function doHook()
-    if (not hook) then
+	if (not hook) then
 		hook = function(...)
 			if (_E) then return pipe(...) end
 		end

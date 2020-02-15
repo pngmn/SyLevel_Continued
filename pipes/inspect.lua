@@ -1,7 +1,3 @@
--- TODO:
---  - Write a description.
--- we might want to merge this with char.lua...
-
 if (select(4, GetAddOnInfo("Fizzle"))) then return end
 
 local _E
@@ -68,10 +64,6 @@ local function ADDON_LOADED(self, event, addon)
 	if (addon == "Blizzard_InspectUI") then
 		self:RegisterEvent("PLAYER_TARGET_CHANGED", update)
 		self:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)
-
-		-- We should check the first argument of this event later on.
-		-- Blizzard"s code isn"t actually updated yet, so it doesn"t
-		-- check if the GUID is correct, nor if the inspect is ready.
 		self:RegisterEvent("INSPECT_READY", update)
 		self:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
 	end

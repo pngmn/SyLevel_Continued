@@ -1,6 +1,3 @@
--- TODO:
---  - Write a description.
-
 local _E
 local hook
 

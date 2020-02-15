@@ -6,22 +6,22 @@ if (IsAddOnLoaded("Bagnon")) then return end
 if (IsAddOnLoaded("Inventorian")) then return end
 
 local function update(self)
-    if (ContainerFrame1:IsShown()) then
-        local id = self:GetID()
-        local name = self:GetName()
-        local size = self.size
+	if (ContainerFrame1:IsShown()) then
+		local id = self:GetID()
+		local name = self:GetName()
+		local size = self.size
 
-        for i=1, size do
-            local bid = size - i + 1
-            local slotFrame = _G[name.."Item"..bid]
-            local slotLink = GetContainerItemLink(id, i)
-            SyLevel:CallFilters("bags", slotFrame, _E and slotLink)
-        end
-    end
+		for i=1, size do
+			local bid = size - i + 1
+			local slotFrame = _G[name.."Item"..bid]
+			local slotLink = GetContainerItemLink(id, i)
+			SyLevel:CallFilters("bags", slotFrame, _E and slotLink)
+		end
+	end
 end
 
 local function doHook()
-    if (not hook) then
+	if (not hook) then
 		hook = function(...)
 			if (_E) then return update(...) end
 		end
@@ -31,7 +31,7 @@ end
 
 local function enable(self)
 	_E = true
-    doHook()
+	doHook()
 end
 
 local function disable(self)

@@ -46,7 +46,7 @@ local function update(self)
 end
 
 local function doHook()
-    if (not hook) then
+	if (not hook) then
 		hook = function(...)
 			if (_E) then return updateContents(...) end
 		end
