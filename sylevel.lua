@@ -26,7 +26,7 @@ local function copyTable(initial)
 			endTable[k] = v
 		end
 	end
-	return endTable			
+	return endTable
 end
 
 local defaults = {
@@ -62,7 +62,7 @@ local function ADDON_LOADED(self, event, addon)
 	if (addon == "SyLevel_Continued") then
 		if (not SyLevelDB) then
 			SyLevelDB = {}
-			SyLevelDB = copyTable(defaults)			
+			SyLevelDB = copyTable(defaults)
 			SyLevel:SetColorFunc(SyLevelDB.ColorFunc)
 			for pipe in next, pipesTable do
 				self:EnablePipe(pipe)

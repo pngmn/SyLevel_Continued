@@ -68,16 +68,19 @@ local function ScanTip(itemLink, id, slot)
 
 	if type(tipCache[itemLink].ilevel) == "nil" or not tipCache[itemLink].cached then
 		local skipScan = nil
-		local _, quality
+		local quality
+
 		if not scanningTooltip then
 			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
 			anchor = CreateFrame("Frame")
 			anchor:Hide()
 		end
+
 		GameTooltip_SetDefaultAnchor(scanningTooltip, anchor)
 		scanningTooltip:ClearLines()
 		local itemString = itemLink:match("|H(.-)|h")
 		local rc, message = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
+
 		if id and type(id) == "string" and slot then
 			rc, message = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, id, slot, nil, true)
 			quality = GetInventoryItemQuality(id, slot)
@@ -102,7 +105,6 @@ local function ScanTip(itemLink, id, slot)
 		local c = tipCache[itemLink]
 		if skipScan then
 			c.ilevel = id:GetCurrentItemLevel()
-			c.ilevelString = id:GetCurrentItemLevel()
 		else
 			for i = 2, 3 do
 				local label, text = _G["GearLevelScanTooltipTextLeft"..i], nil
@@ -115,14 +117,6 @@ local function ScanTip(itemLink, id, slot)
 							c.ilevel = tonumber(timewalking)
 						else
 							c.ilevel = tonumber(normal)
-						end
-					end
-					if c.ilevelString == nil then
-						normal, timewalking = text:match(minItemLevelPattern)
-						if timewalking ~= "" then
-							c.ilevelString = timewalking
-						else
-							c.ilevelString = normal
 						end
 					end
 				end
@@ -143,22 +137,22 @@ function SyLevel:GetHeirloomTrueLevel(itemString, id, slot)
 		return nil, false
 	end
 	local rc = ScanTip(itemString, id, slot)
-	if rc.ilevel and rc.ilevelString then
-		return rc.ilevel, rc.ilevelString, rc.quality, true
+	if rc.ilevel then
+		return rc.ilevel, rc.quality, true
 	else
-		return nil, false
+		return nil, nil, false
 	end
 end
 
 function SyLevel:GetUpgradedItemLevel(itemString, id, slot)
-	local ilvl, ilvlText, quality, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
+	local ilvl, quality, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
 	if isTrue then
-		return ilvl, ilvlText, quality
+		return ilvl, quality
 	end
 end
 
 function SyLevel:CheckGear(itemString)
-	local itemClass, itemSubClass = select(6, GetItemInfoInstant(itemString))
+	local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemString)
 	if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR or itemSubClass == LE_ITEM_ARMOR_RELIC or itemSubClass == LE_ITEM_ARMOR_IDOL then
 		return true
 	else
