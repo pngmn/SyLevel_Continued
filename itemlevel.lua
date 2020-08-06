@@ -13,6 +13,7 @@ do
 			local cached = {oGetItemInfo(key)}
 			if #cached == 0 then return nil end
 			local itemLink = cached[2]
+			if not itemLink then return nil end
 			local cacheIt = true
 			if cacheIt then
 				rawset(table, key, cached)
@@ -48,30 +49,27 @@ local function ScanTip(itemLink, id, slot)
 		itemLink = CachedGetItemInfo(itemLink, 2)
 		if not itemLink then return emptytable end
 	end
-	
+
 	if type(tipCache[itemLink].gearcheck) == "nil" then
 		local cacheIt = true
-		
+
 		tipCache[itemLink] = {
 			ilevel = nil,
 			ilevelString = nil,
 			quality = nil,
-			gearcheck = nil,
+			gearcheck = SyLevel:CheckGear(itemLink),
 			cached = cacheIt
 		}
-		local c = tipCache[itemLink]
-		c.gearcheck = SyLevel:CheckGear(itemLink)
 	end
-	
+
 	if tipCache[itemLink].gearcheck == false then
 		return emptytable
 	end
 
-	if type(tipCache[itemLink].ilevel) == "nil" then
-		local cacheIt = true
+	if type(tipCache[itemLink].ilevel) == "nil" or not tipCache[itemLink].cached then
 		local skipScan = nil
 		local _, quality
-					 
+
 		if not scanningTooltip then
 			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
 			anchor = CreateFrame("Frame")
@@ -85,7 +83,7 @@ local function ScanTip(itemLink, id, slot)
 			rc, message = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, id, slot, nil, true)
 			quality = GetInventoryItemQuality(id, slot)
 		elseif id and type(id) == "number" and slot then
-			rc, message = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot) 
+			rc, message = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot)
 			_, _, _, quality = GetContainerItemInfo(id, slot)
 		elseif id then
 			rc = true
@@ -94,8 +92,14 @@ local function ScanTip(itemLink, id, slot)
 		else
 			_, _, quality = GetItemInfo(itemLink)
 		end
+
+		-- Don't cache Artifact Weapons
+		if quality==LE_ITEM_QUALITY_ARTIFACT then
+			tipCache[itemLink].cached = false
+		end
+
 		if not rc then return emptytable end
-		  
+
 		local c = tipCache[itemLink]
 		if skipScan then
 			c.ilevel = id:GetCurrentItemLevel()
@@ -125,12 +129,11 @@ local function ScanTip(itemLink, id, slot)
 				end
 			end
 		end
-		
 		c.ilevel = c.ilevel or 1
 		c.quality = quality
 		scanningTooltip:Hide()
 	end
-	
+
 	return tipCache[itemLink]
 end
 
@@ -156,10 +159,10 @@ function SyLevel:GetUpgradedItemLevel(itemString, id, slot)
 end
 
 function SyLevel:CheckGear(itemString)
-	local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemString)
+	local itemClass, itemSubClass = CachedGetItemInfo(itemString, 12)
 	if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR or itemSubClass == LE_ITEM_ARMOR_RELIC or itemSubClass == LE_ITEM_ARMOR_IDOL then
-		return true 
-	else 
+		return true
+	else
 		return false
 	end
 end
