@@ -69,7 +69,6 @@ local function ScanTip(itemLink, id, slot)
 	if type(tipCache[itemLink].ilevel) == "nil" or not tipCache[itemLink].cached then
 		local skipScan = nil
 		local _, quality
-
 		if not scanningTooltip then
 			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
 			anchor = CreateFrame("Frame")
@@ -159,7 +158,7 @@ function SyLevel:GetUpgradedItemLevel(itemString, id, slot)
 end
 
 function SyLevel:CheckGear(itemString)
-	local itemClass, itemSubClass = CachedGetItemInfo(itemString, 12)
+	local itemClass, itemSubClass = select(6, GetItemInfoInstant(itemString))
 	if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR or itemSubClass == LE_ITEM_ARMOR_RELIC or itemSubClass == LE_ITEM_ARMOR_IDOL then
 		return true
 	else

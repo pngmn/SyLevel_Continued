@@ -29,7 +29,7 @@ local function enable()
 		hook = function(...)
 			if (_E) then return update(...) end
 		end
-		hooksecurefunc("LiteBagItemButton_UpdateItem", update)
+		hooksecurefunc("LiteBagItemButton_Update", update)
 	end
 end
 
