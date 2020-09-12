@@ -56,7 +56,7 @@ local function ScanTip(itemLink, id, slot)
 		tipCache[itemLink] = {
 			ilevel = nil,
 			ilevelString = nil,
-			quality = nil,
+			quality = CachedGetItemInfo(itemLink, 3),
 			gearcheck = SyLevel:CheckGear(itemLink),
 			cached = cacheIt
 		}
@@ -79,20 +79,16 @@ local function ScanTip(itemLink, id, slot)
 		GameTooltip_SetDefaultAnchor(scanningTooltip, anchor)
 		scanningTooltip:ClearLines()
 		local itemString = itemLink:match("|H(.-)|h")
-		local rc, message = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
-
+		local rc
 		if id and type(id) == "string" and slot then
-			rc, message = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, id, slot, nil, true)
-			quality = GetInventoryItemQuality(id, slot)
+			rc = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, id, slot)
 		elseif id and type(id) == "number" and slot then
-			rc, message = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot)
-			_, _, _, quality = GetContainerItemInfo(id, slot)
+			rc = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot)
 		elseif id then
 			rc = true
 			skipScan = true
-			quality = id:GetItemQuality()
 		else
-			_, _, quality = GetItemInfo(itemLink)
+			rc = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
 		end
 
 		-- Don't cache Artifact Weapons
@@ -113,17 +109,18 @@ local function ScanTip(itemLink, id, slot)
 					local normal, timewalking
 					if c.ilevel == nil then
 						normal, timewalking = text:match(itemLevelPattern)
-						if timewalking ~= "" then
+						if timewalking and timewalking ~= "" then
 							c.ilevel = tonumber(timewalking)
+							tipCache[itemLink].cached = false
 						else
 							c.ilevel = tonumber(normal)
+							tipCache[itemLink].cached = true
 						end
 					end
 				end
 			end
 		end
 		c.ilevel = c.ilevel or 1
-		c.quality = quality
 		scanningTooltip:Hide()
 	end
 

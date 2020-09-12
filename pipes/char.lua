@@ -14,7 +14,7 @@ local function update(self, key, slotFrame)
 	itemLoc = ItemLocation:CreateFromEquipmentSlot(key)
 	if C_Item.DoesItemExist(itemLoc) then
 		slotLink = item:GetItemLink()
-		SyLevel:CallFilters("char", slotFrame, _E and slotLink, item)
+		SyLevel:CallFilters("char", slotFrame, _E and slotLink, "player", key)
 	else
 		SyLevel:CallFilters("char", slotFrame, _E and nil)
 	end
