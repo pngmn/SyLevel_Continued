@@ -3,13 +3,17 @@ local hook
 if (not IsAddOnLoaded("LiteBag")) then return end
 
 local function update(self)
-	if (not (LiteBagInventory:IsVisible() or LiteBagBank:IsVisible())) then return end
+	-- if (not (LiteBagInventory:IsVisible() or LiteBagBank:IsVisible())) then return end
 	local i = self:GetID()
 	local id = self:GetParent():GetID()
 	local name = self:GetName()
 	local slotFrame = _G[name]
 	local itemLink = GetContainerItemLink(id, i)
-	SyLevel:CallFilters("litebag", slotFrame, _E and itemLink, id, i)
+	if itemLink then
+		SyLevel:CallFilters("litebag", slotFrame, _E and itemLink, id, i)
+	else
+		SyLevel:CallFilters("litebag", slotFrame, _E and nil)
+	end
 end
 
 local function pipe()
