@@ -138,7 +138,7 @@ do
 	end
 
 	local function createRow(parent, i)
-		local row = CreateFrame("Button", nil, parent)
+		local row = CreateFrame("Button", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 
 		row:SetBackdrop(ns.Backdrop)
 		row:SetBackdropColor(.1, .1, .1, .5)
