@@ -17,7 +17,7 @@ local function update(self)
 	end
 end
 
-local function ADDON_LOADED(self, event, addon)
+local function ADDON_LOADED(self, _, addon)
 	if (addon == "Blizzard_ScrappingMachineUI") then
 		SyLevel:RegisterEvent("SCRAPPING_MACHINE_PENDING_ITEM_CHANGED", update)
 		SyLevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
@@ -26,7 +26,7 @@ end
 
 local function enable(self)
 	_E = true
-	
+
 	if IsAddOnLoaded("Blizzard_ScrappingMachineUI") then
 		SyLevel:RegisterEvent("SCRAPPING_MACHINE_PENDING_ITEM_CHANGED", update)
 	else

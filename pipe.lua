@@ -33,9 +33,9 @@ end
 
 do
 	local function iter(_, n)
-		local n, t = next(pipesTable, n)
+		local m, t = next(pipesTable, n)
 		if (t) then
-			return n, t.isActive, t.name, t.desc
+			return m, t.isActive, t.name, t.desc
 		end
 	end
 
@@ -48,7 +48,7 @@ function SyLevel:EnablePipe(pipe)
 	argcheck(pipe, 2, "string")
 
 	local ref = pipesTable[pipe]
-	
+
 	if (ref and not ref.isActive) then
 		ref.enable(self)
 		ref.isActive = true

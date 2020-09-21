@@ -18,7 +18,7 @@ function frame:CreateOptions()
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
 	title:SetText(ns.TrivName..": Colors")
-	
+
 	local methods = {
 		"Low Green, Yellow, Red High",
 		"Low Red, Yellow, Green High",
@@ -29,32 +29,31 @@ function frame:CreateOptions()
 		"Class Coloring",
 		"Quality Coloring"
 	}
-	
+
 	local colorDropdown = CreateFrame("Button", ns.Name.."OptFColorDropdown", self, "UIDropDownMenuTemplate")
 	colorDropdown:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -16, -6)
 	UIDropDownMenu_SetWidth(colorDropdown, 200, 2)
 
 	do
-		local function DropDown_OnClick(self)
+		local function DropDown_OnClick()
 			SyLevelDB.FilterSettings.colorFunc = self.value
 			SyLevel:CallOptionCallbacks()
-			
 			SyLevel:SetColorFunc(self.value)
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
 
-		local function DropDown_OnEnter(self)
+		local function DropDown_OnEnter()
 			GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
 			GameTooltip:SetText("Sets the mode of coloring.", nil, nil, nil, nil, 1)
 		end
 
 		local DropDown_OnLeave = GameTooltip_Hide
 
-		local function UpdateSelected(self)
+		local function UpdateSelected()
 			UIDropDownMenu_SetSelectedID(colorDropdown, SyLevelDB.ColorFunc)
 		end
 
-		local function DropDown_init(self)
+		local function DropDown_init()
 			local info
 
 			for i=1,#methods do
@@ -70,7 +69,7 @@ function frame:CreateOptions()
 		colorDropdown:SetScript("OnEnter", DropDown_OnEnter)
 		colorDropdown:SetScript("OnLeave", DropDown_OnLeave)
 
-		function frame:refresh()
+		function frame.refresh()
 			UIDropDownMenu_Initialize(colorDropdown, DropDown_init)
 			UpdateSelected()
 		end

@@ -82,18 +82,14 @@ local function ADDON_LOADED(self, event, addon)
 		end
 		self:UnregisterEvent(event)
 	end
-	
 end
 
 --[[ General API ]]
 
 function SyLevel:CallFilters(pipe, frame, ...)
 	argcheck(pipe, 2, "string")
-
 	if (not pipesTable[pipe]) then return nil, "Pipe does not exist." end
-	
 	local ref = activeFilters[pipe]
-
 	if (ref) then
 		for display, filters in next, ref do
 			-- TODO: Move this check out of the loop.
@@ -102,7 +98,7 @@ function SyLevel:CallFilters(pipe, frame, ...)
 			for i=1,#filters do
 				local func = filters[i][2]
 				-- drop out of the loop if we actually do something nifty on a frame.
-				
+
 				if (displaysTable[display](frame, func(...))) then break end
 			end
 		end
@@ -126,11 +122,11 @@ end
 
 function SyLevel:UpdateAllPipes()
 	SyLevel:CallOptionCallbacks()
-	for pipe, active, name, desc in SyLevel.IteratePipes() do
+	for pipe, active in SyLevel.IteratePipes() do
 		if (active) then
 			SyLevel:UpdatePipe(pipe)
 		end
-	end	
+	end
 end
 
 function SyLevel:RegisterOptionCallback(func)

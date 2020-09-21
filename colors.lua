@@ -22,10 +22,10 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local MAX_ITEM_LEVEL = 425
 SyLevel.MAX_ITEM_LEVEL = MAX_ITEM_LEVEL
 
---[[ Do not edit beyond this point ]]-- 
+--[[ Do not edit beyond this point ]]--
 
 local colors = {
-	WHITE, 				-- 1 
+	WHITE, 				-- 1
 	PINK, 				-- 2
 	PURPLE, 			-- 3
 	DARKBLUE, 			-- 4
@@ -53,7 +53,7 @@ local ilvls = {
 	150, -- 10
 	100, -- 11
 	50, -- 12
-	1 -- 13	
+	1 -- 13
 }
 
 local function BuildRelative(e)
@@ -63,13 +63,12 @@ local function BuildRelative(e)
 	for i=1,12 do
 		start = start - increment
 		if (start + e) > 1 then
-			t[i] = start + e			
+			t[i] = start + e
 		else
 			t[i] = 1
-		end	
+		end
 	end
 	t[13] = 1 -- Always make level 1 items grey.
-	
 	return t
 end
 
@@ -85,7 +84,7 @@ function CS:GetSmudgeColorRGB(lc, hc, perc)
 		local radius = (360-abs(h1-h2))*perc
 		if h1 < h2 then
 			h3 = floor(h1-radius)
-			if h3 < 0 then	
+			if h3 < 0 then
 				h3 = 360-h3
 			end
 		else
@@ -150,7 +149,7 @@ local colorFunctions = {
 			if ilvl >= ilvls[i] then
 				return unpack(colors[i] or {0.3, 0.3, 0.3})
 			end
-		end		
+		end
 	end,
 	[4] = function(ilvl)
 		argcheck(ilvl, 2, "number")
@@ -172,7 +171,7 @@ local colorFunctions = {
 				g = 1
 				b = 0
 			else
-				
+
 				r = 1
 				g = 1-(ilvl-0.5)*2
 				b = 0
@@ -205,7 +204,7 @@ local colorFunctions = {
 		local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
 		return color.r, color.g, color.b
 	end,
-	[8] = function(ilvl, quality)
+	[8] = function(_, quality)
 		if not quality then return 1, 1, 1 end
 		local color = ITEM_QUALITY_COLORS[quality]
 		return color.r, color.g, color.b

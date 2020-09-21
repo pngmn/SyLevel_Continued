@@ -28,7 +28,7 @@ local function inbox()
 		end
 
 		SyLevel:CallFilters("mail", slotFrame, _E and unpack(stack))
-		wipe(stack)
+		table.wipe(stack)
 
 		index = index + 1
 	end

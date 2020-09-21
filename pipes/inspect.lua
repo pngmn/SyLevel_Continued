@@ -1,4 +1,4 @@
-if (select(4, GetAddOnInfo("Fizzle"))) then return end
+if (IsAddOnLoaded("Fizzle")) then return end
 
 local _E
 local slots = {
@@ -54,13 +54,13 @@ local function update(self)
 	end
 end
 
-local function UNIT_INVENTORY_CHANGED(self, event, unit)
+local function UNIT_INVENTORY_CHANGED(self, _, unit)
 	if (InspectFrame.unit == unit) then
 		update(self)
 	end
 end
 
-local function ADDON_LOADED(self, event, addon)
+local function ADDON_LOADED(self, _, addon)
 	if (addon == "Blizzard_InspectUI") then
 		self:RegisterEvent("PLAYER_TARGET_CHANGED", update)
 		self:RegisterEvent("UNIT_INVENTORY_CHANGED", UNIT_INVENTORY_CHANGED)

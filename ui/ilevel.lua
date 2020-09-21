@@ -14,7 +14,7 @@ frame:SetScript("OnShow", function(self)
 	self:SetScript("OnShow", nil)
 end)
 
-function frame:CreateOptions()   
+function frame:CreateOptions()
 	local filters = SyLevelDB.FilterSettings
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
@@ -22,47 +22,47 @@ function frame:CreateOptions()
 
 	local ilevelThresLabel = ns.createFontString(self, "GameFontNormalSmall")
 	ilevelThresLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
-	
+
 	local s1 = ns.createSlider(self, "Item Level Threshold", 1, MAX_ITEM_LEVEL, 1)
 	s1:SetPoint("TOPLEFT", ilevelThresLabel, "BOTTOMLEFT", 0, -16)
-	
+
 	local e1 = ns.createEditBox(self, "ItemLevelThreshold", 40, 20, true, 3)
 	e1:SetPoint("TOP", s1, "BOTTOM", 0, -6)
-	
+
 	local qualityThresLabel = ns.createFontString(self, "GameFontNormalSmall")
 	qualityThresLabel:SetPoint("TOPLEFT", s1, "BOTTOMLEFT", 0, -48)
 	qualityThresLabel:SetText("Item Quality Threshold")
-	
+
 	local d1 = CreateFrame("Button", ns.Name.."_QualityThresholdDropdown", self, "UIDropDownMenuTemplate")
 	d1:SetPoint("TOPLEFT", qualityThresLabel, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(d1, 200)
-	
+
 	do -- After Variables Loaded?
-		local function UpdateSlider(self)
+		local function UpdateSlider()
 			local threshold = 1
 			if (filters and filters.ilevel) then
 				threshold = filters.ilevel
-			end	
+			end
 			s1:SetValue(threshold)
 		end
-		
-		local function UpdateEditbox(self)
+
+		local function UpdateEditbox()
 			local threshold = 1
 			if (filters and filters.ilevel) then
 				threshold = filters.ilevel
-			end	
+			end
 			e1:SetNumber(threshold)
 			e1:ClearFocus()
 		end
-		
-		s1:SetScript("OnValueChanged", function(self,value)
+
+		s1:SetScript("OnValueChanged", function(_, value)
 			filters.ilevel = value
 			SyLevel:UpdateAllPipes()
 			UpdateSlider()
 			UpdateEditbox()
 		end)
-		
-		e1:SetScript("OnEnterPressed", function(self)
+
+		e1:SetScript("OnEnterPressed", function()
 			local value = tonumber(self:GetText())
 			if not value or value < 1 then
 				value = 1
@@ -74,24 +74,24 @@ function frame:CreateOptions()
 			UpdateSlider()
 			UpdateEditbox()
 			self:ClearFocus()
-		end)		
-		
+		end)
+
 		local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
-		local function DropDown_OnClick(self)
+		local function DropDown_OnClick()
 			local t = ItemQualityOptions
 			filters.quality = self:GetID()-1
 			SyLevel:UpdateAllPipes()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
 
-		local function DropDown_OnEnter(self)
+		local function DropDown_OnEnter()
 			GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
 			GameTooltip:SetText("Set your item quality filter.", nil, nil, nil, nil, 1)
 		end
 
 		local DropDown_OnLeave = GameTooltip_Hide
 
-		local function UpdateSelected(self)
+		local function UpdateSelected()
 			local t = ItemQualityOptions
 			for i=1,#t do
 				if filters.quality == i-1 then
@@ -99,14 +99,14 @@ function frame:CreateOptions()
 				end
 			end
 		end
-		
-		local function DropDown_init(self)
+
+		local function DropDown_init()
 			local info
 			local t = ItemQualityOptions
 			for i=1,#t do
-				
+
 				info = UIDropDownMenu_CreateInfo()
-				info.text = ITEM_QUALITY_COLORS[i-1].hex .. t[i] .. "|r"  
+				info.text = ITEM_QUALITY_COLORS[i-1].hex .. t[i] .. "|r"
 				info.value = i-1
 				info.func = DropDown_OnClick
 
@@ -117,16 +117,16 @@ function frame:CreateOptions()
 		d1:SetScript("OnEnter", DropDown_OnEnter)
 		d1:SetScript("OnLeave", DropDown_OnLeave)
 
-		function frame:refresh()
+		function frame.refresh()
 			UpdateSlider()
 			UpdateEditbox()
 			UIDropDownMenu_Initialize(d1, DropDown_init)
 			UpdateSelected()
 			UIDropDownMenu_Refresh(d1)
-		end		
-		
+		end
+
 		self:refresh()
-	end   
+	end
 end
 
 InterfaceOptions_AddCategory(frame)

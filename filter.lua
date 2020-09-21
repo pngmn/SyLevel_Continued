@@ -24,9 +24,9 @@ end
 
 do
 	local function iter(_, n)
-		local n, t = next(filtersTable, n)
+		local m, t = next(filtersTable, n)
 		if (t) then
-			return n, t[1], t[4]
+			return m, t[1], t[4]
 		end
 	end
 
@@ -75,7 +75,7 @@ function SyLevel.IterateFiltersOnPipe(pipe)
 	return coroutine.wrap(function()
 		if (t) then
 			for _, sub in next, t do
-				for k, v in next, sub do
+				for _, v in next, sub do
 					coroutine.yield(v[3], v[1], v[4])
 				end
 			end

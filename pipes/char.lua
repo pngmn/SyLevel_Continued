@@ -10,10 +10,10 @@ CharacterNeckSlot.RankFrame:SetAlpha(0)
 
 local function update(self, key, slotFrame)
 	if not key then return end
-	item = Item:CreateFromEquipmentSlot(key)
-	itemLoc = ItemLocation:CreateFromEquipmentSlot(key)
+	local item = Item:CreateFromEquipmentSlot(key)
+	local itemLoc = ItemLocation:CreateFromEquipmentSlot(key)
 	if C_Item.DoesItemExist(itemLoc) then
-		slotLink = item:GetItemLink()
+		local slotLink = item:GetItemLink()
 		SyLevel:CallFilters("char", slotFrame, _E and slotLink, "player", key)
 	else
 		SyLevel:CallFilters("char", slotFrame, _E and nil)
@@ -33,7 +33,7 @@ local function pipe(self, slot)
 	end
 end
 
-local function PLAYER_EQUIPMENT_CHANGED(self, event, slot)
+local function PLAYER_EQUIPMENT_CHANGED(self, _, slot)
 	pipe(self, slot)
 end
 

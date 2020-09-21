@@ -14,12 +14,11 @@ end
 
 local function pipe(self)
 	local location, itemLink = self.location
-	local slotFrame = self
 	if (location and location < EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION - 1) then
-		itemLink, id, slot = getIL(location)
+		itemLink = getIL(location)
 	end
 
-	return SyLevel:CallFilters("char-flyout", slotFrame, _E and itemLink)
+	return SyLevel:CallFilters("char-flyout", self, _E and itemLink)
 end
 
 local function update(self)

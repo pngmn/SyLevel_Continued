@@ -6,7 +6,7 @@ local colorFunc
 local typeface, size, align, reference, offsetx, offsety, flags
 local Media = SyLevel.media
 
-local function createText(self, point)
+local function createText(self)
 	local tc = self.SyLevelText
 	if (not tc) then
 		if (not self:IsObjectType("Frame")) then

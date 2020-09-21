@@ -24,7 +24,8 @@ ns.Backdrop = {
 	insets = {left = 2, right = 2, top = 2, bottom = 2}
 }
 
-ns.FullAlign = {TOPLEFT = "TOPLEFT",TOP = "TOP",TOPRIGHT = "TOPRIGHT",LEFT = "LEFT",CENTER = "CENTER",RIGHT = "RIGHT",BOTTOMLEFT = "BOTTOMLEFT",BOTTOM = "BOTTOM",BOTTOMRIGHT = "BOTTOMRIGHT"}
+ns.FullAlign = {TOPLEFT = "TOPLEFT", TOP = "TOP", TOPRIGHT = "TOPRIGHT", LEFT = "LEFT", CENTER = "CENTER",
+				RIGHT = "RIGHT", BOTTOMLEFT = "BOTTOMLEFT", BOTTOM = "BOTTOM",BOTTOMRIGHT = "BOTTOMRIGHT"}
 
 function ns.Hex(r, g, b)
 	if (type(r) == "table") then
@@ -76,7 +77,7 @@ do
 		end
 	end
 
-	local function OnChar(self, key)
+	local function OnChar(self)
 		local text = self:GetText()
 		if (self.validate and not self:validate(text)) then
 			local pos = self:GetCursorPosition() - 1
@@ -111,17 +112,17 @@ do
 		background:SetPoint("RIGHT")
 		background:SetPoint("BOTTOM", 0, 4)
 		background:SetColorTexture(1, 1, 1, .05)
-		
+
 		return editbox
 	end
 end
 
 do
-	function ns.createSlider(self, name, minv, maxv, step)
+	function ns.createSlider(self, name, minv, maxv)
 		local slider = CreateFrame("Slider", name, self, "OptionsSliderTemplate")
 		slider:SetMinMaxValues(minv, maxv)
 		slider:SetOrientation("HORIZONTAL")
-		slider:SetValueStep(1)	
+		slider:SetValueStep(1)
 		_G[slider:GetName().."Text"]:SetText(name)
 		_G[slider:GetName().."Low"]:SetText(minv)
 		_G[slider:GetName().."High"]:SetText(maxv)
@@ -130,7 +131,7 @@ do
 end
 
 do
-	local function OnClick(self, button, down)
+	local function OnClick(self)
 		self:GetParent():GetParent().colorPicker = self
 		OpenColorPicker(self)
 	end

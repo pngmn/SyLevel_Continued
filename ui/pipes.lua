@@ -101,7 +101,7 @@ do
 		for i=1, #filterFrame do
 			local filter = filterFrame[i]
 			filter:SetChecked(nil)
-			for name, type, desc in SyLevel.IterateFiltersOnPipe(self.pipe) do
+			for name in SyLevel.IterateFiltersOnPipe(self.pipe) do
 				filter:SetChecked(filter.name == name)
 			end
 		end
@@ -277,7 +277,7 @@ do
 			n = n + 1
 		end]]
 		local n = 1
-		for pipe, active, name, desc in SyLevel.IteratePipes() do
+		for pipe, active, name in SyLevel.IteratePipes() do
 			local row = sChild.rows[n] or createRow(sChild, n)
 
 			row:SetBackdropBorderColor(.3, .3, .3)

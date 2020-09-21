@@ -12,7 +12,7 @@ end
 
 local function enable(self)
 	_E = true
-	
+
 	if (not hook) then
 		hooksecurefunc("BossBanner_ConfigureLootFrame", update)
 		hook = true

@@ -1,8 +1,13 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local type, tonumber, select, strsplit, GetItemInfoFromHyperlink = type, tonumber, select, strsplit, GetItemInfoFromHyperlink
-local unpack, GetDetailedItemLevelInfo = unpack, GetDetailedItemLevelInfo
+local type = type
+local tonumber = tonumber
+local select = select
+local strsplit = strsplit
+local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
+local unpack = unpack
+local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 
 do
 	local oGetItemInfo = GetItemInfo
@@ -68,7 +73,6 @@ local function ScanTip(itemLink, id, slot)
 
 	if type(tipCache[itemLink].ilevel) == "nil" or not tipCache[itemLink].cached then
 		local skipScan = nil
-		local quality
 
 		if not scanningTooltip then
 			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
@@ -92,7 +96,7 @@ local function ScanTip(itemLink, id, slot)
 		end
 
 		-- Don't cache Artifact Weapons
-		if quality==LE_ITEM_QUALITY_ARTIFACT then
+		if tipCache[itemLink].quality == LE_ITEM_QUALITY_ARTIFACT then
 			tipCache[itemLink].cached = false
 		end
 
@@ -150,7 +154,8 @@ end
 
 function SyLevel:CheckGear(itemString)
 	local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemString)
-	if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR or itemSubClass == LE_ITEM_ARMOR_RELIC or itemSubClass == LE_ITEM_ARMOR_IDOL then
+	if itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR
+		or itemSubClass == LE_ITEM_ARMOR_RELIC or itemSubClass == LE_ITEM_ARMOR_IDOL then
 		return true
 	else
 		return false

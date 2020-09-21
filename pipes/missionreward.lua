@@ -18,7 +18,7 @@ local function doHook()
 	end
 end
 
-local function ADDON_LOADED(self, event, addon)
+local function ADDON_LOADED(self, _, addon)
 	if (addon == "Blizzard_GarrisonUI") then
 		doHook()
 		SyLevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)

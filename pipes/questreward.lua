@@ -3,8 +3,7 @@ local hook
 
 local function update()
 	if (not QuestInfoRewardsFrame or not QuestInfoRewardsFrame:IsShown()) then return end
-	
-	local i
+
 	for i = 1, MAX_NUM_ITEMS do
 		local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
 		local slotFrame = questItem.IconBorder
@@ -22,8 +21,8 @@ local function update()
 		RewardChoices = GetNumQuestChoices()
 		GetLinkFunction = GetQuestItemLink
 	end
-	if StaticRewards + RewardChoices == 0 then 
-		return 
+	if StaticRewards + RewardChoices == 0 then
+		return
 	end
 	if not QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, 1) then
 		return
@@ -35,7 +34,7 @@ local function update()
 		local slotFrame = questItem.IconBorder
 		SyLevel:CallFilters("questreward", slotFrame, _E and itemLink)
 	end
-	
+
 	for i = 1, RewardChoices do
 		local itemLink = GetLinkFunction("choice", i)
 		local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)
@@ -53,7 +52,7 @@ local function OnQuestInfo_Display(template)
 end
 
 local function doHook()
-	if (not hook) then 
+	if (not hook) then
 		hook = function(...)
 			if _E then return OnQuestInfo_Display(...) end
 		end

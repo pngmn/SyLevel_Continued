@@ -6,7 +6,7 @@ local function update(self)
 		for i=1, LOOTFRAME_NUMBUTTONS or 4 do
 			local slotFrame = _G["LootButton"..i]
 			local slot = slotFrame.slot
-			
+
 			local itemLink
 			if (slot) then
 				itemLink = GetLootSlotLink(slot)

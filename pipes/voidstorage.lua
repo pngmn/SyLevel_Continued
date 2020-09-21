@@ -7,9 +7,9 @@ local function updateContents(self)
 		local slotFrame =  _G["VoidStorageStorageButton" .. slot]
 		local page = _G["VoidStorageFrame"].page
 		local itemID = GetVoidItemInfo(page, slot)
-		local itemName, itemLink
+		local itemLink
 		if itemID then
-			itemName, itemLink = GetItemInfo(itemID)
+			itemLink = select(2, GetItemInfo(itemID))
 		end
 		self:CallFilters("voidstore", slotFrame, _E and itemLink)
 	end
@@ -17,21 +17,21 @@ local function updateContents(self)
 	for slot=1, VOID_WITHDRAW_MAX or 9 do
 		local slotFrame = _G["VoidStorageWithdrawButton"..slot]
 		local itemID = GetVoidTransferWithdrawalInfo(slot)
-		local itemName, itemLink
+		local itemLink
 		if itemID then
-			itemName, itemLink = GetItemInfo(itemID)
+			itemLink = select(2, GetItemInfo(itemID))
 		end
 		self:CallFilters("voidstore", slotFrame, _E and itemLink)
 	end
 end
 
-local function updateDeposit(self, event, slot)
+local function updateDeposit(self, _, slot)
 	if (not VoidStorageFrame) then return end
 	local slotFrame = _G["VoidStorageDepositButton"..slot]
 	local itemID = GetVoidTransferDepositInfo(slot)
-	local itemName, itemLink
+	local itemLink
 	if itemID then
-		itemName, itemLink = GetItemInfo(itemID)
+		itemLink = select(2, GetItemInfo(itemID))
 	end
 	self:CallFilters("voidstore", slotFrame, _E and itemLink)
 end
@@ -54,7 +54,7 @@ local function doHook()
 	end
 end
 
-local function ADDON_LOADED(self, event, addon)
+local function ADDON_LOADED(self)
 	if (IsAddOnLoaded("Blizzard_VoidStorageUI")) then
 		doHook()
 		SyLevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
@@ -63,7 +63,7 @@ end
 
 local function enable(self)
 	_E = true
-	
+
 	if (IsAddOnLoaded("Blizzard_VoidStorageUI")) then
 		doHook()
 	else
