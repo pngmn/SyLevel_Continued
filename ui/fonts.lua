@@ -1,9 +1,6 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local colorTable = ns.colorTable
-local pendingConfig
-
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
 frame.name = "Font Settings"
@@ -13,27 +10,6 @@ frame:SetScript("OnShow", function(self)
 	self:CreateOptions()
 	self:SetScript("OnShow", nil)
 end)
-
-local sliders = {
-	["size"] = {
-		name = "Font Size",
-		low = 8,
-		high = 32,
-		step = 1,
-	},
-	["x"] = {
-		name = "X Offset",
-		low = -64,
-		high = 64,
-		step = 0.5,
-	},
-	["y"] = {
-		name = "Y Offset",
-		low = -64,
-		high = 64,
-		step = 0.5
-	},
-}
 
 function frame:CreateOptions()
 	local font = SyLevelDB.FontSettings

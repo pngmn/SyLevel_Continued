@@ -1,7 +1,6 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local colorTable = ns.colorTable
 local MAX_ITEM_LEVEL = SyLevel.MAX_ITEM_LEVEL
 
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
@@ -78,8 +77,7 @@ function frame:CreateOptions()
 
 		local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
 		local function DropDown_OnClick()
-			local t = ItemQualityOptions
-			filters.quality = self:GetID()-1
+			filters.quality = self:GetID() - 1
 			SyLevel:UpdateAllPipes()
 			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
 		end
@@ -93,8 +91,8 @@ function frame:CreateOptions()
 
 		local function UpdateSelected()
 			local t = ItemQualityOptions
-			for i=1,#t do
-				if filters.quality == i-1 then
+			for i = 1, #t do
+				if filters.quality == i - 1 then
 					UIDropDownMenu_SetSelectedID(d1, i)
 				end
 			end
@@ -103,11 +101,11 @@ function frame:CreateOptions()
 		local function DropDown_init()
 			local info
 			local t = ItemQualityOptions
-			for i=1,#t do
+			for i = 1, #t do
 
 				info = UIDropDownMenu_CreateInfo()
 				info.text = ITEM_QUALITY_COLORS[i-1].hex .. t[i] .. "|r"
-				info.value = i-1
+				info.value = i - 1
 				info.func = DropDown_OnClick
 
 				UIDropDownMenu_AddButton(info)

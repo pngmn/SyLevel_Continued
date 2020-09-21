@@ -4,10 +4,7 @@ local SyLevel = ns.SyLevel
 local type = type
 local tonumber = tonumber
 local select = select
-local strsplit = strsplit
-local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
 local unpack = unpack
-local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 
 do
 	local oGetItemInfo = GetItemInfo
@@ -47,7 +44,7 @@ local tipCache = ns.tipCache
 local emptytable = {}
 local scanningTooltip, anchor
 local itemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+).?%%(?(%%d*)%%)?')
-local minItemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+%%+?).?%%(?(%%d*)%%)?')
+-- local minItemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+%%+?).?%%(?(%%d*)%%)?')
 
 local function ScanTip(itemLink, id, slot)
 	if type(itemLink) == "number" then

@@ -11,7 +11,7 @@ local function update()
 	end
 
 	local StaticRewards, RewardChoices
-	local GetLinkFunction, GetRewardInfoFunction
+	local GetLinkFunction
 	if QuestInfoFrame.questLog then
 		StaticRewards = GetNumQuestLogRewards()
 		RewardChoices = GetNumQuestLogChoices()

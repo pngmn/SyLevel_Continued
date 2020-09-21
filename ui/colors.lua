@@ -1,9 +1,6 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local colorTable = ns.colorTable
-local colorFunc = ns.colorFunc
-
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame:Hide()
 frame.name = "Colors"

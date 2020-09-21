@@ -1,82 +1,44 @@
 std = "lua51"
+max_line_length = 150
 ignore = {
-    "211", -- unused local variable / function
-    "212/self", -- unused argument self
+    "11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
+    "11./BINDING_.*", -- Setting an undefined (Keybinding header) global variable
+    "113/LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
+    "113/NUM_LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
+    "211/L", -- Unused local variable "L"
+    "212", -- Unused argument.
+    "411", -- Redefining a local variable.
+    "421", -- Shadowing a local variable.
+    "412", -- Redefining a local variable.
+    "43.", -- Shadowing an upvalue, an upvalue argument, an upvalue loop variable.
+    "542", -- An empty if branch
 }
 globals = {
-    -- LUA
     "abs",
-    "debugstack",
-    "floor",
-    "geterrorhandler",
-    "strjoin",
-    "strmatch",
-    "strsplit",
-    "table",
-
-    -- Constants
     "ATTACHMENTS_MAX_RECEIVE",
     "ATTACHMENTS_MAX_SEND",
-    "BUYBACK_ITEMS_PER_PAGE",
-    "EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION",
-    "INBOXITEMS_TO_DISPLAY",
-    "ITEM_QUALITY_COLORS",
-    "LE_ITEM_ARMOR_IDOL",
-    "LE_ITEM_ARMOR_RELIC",
-    "LE_ITEM_CLASS_ARMOR",
-    "LE_ITEM_CLASS_WEAPON",
-    "LE_ITEM_QUALITY_ARTIFACT",
-    "LOOTFRAME_NUMBUTTONS",
-    "MAX_GUILDBANK_SLOTS_PER_TAB",
-    "MAX_NUM_ITEMS",
-    "MAX_TRADE_ITEMS",
-    "MERCHANT_ITEMS_PER_PAGE",
-    "NUM_BANKGENERIC_SLOTS",
-    "RAID_CLASS_COLORS",
-    "VOID_DEPOSIT_MAX",
-    "VOID_WITHDRAW_MAX",
-
-    -- Addon
+    "BackdropTemplateMixin",
     "Bagnon",
-    "SLASH_SyLevel_UI1",
-    "SyLevel",
-    "SyLevelDB",
-
-    -- Libs
-    "LibStub",
-
-    -- API
+    "BankFrame",
+    "BUYBACK_ITEMS_PER_PAGE",
     "C_Item",
     "C_ScrappingMachineUI",
     "C_TradeSkillUI",
-    "Item",
-    "ItemLocation",
-
-    -- Frames
-    "BankFrame",
     "CharacterFrame",
     "CharacterNeckSlot",
     "ContainerFrame1",
-    "EncounterJournal",
-    "EquipmentFlyoutFrame",
-    "GarrisonMissionFrame",
-    "InboxFrame",
-    "InspectFrame",
-    "LootFrame",
-    "MerchantFrame",
-    "QuestInfoFrame",
-    "QuestInfoRewardsFrame",
-    "ScrappingMachineFrame",
-    "SendMailFrame",
-    "TradeSkillFrame",
-    "VoidStorageFrame",
-
-    -- Functions
     "CreateFrame",
+    "debugstack",
+    "EncounterJournal",
+    "EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION",
+    "EquipmentFlyoutFrame",
     "EquipmentManager_UnpackLocation",
+    "floor",
+    "GameFontHighlight",
     "GameTooltip_Hide",
     "GameTooltip_SetDefaultAnchor",
     "GameTooltip",
+    "GarrisonMissionFrame",
     "GetAddOnInfo",
     "GetAddOnMetadata",
     "GetAverageItemLevel",
@@ -85,6 +47,7 @@ globals = {
     "GetContainerNumSlots",
     "GetCurrentGuildBankTab",
     "GetDetailedItemLevelInfo",
+    "geterrorhandler",
     "GetGuildBankItemLink",
     "GetInboxItemLink",
     "GetInboxNumItems",
@@ -110,16 +73,50 @@ globals = {
     "GetVoidTransferDepositInfo",
     "GetVoidTransferWithdrawalInfo",
     "hooksecurefunc",
+    "InboxFrame",
+    "INBOXITEMS_TO_DISPLAY",
+    "InspectFrame",
     "InterfaceOptions_AddCategory",
     "InterfaceOptionsFrame_OpenToCategory",
+    "InterfaceOptionsFramePanelContainer",
     "IsAddOnLoaded",
+    "ITEM_QUALITY_COLORS",
+    "Item",
+    "ItemLocation",
+    "LE_ITEM_ARMOR_IDOL",
+    "LE_ITEM_ARMOR_RELIC",
+    "LE_ITEM_CLASS_ARMOR",
+    "LE_ITEM_CLASS_WEAPON",
+    "LE_ITEM_QUALITY_ARTIFACT",
+    "LibStub",
+    "LOOTFRAME_NUMBUTTONS",
+    "LootFrame",
     "LootFrameDownButton",
     "LootFrameUpButton",
+    "MAX_GUILDBANK_SLOTS_PER_TAB",
+    "MAX_NUM_ITEMS",
+    "MAX_TRADE_ITEMS",
+    "MERCHANT_ITEMS_PER_PAGE",
     "MerchantBuyBackItemItemButton",
+    "MerchantFrame",
+    "NUM_BANKGENERIC_SLOTS",
     "OpenColorPicker",
     "QuestInfo_GetRewardButton",
     "QuestInfo_ShowRewards",
+    "QuestInfoFrame",
+    "QuestInfoRewardsFrame",
+    "RAID_CLASS_COLORS",
+    "ScrappingMachineFrame",
+    "SendMailFrame",
+    "SLASH_SyLevel_UI1",
     "SlashCmdList",
+    "strjoin",
+    "strmatch",
+    "strsplit",
+    "SyLevel",
+    "SyLevelDB",
+    "table",
+    "TradeSkillFrame",
     "UIDropDownMenu_AddButton",
     "UIDropDownMenu_CreateInfo",
     "UIDropDownMenu_Initialize",
@@ -127,9 +124,7 @@ globals = {
     "UIDropDownMenu_SetSelectedID",
     "UIDropDownMenu_SetWidth",
     "UnitClass",
-
-    -- Templates
-    "BackdropTemplateMixin",
-    "GameFontHighlight",
-    "InterfaceOptionsFramePanelContainer",
+    "VOID_DEPOSIT_MAX",
+    "VOID_WITHDRAW_MAX",
+    "VoidStorageFrame",
 }

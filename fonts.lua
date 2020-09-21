@@ -1,8 +1,6 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local argcheck = SyLevel.argcheck
-
 function SyLevel:SetFontSettings()
 	SyLevel:UpdateAllPipes()
 end

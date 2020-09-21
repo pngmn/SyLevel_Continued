@@ -1,5 +1,4 @@
 local _, ns = ...
-local SyLevel = ns.SyLevel
 
 function ns.createFontString(parent, template)
 	local label = parent:CreateFontString(nil, nil, template or "GameFontHighlight")
@@ -49,7 +48,6 @@ do
 	end
 
 	local function OnEnterPressed(self)
-		local text = self:GetText()
 		self:ClearFocus()
 		if self.update then
 			self:update()

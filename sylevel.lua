@@ -5,14 +5,12 @@ local _VERSION = GetAddOnMetadata(ns.Name, "version")
 
 local argcheck = SyLevel.argcheck
 
-local function print(...) print("|cff33ff99SyLevel:|r ", ...) end
-local function error(...) print("|cffff0000Error:|r "..string.format(...)) end
+-- local function print(...) print("|cff33ff99SyLevel:|r ", ...) end
+-- local function error(...) print("|cffff0000Error:|r "..string.format(...)) end
 
 local pipesTable = ns.pipesTable
 local filtersTable = ns.filtersTable
 local displaysTable = ns.displaysTable
-
-local numFilters = 0
 
 local optionCallbacks = {}
 local activeFilters = ns.activeFilters

@@ -1,7 +1,6 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local argcheck = SyLevel.argcheck
 local colorFunc
 local typeface, size, align, reference, offsetx, offsety, flags
 local Media = SyLevel.media
