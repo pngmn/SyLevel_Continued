@@ -1,11 +1,19 @@
 local _E
 local hook
 
-local function update(self)
-	if (GarrisonMissionFrame and GarrisonMissionFrame:IsShown()) then
-		local _, itemLink = GetItemInfo(self.itemID)
-		local slotFrame = self
-		SyLevel:CallFilters("missionreward", slotFrame, _E and itemLink)
+local function update(self, rewards)
+	if (rewards and #rewards > 0) then
+		local index = 1
+		for _, reward in pairs(rewards) do
+			local Reward = self.Rewards[index]
+			if reward.itemID then
+				local _, itemLink = GetItemInfo(reward.itemID)
+				SyLevel:CallFilters("missionreward", Reward.IconBorder, _E and itemLink)
+			else
+				SyLevel:CallFilters("missionreward", Reward.IconBorder, _E and nil)
+			end
+			index = index + 1
+		end
 	end
 end
 
@@ -14,11 +22,11 @@ local function doHook()
 		hook = function(...)
 			if (_E) then return update(...) end
 		end
-		hooksecurefunc("GarrisonMissionFrame_SetItemRewardDetails", update)
+		hooksecurefunc("GarrisonMissionButton_SetRewards", update)
 	end
 end
 
-local function ADDON_LOADED(self, _, addon)
+local function ADDON_LOADED(self, event, addon)
 	if (addon == "Blizzard_GarrisonUI") then
 		doHook()
 		SyLevel:UnregisterEvent("ADDON_LOADED", ADDON_LOADED)
