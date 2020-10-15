@@ -30,7 +30,7 @@ local bankUpdate = function(self)
 	end
 end
 
-local slotUpdate = function(self, _, bag, slot)
+local slotUpdate = function(self, event, bag, slot)
 	local itemSlot = self:GetItemSlot(bag, slot)
 	if not itemSlot or not IsBankSlot(bag) then return end
 	SyLevel:CallFilters('Bagnonbags', itemSlot, _E and itemSlot:GetItem())

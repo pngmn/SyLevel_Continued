@@ -25,7 +25,7 @@ local function updateContents(self)
 	end
 end
 
-local function updateDeposit(self, _, slot)
+local function updateDeposit(self, event, slot)
 	if (not VoidStorageFrame) then return end
 	local slotFrame = _G["VoidStorageDepositButton"..slot]
 	local itemID = GetVoidTransferDepositInfo(slot)

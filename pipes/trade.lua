@@ -1,13 +1,13 @@
 local _E
 
-local function player(self, _, index)
+local function player(self, event, index)
 	local slotFrame = _G["TradePlayerItem"..index.."ItemButton"]
 	local slotLink = GetTradePlayerItemLink(index)
 
 	self:CallFilters("trade", slotFrame, _E and slotLink)
 end
 
-local function target(self, _, index)
+local function target(self, event, index)
 	local slotFrame = _G["TradeRecipientItem"..index.."ItemButton"]
 	local slotLink = GetTradeTargetItemLink(index)
 
@@ -15,7 +15,7 @@ local function target(self, _, index)
 end
 
 local function update(self)
-	for i=1, MAX_TRADE_ITEMS or 8 do
+	for i = 1, MAX_TRADE_ITEMS or 8 do
 		player(self, nil, i)
 		target(self, nil, i)
 	end

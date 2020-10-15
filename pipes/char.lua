@@ -33,7 +33,7 @@ local function pipe(self, slot)
 	end
 end
 
-local function PLAYER_EQUIPMENT_CHANGED(self, _, slot)
+local function PLAYER_EQUIPMENT_CHANGED(self, event, slot)
 	pipe(self, slot)
 end
 
