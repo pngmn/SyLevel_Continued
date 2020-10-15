@@ -17,13 +17,11 @@ local function update(self)
 end
 
 local function pipe()
-	local numSlots = 0
-	for bag = 0, 4 do
-		numSlots = numSlots + GetContainerNumSlots(bag)
-	end
-	for slot = 1, numSlots do
-		local button = _G["LiteBagInventoryPanelItemButton"..slot]
-		update(button)
+	for bag = 1, 5 do
+		for slot = 1, GetContainerNumSlots(bag-1) do
+			local button = _G["LiteBagInventoryPanelContainerFrame"..bag.."Item"..slot]
+			if button then update(button) end
+		end
 	end
 end
 
@@ -33,7 +31,8 @@ local function enable()
 		hook = function(...)
 			if (_E) then return update(...) end
 		end
-		hooksecurefunc("LiteBagItemButton_Update", update)
+		LiteBag_RegisterHook('LiteBagItemButton_Update', update)
+		-- hooksecurefunc('LiteBagPanel_UpdateBag', pipe)
 	end
 end
 
