@@ -141,7 +141,7 @@ do
 		local background = swatch:CreateTexture(nil, "BACKGROUND")
 		background:SetSize(14, 14)
 		background:SetPoint("CENTER")
-		background:SetTexture(.3, .3, .3)
+		background:SetColorTexture(.3, .3, .3)
 
 		swatch:SetNormalTexture[[Interface\ChatFrame\ChatFrameColorSwatch]]
 
