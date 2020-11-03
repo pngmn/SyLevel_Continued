@@ -5,18 +5,17 @@ if (IsAddOnLoaded("LiteBag")) then return end
 if (IsAddOnLoaded("Bagnon")) then return end
 if (IsAddOnLoaded("Inventorian")) then return end
 
-local function update(self)
-	if (ContainerFrame1:IsShown()) then
-		local id = self:GetID()
-		local name = self:GetName()
-		local size = self.size
+local function update(frame)
+	if (not frame) then return end
+	local id = frame:GetID()
+	local name = frame:GetName()
+	local size = frame.size
 
-		for i=1, size do
-			local bid = size - i + 1
-			local slotFrame = _G[name.."Item"..bid]
-			local slotLink = GetContainerItemLink(id, i)
-			SyLevel:CallFilters("bags", slotFrame, _E and slotLink)
-		end
+	for i=1, size do
+		local bid = size - i + 1
+		local slotFrame = _G[name.."Item"..bid]
+		local slotLink = GetContainerItemLink(id, i)
+		SyLevel:CallFilters("bags", slotFrame, _E and slotLink)
 	end
 end
 

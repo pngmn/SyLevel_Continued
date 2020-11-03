@@ -2,7 +2,7 @@ local _E
 local hook
 
 local function update()
-	if (not QuestInfoRewardsFrame or not QuestInfoRewardsFrame:IsShown()) then return end
+	if (not QuestInfoRewardsFrame or not QuestInfoRewardsFrame:IsVisible()) then return end
 
 	for i = 1, MAX_NUM_ITEMS do
 		local questItem = QuestInfo_GetRewardButton(QuestInfoFrame.rewardsFrame, i)

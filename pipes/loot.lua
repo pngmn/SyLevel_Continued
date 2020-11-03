@@ -1,19 +1,18 @@
 local hook
 local _E
 
-local function update(self)
-	if (LootFrame:IsShown()) then
-		for i=1, LOOTFRAME_NUMBUTTONS or 4 do
-			local slotFrame = _G["LootButton"..i]
-			local slot = slotFrame.slot
+local function update()
+	if (not LootFrame:IsVisible()) then return end
+	for i = 1, LOOTFRAME_NUMBUTTONS or 4 do
+		local slotFrame = _G["LootButton"..i]
+		local slot = slotFrame.slot
 
-			local itemLink
-			if (slot) then
-				itemLink = GetLootSlotLink(slot)
-			end
-
-			SyLevel:CallFilters("loot", slotFrame, _E and itemLink)
+		local itemLink
+		if (slot) then
+			itemLink = GetLootSlotLink(slot)
 		end
+
+		SyLevel:CallFilters("loot", slotFrame, _E and itemLink)
 	end
 end
 

@@ -6,12 +6,8 @@ local function update(self, rewards)
 		local index = 1
 		for _, reward in pairs(rewards) do
 			local Reward = self.Rewards[index]
-			if reward.itemID then
-				local _, itemLink = GetItemInfo(reward.itemID)
-				SyLevel:CallFilters("missionreward", Reward.IconBorder, _E and itemLink)
-			else
-				SyLevel:CallFilters("missionreward", Reward.IconBorder, _E and nil)
-			end
+			local _, itemLink = reward.itemID and GetItemInfo(reward.itemID)
+			SyLevel:CallFilters("missionreward", Reward.IconBorder, _E and itemLink)
 			index = index + 1
 		end
 	end

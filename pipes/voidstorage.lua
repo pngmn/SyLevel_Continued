@@ -1,48 +1,48 @@
 local _E
 local hook
 
-local function updateContents(self)
-	if (not VoidStorageFrame) then return end
-	for slot=1, VOID_WITHDRAW_MAX or 80 do
-		local slotFrame =  _G["VoidStorageStorageButton" .. slot]
+local function updateContents()
+	if (not VoidStorageFrame:IsVisible()) then return end
+	for slot = 1, VOID_WITHDRAW_MAX or 80 do
+		local slotFrame = _G["VoidStorageStorageButton" .. slot]
 		local page = _G["VoidStorageFrame"].page
 		local itemID = GetVoidItemInfo(page, slot)
 		local itemLink
 		if itemID then
 			itemLink = select(2, GetItemInfo(itemID))
 		end
-		self:CallFilters("voidstore", slotFrame, _E and itemLink)
+		SyLevel:CallFilters("voidstore", slotFrame, _E and itemLink)
 	end
 
-	for slot=1, VOID_WITHDRAW_MAX or 9 do
+	for slot = 1, VOID_WITHDRAW_MAX or 9 do
 		local slotFrame = _G["VoidStorageWithdrawButton"..slot]
 		local itemID = GetVoidTransferWithdrawalInfo(slot)
 		local itemLink
 		if itemID then
 			itemLink = select(2, GetItemInfo(itemID))
 		end
-		self:CallFilters("voidstore", slotFrame, _E and itemLink)
+		SyLevel:CallFilters("voidstore", slotFrame, _E and itemLink)
 	end
 end
 
-local function updateDeposit(self, event, slot)
-	if (not VoidStorageFrame) then return end
+local function updateDeposit(slot)
+	if (not VoidStorageFrame:IsVisible()) then return end
 	local slotFrame = _G["VoidStorageDepositButton"..slot]
 	local itemID = GetVoidTransferDepositInfo(slot)
 	local itemLink
 	if itemID then
 		itemLink = select(2, GetItemInfo(itemID))
 	end
-	self:CallFilters("voidstore", slotFrame, _E and itemLink)
+	SyLevel:CallFilters("voidstore", slotFrame, _E and itemLink)
 end
 
 local function update(self)
 	if (not VoidStorageFrame) then return end
-	for slot=1, VOID_DEPOSIT_MAX or 9 do
-		updateDeposit(self, nil, slot)
+	for slot = 1, VOID_DEPOSIT_MAX or 9 do
+		updateDeposit(slot)
 	end
 
-	return updateContents(self)
+	return updateContents()
 end
 
 local function doHook()

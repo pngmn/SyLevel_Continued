@@ -1,23 +1,23 @@
 local _E
 
-local function player(self, event, index)
+local function player(index)
 	local slotFrame = _G["TradePlayerItem"..index.."ItemButton"]
 	local slotLink = GetTradePlayerItemLink(index)
 
-	self:CallFilters("trade", slotFrame, _E and slotLink)
+	SyLevel:CallFilters("trade", slotFrame, _E and slotLink)
 end
 
-local function target(self, event, index)
+local function target(index)
 	local slotFrame = _G["TradeRecipientItem"..index.."ItemButton"]
 	local slotLink = GetTradeTargetItemLink(index)
 
-	self:CallFilters("trade", slotFrame, _E and slotLink)
+	SyLevel:CallFilters("trade", slotFrame, _E and slotLink)
 end
 
-local function update(self)
+local function update()
 	for i = 1, MAX_TRADE_ITEMS or 8 do
-		player(self, nil, i)
-		target(self, nil, i)
+		player(i)
+		target(i)
 	end
 end
 

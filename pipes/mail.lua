@@ -2,13 +2,11 @@ local _E
 local hook
 local stack = {}
 
-local function send(self)
-	if (not SendMailFrame:IsShown()) then return end
-
-	for i=1, ATTACHMENTS_MAX_SEND do
+local function send()
+	for i = 1, ATTACHMENTS_MAX_SEND do
 		local slotLink = GetSendMailItemLink(i)
 		local slotFrame = _G["SendMailAttachment"..i]
-		self:CallFilters("mail", slotFrame, _E and slotLink)
+		SyLevel:CallFilters("mail", slotFrame, _E and slotLink)
 	end
 end
 
@@ -16,19 +14,19 @@ local function inbox()
 	local numItems = GetInboxNumItems()
 	local index = ((InboxFrame.pageNum - 1) * INBOXITEMS_TO_DISPLAY) + 1
 
-	for i=1, INBOXITEMS_TO_DISPLAY do
+	for i = 1, INBOXITEMS_TO_DISPLAY do
 		local slotFrame = _G["MailItem"..i.."Button"]
 		if (index <= numItems) then
-			for j=1, ATTACHMENTS_MAX_RECEIVE do
+			for j = 1, ATTACHMENTS_MAX_RECEIVE do
 				local attachLink = GetInboxItemLink(index, j)
 				if (attachLink) then
-					table.insert(stack, attachLink)
+					tinsert(stack, attachLink)
 				end
 			end
 		end
 
 		SyLevel:CallFilters("mail", slotFrame, _E and unpack(stack))
-		table.wipe(stack)
+		wipe(stack)
 
 		index = index + 1
 	end
@@ -37,7 +35,7 @@ end
 local function letter()
 	if (not InboxFrame.openMailID) then return end
 
-	for i=1, ATTACHMENTS_MAX_RECEIVE do
+	for i = 1, ATTACHMENTS_MAX_RECEIVE do
 		local itemLink = GetInboxItemLink(InboxFrame.openMailID, i)
 		if (itemLink) then
 			local slotFrame = _G["OpenMailAttachmentButton"..i]
@@ -47,8 +45,8 @@ local function letter()
 	end
 end
 
-local function update(self)
-	send(self)
+local function update()
+	send()
 	inbox()
 	letter()
 end

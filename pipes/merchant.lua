@@ -2,25 +2,21 @@ local _E
 local hook
 
 local function update()
-	if (MerchantFrame:IsShown()) then
-		if (MerchantFrame.selectedTab == 1) then
-			for i=1, MERCHANT_ITEMS_PER_PAGE do
-				local index = (((MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE) + i)
-				local itemLink = GetMerchantItemLink(index)
-				local slotFrame = _G["MerchantItem"..i.."ItemButton"]
-
-				SyLevel:CallFilters("merchant", slotFrame, _E and itemLink)
-			end
-
-			local buyBackLink = GetBuybackItemLink(GetNumBuybackItems())
-			SyLevel:CallFilters("merchant", MerchantBuyBackItemItemButton, _E and buyBackLink)
-		else
-			for i=1, BUYBACK_ITEMS_PER_PAGE do
-				local itemLink = GetBuybackItemLink(i)
-				local slotFrame = _G["MerchantItem"..i.."ItemButton"]
-
-				SyLevel:CallFilters("merchant", slotFrame, _E and itemLink)
-			end
+	if (not MerchantFrame:IsVisible()) then return end
+	if (MerchantFrame.selectedTab == 1) then
+		for i = 1, MERCHANT_ITEMS_PER_PAGE do
+			local index = (((MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE) + i)
+			local itemLink = GetMerchantItemLink(index)
+			local slotFrame = _G["MerchantItem"..i.."ItemButton"]
+			SyLevel:CallFilters("merchant", slotFrame, _E and itemLink)
+		end
+		local buyBackLink = GetBuybackItemLink(GetNumBuybackItems())
+		SyLevel:CallFilters("merchant", MerchantBuyBackItemItemButton, _E and buyBackLink)
+	else
+		for i = 1, BUYBACK_ITEMS_PER_PAGE do
+			local itemLink = GetBuybackItemLink(i)
+			local slotFrame = _G["MerchantItem"..i.."ItemButton"]
+			SyLevel:CallFilters("merchant", slotFrame, _E and itemLink)
 		end
 	end
 end

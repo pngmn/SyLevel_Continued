@@ -4,11 +4,10 @@ local _E
 local function getIL(loc)
 	local player, bank, bags, _, slot, bag = EquipmentManager_UnpackLocation(loc)
 	if (not player and not bank and not bags) then return end
-
 	if (not bags) then
-		return GetInventoryItemLink("player", slot), "player", slot
+		return GetInventoryItemLink("player", slot)
 	else
-		return GetContainerItemLink(bag, slot), bag, slot
+		return GetContainerItemLink(bag, slot)
 	end
 end
 

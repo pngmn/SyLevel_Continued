@@ -7,14 +7,12 @@ if (IsAddOnLoaded("LiteBag")) then return end
 if (IsAddOnLoaded("Bagnon")) then return end
 if (IsAddOnLoaded("Inventorian")) then return end
 
-local function update(self)
-	if (BankFrame:IsShown()) then
-		for i=1, NUM_BANKGENERIC_SLOTS or 28 do
-			local slotFrame = _G["BankFrameItem"..i]
-			local slotLink = GetContainerItemLink(-1, i)
-
-			self:CallFilters("bank", slotFrame, _E and slotLink)
-		end
+local function update()
+	if (not BankFrame:IsVisible()) then return end
+	for i=1, NUM_BANKGENERIC_SLOTS or 28 do
+		local slotFrame = _G["BankFrameItem"..i]
+		local slotLink = GetContainerItemLink(-1, i)
+		SyLevel:CallFilters("bank", slotFrame, _E and slotLink)
 	end
 end
 

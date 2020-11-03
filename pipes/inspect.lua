@@ -37,8 +37,8 @@ pollFrame:SetScript("OnUpdate", function(self, elapsed)
 	end
 end)
 
-local function update(self)
-	if (not InspectFrame or not InspectFrame:IsShown()) then return end
+local function update()
+	if (not InspectFrame:IsVisible()) then return end
 
 	local unit = InspectFrame.unit
 	for i, slotName in next, slots do
@@ -56,7 +56,7 @@ end
 
 local function UNIT_INVENTORY_CHANGED(self, event, unit)
 	if (InspectFrame.unit == unit) then
-		update(self)
+		update()
 	end
 end
 
