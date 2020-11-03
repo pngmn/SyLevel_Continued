@@ -12,9 +12,10 @@ local function update()
 
 	local StaticRewards, RewardChoices
 	local GetLinkFunction
+	local questID = C_QuestLog.GetSelectedQuest()
 	if QuestInfoFrame.questLog then
 		StaticRewards = GetNumQuestLogRewards()
-		RewardChoices = GetNumQuestLogChoices()
+		RewardChoices = GetNumQuestLogChoices(questID, true)
 		GetLinkFunction = GetQuestLogItemLink
 	else
 		StaticRewards = GetNumQuestRewards()
