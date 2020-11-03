@@ -1,10 +1,8 @@
 local _, ns = ...
 local SyLevel = ns.SyLevel
 
-local type = type
-local tonumber = tonumber
-local select = select
-local unpack = unpack
+local LE_ITEM_QUALITY_ARTIFACT=Enum.ItemQuality.Artifact
+local LE_ITEM_QUALITY_HEIRLOOM=Enum.ItemQuality.Heirloom
 
 do
 	local oGetItemInfo = GetItemInfo
@@ -46,7 +44,7 @@ local scanningTooltip, anchor
 local itemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+).?%%(?(%%d*)%%)?')
 -- local minItemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+%%+?).?%%(?(%%d*)%%)?')
 
-local function ScanTip(itemLink, id, slot)
+local function ScanTip(itemLink, key, slot)
 	if type(itemLink) == "number" then
 		itemLink = CachedGetItemInfo(itemLink, 2)
 		if not itemLink then return emptytable end
@@ -54,7 +52,6 @@ local function ScanTip(itemLink, id, slot)
 
 	if type(tipCache[itemLink].gearcheck) == "nil" then
 		local cacheIt = true
-
 		tipCache[itemLink] = {
 			ilevel = nil,
 			ilevelString = nil,
@@ -81,13 +78,10 @@ local function ScanTip(itemLink, id, slot)
 		scanningTooltip:ClearLines()
 		local itemString = itemLink:match("|H(.-)|h")
 		local rc
-		if id and type(id) == "string" and slot then
-			rc = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, id, slot)
-		elseif id and type(id) == "number" and slot then
-			rc = pcall(scanningTooltip.SetBagItem, scanningTooltip, id, slot)
-		elseif id then
-			rc = true
-			skipScan = true
+		if key and key > -1 and slot then
+			rc = pcall(scanningTooltip.SetBagItem, scanningTooltip, key, slot)
+		elseif key then
+			rc = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, "player", (key == -1) and BankButtonIDToInvSlotID(slot) or key)
 		else
 			rc = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
 		end
@@ -98,25 +92,22 @@ local function ScanTip(itemLink, id, slot)
 		end
 
 		if not rc then return emptytable end
+		scanningTooltip:Show()
 
 		local c = tipCache[itemLink]
-		if skipScan then
-			c.ilevel = id:GetCurrentItemLevel()
-		else
-			for i = 2, 3 do
-				local label, text = _G["GearLevelScanTooltipTextLeft"..i], nil
-				if label then text = label:GetText() end
-				if text then
-					local normal, timewalking
-					if c.ilevel == nil then
-						normal, timewalking = text:match(itemLevelPattern)
-						if timewalking and timewalking ~= "" then
-							c.ilevel = tonumber(timewalking)
-							tipCache[itemLink].cached = false
-						else
-							c.ilevel = tonumber(normal)
-							tipCache[itemLink].cached = true
-						end
+		for i = 2, 3 do
+			local label = _G["GearLevelScanTooltipTextLeft"..i]
+			local text = label and label:GetText()
+			if text then
+				local normal, timewalking
+				if c.ilevel == nil then
+					normal, timewalking = text:match(itemLevelPattern)
+					if timewalking and timewalking ~= "" then
+						c.ilevel = tonumber(timewalking)
+						tipCache[itemLink].cached = false
+					else
+						c.ilevel = tonumber(normal)
+						tipCache[itemLink].cached = true
 					end
 				end
 			end

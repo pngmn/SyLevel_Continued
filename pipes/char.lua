@@ -6,18 +6,12 @@ local slots = {
 	"SecondaryHand", [19] = "Tabard",
 }
 
-CharacterNeckSlot.RankFrame:SetAlpha(0)
-
 local function update(self, key, slotFrame)
 	if not key then return end
 	local item = Item:CreateFromEquipmentSlot(key)
 	local itemLoc = ItemLocation:CreateFromEquipmentSlot(key)
-	if C_Item.DoesItemExist(itemLoc) then
-		local slotLink = item:GetItemLink()
-		SyLevel:CallFilters("char", slotFrame, _E and slotLink, "player", key)
-	else
-		SyLevel:CallFilters("char", slotFrame, _E and nil)
-	end
+	local slotLink = C_Item.DoesItemExist(itemLoc) and item:GetItemLink()
+	SyLevel:CallFilters("char", slotFrame, _E and slotLink, key)
 end
 
 local function pipe(self, slot)
