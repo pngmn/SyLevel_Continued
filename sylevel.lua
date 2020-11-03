@@ -122,7 +122,7 @@ function SyLevel:UpdateAllPipes()
 	SyLevel:CallOptionCallbacks()
 	for pipe, active in SyLevel.IteratePipes() do
 		if (active) then
-			SyLevel:UpdatePipe(pipe)
+			-- SyLevel:UpdatePipe(pipe)
 		end
 	end
 end

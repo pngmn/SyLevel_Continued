@@ -68,7 +68,7 @@ do
 			SyLevel:DisablePipe(pipe)
 		end
 
-		SyLevel:UpdatePipe(pipe)
+		-- SyLevel:UpdatePipe(pipe)
 	end
 
 	local function Filter_OnClick(self)
@@ -79,7 +79,7 @@ do
 			SyLevel:UnregisterFilterOnPipe(pipe, self.name)
 		end
 
-		SyLevel:UpdatePipe(pipe)
+		-- SyLevel:UpdatePipe(pipe)
 	end
 
 	local function Row_OnClick(self)
