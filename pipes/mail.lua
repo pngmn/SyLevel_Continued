@@ -37,11 +37,8 @@ local function letter()
 
 	for i = 1, ATTACHMENTS_MAX_RECEIVE do
 		local itemLink = GetInboxItemLink(InboxFrame.openMailID, i)
-		if (itemLink) then
-			local slotFrame = _G["OpenMailAttachmentButton"..i]
-
-			SyLevel:CallFilters("mail", slotFrame, _E and itemLink)
-		end
+		local slotFrame = _G["OpenMailAttachmentButton"..i]
+		SyLevel:CallFilters("mail", slotFrame, _E and itemLink)
 	end
 end
 

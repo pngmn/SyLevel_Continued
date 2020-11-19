@@ -6,12 +6,7 @@ local function update()
 	for i = 1, LOOTFRAME_NUMBUTTONS or 4 do
 		local slotFrame = _G["LootButton"..i]
 		local slot = slotFrame.slot
-
-		local itemLink
-		if (slot) then
-			itemLink = GetLootSlotLink(slot)
-		end
-
+		local itemLink = slot and GetLootSlotLink(slot)
 		SyLevel:CallFilters("loot", slotFrame, _E and itemLink)
 	end
 end
