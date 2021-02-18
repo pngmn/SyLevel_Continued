@@ -25,6 +25,7 @@ function frame:CreateOptions()
 	local fontsDDown = CreateFrame("Button", ns.Name.."_FontsDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDown:SetPoint("TOPLEFT", fontsLabel, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDown, 200)
+	UIDropDownMenu_SetText(fontsDDown, font.typeface)
 
 	local fontsLabelAlign = ns.createFontString(self, "GameFontNormalSmall")
 	fontsLabelAlign:SetPoint("TOPLEFT", fontsLabel, "BOTTOMLEFT", 0, -48)
@@ -33,6 +34,7 @@ function frame:CreateOptions()
 	local fontsDDownAlign = CreateFrame("Button", ns.Name.."_AlignDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDownAlign:SetPoint("TOPLEFT", fontsLabelAlign, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDownAlign, 200)
+	UIDropDownMenu_SetText(fontsDDownAlign, font.reference)
 
 	local fontsLabelRef = ns.createFontString(self, "GameFontNormalSmall")
 	fontsLabelRef:SetPoint("TOPLEFT", fontsLabelAlign, "BOTTOMLEFT", 0, -48)
@@ -41,29 +43,30 @@ function frame:CreateOptions()
 	local fontsDDownRef = CreateFrame("Button", ns.Name.."_ReferenceDropdown", self, "UIDropDownMenuTemplate")
 	fontsDDownRef:SetPoint("TOPLEFT", fontsLabelRef, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(fontsDDownRef, 200)
+	UIDropDownMenu_SetText(fontsDDownRef, font.align)
 
 	local regionPoints = {"TOP", "BOTTOM", "LEFT", "RIGHT", "CENTER", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}
 
 	do
-		local function DropDown_OnClick()
+		local function DropDown_OnClick(info)
 			local t = SyLevel.media:List("font")
-			font.typeface = t[self.value]
+			font.typeface = t[info.value]
 			SyLevel:SetFontSettings()
-			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
+			UIDropDownMenu_SetText(fontsDDown, font.typeface)
 		end
 
-		local function DropDownRef_OnClick()
+		local function DropDownRef_OnClick(info)
 			local t = regionPoints
-			font.reference = t[self.value]
+			font.reference = t[info.value]
 			SyLevel:SetFontSettings()
-			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
+			UIDropDownMenu_SetText(fontsDDownRef, font.reference)
 		end
 
-		local function DropDownAlign_OnClick()
+		local function DropDownAlign_OnClick(info)
 			local t = regionPoints
-			font.reference = t[self.value]
+			font.align = t[info.value]
 			SyLevel:SetFontSettings()
-			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
+			UIDropDownMenu_SetText(fontsDDownAlign, font.align)
 		end
 
 		local function DropDown_OnEnter()
@@ -73,33 +76,6 @@ function frame:CreateOptions()
 
 		local DropDown_OnLeave = GameTooltip_Hide
 
-		local function UpdateSelected()
-			local t = SyLevel.media:List("font")
-			for i=1,#t do
-				if font.typeface == t[i] then
-					UIDropDownMenu_SetSelectedID(fontsDDown, i)
-				end
-			end
-		end
-
-		local function UpdateSelectedRef()
-			local t = regionPoints
-			for i=1,#t do
-				if font.reference == t[i] then
-					UIDropDownMenu_SetSelectedID(fontsDDownRef, i)
-				end
-			end
-		end
-
-		local function UpdateSelectedAlign()
-			local t = regionPoints
-			for i=1,#t do
-				if font.align == t[i] then
-					UIDropDownMenu_SetSelectedID(fontsDDownAlign, i)
-				end
-			end
-		end
-
 		local function DropDown_init()
 			local info
 			local t = SyLevel.media:List("font")
@@ -108,6 +84,7 @@ function frame:CreateOptions()
 				info.text = t[i]
 				info.value = i
 				info.func = DropDown_OnClick
+				info.checked = t[i] == font.typeface
 				UIDropDownMenu_AddButton(info)
 			end
 		end
@@ -120,6 +97,7 @@ function frame:CreateOptions()
 				info.text = t[i]
 				info.value = i
 				info.func = DropDownRef_OnClick
+				info.checked = t[i] == font.reference
 				UIDropDownMenu_AddButton(info)
 			end
 		end
@@ -132,7 +110,7 @@ function frame:CreateOptions()
 				info.text = t[i]
 				info.value = i
 				info.func = DropDownAlign_OnClick
-
+				info.checked = t[i] == font.align
 				UIDropDownMenu_AddButton(info)
 			end
 		end
@@ -142,16 +120,8 @@ function frame:CreateOptions()
 
 		function frame.refresh()
 			UIDropDownMenu_Initialize(fontsDDown, DropDown_init)
-			UpdateSelected()
-			UIDropDownMenu_Refresh(fontsDDown)
-
 			UIDropDownMenu_Initialize(fontsDDownAlign, DropDownAlign_init)
-			UpdateSelectedAlign()
-			UIDropDownMenu_Refresh(fontsDDownAlign)
-
 			UIDropDownMenu_Initialize(fontsDDownRef, DropDownRef_init)
-			UpdateSelectedRef()
-			UIDropDownMenu_Refresh(fontsDDownRef)
 		end
 
 		self:refresh()

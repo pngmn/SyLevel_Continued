@@ -28,6 +28,8 @@ function frame:CreateOptions()
 	local e1 = ns.createEditBox(self, "ItemLevelThreshold", 40, 20, true, 3)
 	e1:SetPoint("TOP", s1, "BOTTOM", 0, -6)
 
+	local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
+
 	local qualityThresLabel = ns.createFontString(self, "GameFontNormalSmall")
 	qualityThresLabel:SetPoint("TOPLEFT", s1, "BOTTOMLEFT", 0, -48)
 	qualityThresLabel:SetText("Item Quality Threshold")
@@ -35,6 +37,7 @@ function frame:CreateOptions()
 	local d1 = CreateFrame("Button", ns.Name.."_QualityThresholdDropdown", self, "UIDropDownMenuTemplate")
 	d1:SetPoint("TOPLEFT", qualityThresLabel, "BOTTOMLEFT", -6, -4)
 	UIDropDownMenu_SetWidth(d1, 200)
+	UIDropDownMenu_SetText(d1,ITEM_QUALITY_COLORS[filters.quality].hex .. ItemQualityOptions[filters.quality + 1] .. "|r")
 
 	do -- After Variables Loaded?
 		local function UpdateSlider()
@@ -75,11 +78,10 @@ function frame:CreateOptions()
 			self:ClearFocus()
 		end)
 
-		local ItemQualityOptions = {"Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Artifact", "Heirloom"}
-		local function DropDown_OnClick()
-			filters.quality = self:GetID() - 1
+		local function DropDown_OnClick(info)
+			filters.quality = info.value - 1
 			SyLevel:UpdateAllPipes()
-			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
+			UIDropDownMenu_SetText(d1, ITEM_QUALITY_COLORS[filters.quality].hex .. ItemQualityOptions[info.value] .. "|r")
 		end
 
 		local function DropDown_OnEnter()
@@ -89,25 +91,15 @@ function frame:CreateOptions()
 
 		local DropDown_OnLeave = GameTooltip_Hide
 
-		local function UpdateSelected()
-			local t = ItemQualityOptions
-			for i = 1, #t do
-				if filters.quality == i - 1 then
-					UIDropDownMenu_SetSelectedID(d1, i)
-				end
-			end
-		end
-
 		local function DropDown_init()
 			local info
 			local t = ItemQualityOptions
 			for i = 1, #t do
-
 				info = UIDropDownMenu_CreateInfo()
 				info.text = ITEM_QUALITY_COLORS[i-1].hex .. t[i] .. "|r"
-				info.value = i - 1
+				info.value = i
 				info.func = DropDown_OnClick
-
+				info.checked = i == filters.quality + 1
 				UIDropDownMenu_AddButton(info)
 			end
 		end
@@ -119,8 +111,6 @@ function frame:CreateOptions()
 			UpdateSlider()
 			UpdateEditbox()
 			UIDropDownMenu_Initialize(d1, DropDown_init)
-			UpdateSelected()
-			UIDropDownMenu_Refresh(d1)
 		end
 
 		self:refresh()

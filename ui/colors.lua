@@ -12,6 +12,8 @@ frame:SetScript("OnShow", function(self)
 end)
 
 function frame:CreateOptions()
+	local color = SyLevelDB.FilterSettings
+
 	local title = ns.createFontString(self, "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
 	title:SetText(ns.TrivName..": Colors")
@@ -30,13 +32,15 @@ function frame:CreateOptions()
 	local colorDropdown = CreateFrame("Button", ns.Name.."OptFColorDropdown", self, "UIDropDownMenuTemplate")
 	colorDropdown:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -16, -6)
 	UIDropDownMenu_SetWidth(colorDropdown, 200, 2)
+	UIDropDownMenu_SetText(colorDropdown, methods[color.colorFunc])
 
 	do
-		local function DropDown_OnClick()
-			SyLevelDB.FilterSettings.colorFunc = self.value
+		local function DropDown_OnClick(info)
+			color.colorFunc = info.value
 			SyLevel:CallOptionCallbacks()
-			SyLevel:SetColorFunc(self.value)
-			UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
+			SyLevel:SetColorFunc(info.value)
+			-- UIDropDownMenu_SetSelectedID(self:GetParent().dropdown, self:GetID())
+			UIDropDownMenu_SetText(colorDropdown, methods[info.value])
 		end
 
 		local function DropDown_OnEnter()
@@ -46,10 +50,6 @@ function frame:CreateOptions()
 
 		local DropDown_OnLeave = GameTooltip_Hide
 
-		local function UpdateSelected()
-			UIDropDownMenu_SetSelectedID(colorDropdown, SyLevelDB.ColorFunc)
-		end
-
 		local function DropDown_init()
 			local info
 
@@ -58,7 +58,7 @@ function frame:CreateOptions()
 				info.text = methods[i]
 				info.value = i
 				info.func = DropDown_OnClick
-
+				info.checked = i == color.colorFunc
 				UIDropDownMenu_AddButton(info)
 			end
 		end
@@ -68,7 +68,6 @@ function frame:CreateOptions()
 
 		function frame.refresh()
 			UIDropDownMenu_Initialize(colorDropdown, DropDown_init)
-			UpdateSelected()
 		end
 		self:refresh()
 	end
