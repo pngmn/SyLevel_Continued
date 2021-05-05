@@ -55,6 +55,7 @@ local function ScanTip(itemLink, key, slot)
 		tipCache[itemLink] = {
 			ilevel = nil,
 			ilevelString = nil,
+			bind = nil,
 			quality = CachedGetItemInfo(itemLink, 3),
 			gearcheck = SyLevel:CheckGear(itemLink),
 			cached = cacheIt
@@ -95,19 +96,23 @@ local function ScanTip(itemLink, key, slot)
 		scanningTooltip:Show()
 
 		local c = tipCache[itemLink]
-		for i = 2, 3 do
+		for i = 2, 4 do
 			local label = _G["GearLevelScanTooltipTextLeft"..i]
 			local text = label and label:GetText()
 			if text then
-				local normal, timewalking
-				if c.ilevel == nil then
-					normal, timewalking = text:match(itemLevelPattern)
+				if not c.ilevel then
+					local normal, timewalking = text:match(itemLevelPattern)
 					if timewalking and timewalking ~= "" then
 						c.ilevel = tonumber(timewalking)
 						tipCache[itemLink].cached = false
 					else
 						c.ilevel = tonumber(normal)
 						tipCache[itemLink].cached = true
+					end
+				end
+				if not c.bind then
+					if text == ITEM_BIND_ON_EQUIP then
+						c.bind = true
 					end
 				end
 			end
@@ -127,16 +132,16 @@ function SyLevel:GetHeirloomTrueLevel(itemString, id, slot)
 	end
 	local rc = ScanTip(itemString, id, slot)
 	if rc.ilevel then
-		return rc.ilevel, rc.quality, true
+		return rc.ilevel, rc.quality, rc.bind, true
 	else
-		return nil, nil, false
+		return nil, nil, false, false
 	end
 end
 
 function SyLevel:GetUpgradedItemLevel(itemString, id, slot)
-	local ilvl, quality, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
+	local ilvl, quality, bind, isTrue = self:GetHeirloomTrueLevel(itemString, id, slot)
 	if isTrue then
-		return ilvl, quality
+		return ilvl, quality, bind
 	end
 end
 

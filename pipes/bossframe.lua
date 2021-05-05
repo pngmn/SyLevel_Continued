@@ -2,10 +2,10 @@
 local _E
 local hook
 
-local function update(self, data)
+local function update(lootframe, data)
 	if not data then return end
 	local itemLink = data.itemLink
-	local slotFrame = self.IconHitBox
+	local slotFrame = lootframe.IconHitBox
 	SyLevel:CallFilters("bossframe", slotFrame, _E and itemLink)
 end
 

@@ -110,7 +110,7 @@ function SyLevel:RegisterAllPipesAndFilters()
 			for filter, enabledPipes in next, SyLevelDB.EnabledFilters do
 				if (enabledPipes[pipe]) then
 					self:RegisterFilterOnPipe(pipe, filter)
-					break
+					-- break
 				end
 			end
 		end
@@ -129,7 +129,6 @@ end
 
 function SyLevel:RegisterOptionCallback(func)
 	argcheck(func, 2, "function")
-
 	table.insert(optionCallbacks, func)
 end
 

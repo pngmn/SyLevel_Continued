@@ -29,4 +29,4 @@ SyLevel:RegisterOptionCallback(function(db)
 	end
 end)
 
-SyLevel:RegisterFilter("Item level text", "Text", ilevel, [[Adds item level text that the items have.]])
+SyLevel:RegisterFilter("Item level text", "ItemLevelText", ilevel, [[Adds item level text that the items have.]])

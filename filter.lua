@@ -43,15 +43,17 @@ function SyLevel:RegisterFilterOnPipe(pipe, filter)
 	if (not pipesTable[pipe]) then return nil, "Pipe does not exist." end
 	if (not filtersTable[filter]) then return nil, "Filter does not exist." end
 
+	local filterTable = filtersTable[filter]
+	local display = filterTable[1]
 	-- XXX: Clean up this logic.
 	if (not activeFilters[pipe]) then
-		local filterTable = filtersTable[filter]
-		local display = filterTable[1]
 		activeFilters[pipe] = {}
 		activeFilters[pipe][display] = {}
 		table.insert(activeFilters[pipe][display], filterTable)
+	elseif (not activeFilters[pipe][display]) then
+		activeFilters[pipe][display] = {}
+		table.insert(activeFilters[pipe][display], filterTable)
 	else
-		local filterTable = filtersTable[filter]
 		local ref = activeFilters[pipe][filterTable[1]]
 
 		for _, func in next, ref do
@@ -98,7 +100,6 @@ function SyLevel:UnregisterFilterOnPipe(pipe, filter)
 			if (func == filterTable) then
 				table.remove(ref, k)
 				SyLevelDB.EnabledFilters[filter][pipe] = nil
-
 				return true
 			end
 		end
