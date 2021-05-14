@@ -67,8 +67,6 @@ local function ScanTip(itemLink, key, slot)
 	end
 
 	if type(tipCache[itemLink].ilevel) == "nil" or not tipCache[itemLink].cached then
-		local skipScan = nil
-
 		if not scanningTooltip then
 			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
 			anchor = CreateFrame("Frame")

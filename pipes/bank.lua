@@ -1,6 +1,3 @@
--- TODO:
---  - Write a description.
-
 local _E
 
 if (IsAddOnLoaded("LiteBag")) then return end

@@ -153,7 +153,7 @@ local colorFunctions = {
 	end,
 	[4] = function(ilvl)
 		argcheck(ilvl, 2, "number")
-		local o, e = GetAverageItemLevel()
+		local _, e = GetAverageItemLevel()
 		local relative = BuildRelative(e)
 		return ColorFunction(relative[12], relative[1], PINK, YELLOW, ilvl)
 	end,

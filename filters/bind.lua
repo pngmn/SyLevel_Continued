@@ -1,7 +1,7 @@
 local function binds(itemLink, id, i)
-	local bind
+	local bind, quality
 	if (itemLink) then
-		_, quality, bind = SyLevel:GetUpgradedItemLevel(itemLink, id, i)
+		quality, bind = select(2, SyLevel:GetUpgradedItemLevel(itemLink, id, i))
 	end
 
 	return bind and "BoE" or "", quality
