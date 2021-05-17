@@ -9,7 +9,7 @@ local function update()
 	for i=1, NUM_BANKGENERIC_SLOTS or 28 do
 		local slotFrame = _G["BankFrameItem"..i]
 		local slotLink = GetContainerItemLink(-1, i)
-		SyLevel:CallFilters("bank", slotFrame, _E and slotLink)
+		SyLevel:CallFilters("bank", slotFrame, _E and slotLink, -1, i)
 	end
 end
 

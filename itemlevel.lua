@@ -85,15 +85,15 @@ local function ScanTip(itemLink, key, slot)
 			rc = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
 		end
 
+		local c = tipCache[itemLink]
 		-- Don't cache Artifact Weapons
-		if tipCache[itemLink].quality == LE_ITEM_QUALITY_ARTIFACT then
-			tipCache[itemLink].cached = false
+		if c.quality == LE_ITEM_QUALITY_ARTIFACT then
+			c.cached = false
 		end
 
 		if not rc then return emptytable end
 		scanningTooltip:Show()
 
-		local c = tipCache[itemLink]
 		for i = 2, 4 do
 			local label = _G["GearLevelScanTooltipTextLeft"..i]
 			local text = label and label:GetText()
