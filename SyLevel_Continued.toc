@@ -4,5 +4,6 @@
 ## Version: @project-version@
 ## SavedVariables: SyLevelDB
 ## Notes: Displays item level information on your item slots!
+## OptionalDeps: tdBag2
 
 init.xml
