@@ -1,4 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="litebag.lua"/>
 	<Script file="tdbag2.lua"/>
+	<Script file="bagnon.lua"/>
 </Ui>
