@@ -9,11 +9,17 @@ env:
   GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  release: 
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Project
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+
+      - name: Create Changelog
+        uses: pngmn/actions-recent-changelog@main
+        with:
+          input: CHANGELOG.md
+          output: RECENT_CHANGES.md
 
       - name: Create Retail Package
         uses: BigWigsMods/packager@master
