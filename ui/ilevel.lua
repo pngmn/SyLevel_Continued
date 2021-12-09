@@ -22,7 +22,7 @@ function frame:CreateOptions()
 	local ilevelThresLabel = ns.createFontString(self, "GameFontNormalSmall")
 	ilevelThresLabel:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
 
-	local s1 = ns.createSlider(self, "Item Level Threshold", 1, MAX_ITEM_LEVEL, 1)
+	local s1 = ns.createSlider(self, "Item Level Threshold", 0, MAX_ITEM_LEVEL, 1)
 	s1:SetPoint("TOPLEFT", ilevelThresLabel, "BOTTOMLEFT", 0, -16)
 
 	local e1 = ns.createEditBox(self, "ItemLevelThreshold", 40, 20, true, 3)
