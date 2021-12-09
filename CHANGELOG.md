@@ -1,3 +1,9 @@
+SyLevel Continued | 1.2.1
+-------------------------
+- Add missing default values
+- Removed quality option from bind display
+- Allow 0 for item level filter
+
 SyLevel Continued | 1.2.0
 -------------------------
 - TOC update for 9.1.5
