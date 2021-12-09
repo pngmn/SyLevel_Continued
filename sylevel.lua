@@ -40,7 +40,10 @@ local defaults = {
 		offsety = 0,
 		flags = "OUTLINE"
 	},
-	FilterSettings = {},
+	FilterSettings = {
+		ilevel = 1,
+		quality = 2
+	},
 	ColorFunc = 4
 }
 
