@@ -1,10 +1,10 @@
 local function binds(itemLink, id, i)
-	local bind, quality
+	local bind
 	if (itemLink) then
-		quality, bind = select(2, SyLevel:GetUpgradedItemLevel(itemLink, id, i))
+		bind = select(3, SyLevel:GetUpgradedItemLevel(itemLink, id, i))
 	end
 
-	return bind and "BoE" or "", quality
+	return bind and "BoE" or ""
 end
 
 SyLevel:RegisterFilter("Bind text", "BindsOnText", binds, [[Adds bind on text that the items have.]])
