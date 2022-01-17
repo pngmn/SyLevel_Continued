@@ -41,7 +41,7 @@ ns.tipCache = ns.tipCache or setmetatable({}, {__index = function(table, key) re
 local tipCache = ns.tipCache
 local emptytable = {}
 local scanningTooltip, anchor
-local itemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+).?%%(?(%%d*)%%)?')
+local itemLevelPattern = gsub(ITEM_LEVEL, '%%d', '(%%d+).?%%(?(%%d*)%%)?')
 -- local minItemLevelPattern = _G.ITEM_LEVEL:gsub('%%d', '(%%d+%%+?).?%%(?(%%d*)%%)?')
 
 local function ScanTip(itemLink, key, slot)
@@ -68,54 +68,52 @@ local function ScanTip(itemLink, key, slot)
 
 	if type(tipCache[itemLink].ilevel) == "nil" or not tipCache[itemLink].cached then
 		if not scanningTooltip then
-			scanningTooltip = _G.CreateFrame("GameTooltip", "GearLevelScanTooltip", nil, "GameTooltipTemplate")
+			scanningTooltip = CreateFrame("GameTooltip", "SyLevelScanTooltip", nil, "GameTooltipTemplate")
 			anchor = CreateFrame("Frame")
 			anchor:Hide()
 		end
 
 		GameTooltip_SetDefaultAnchor(scanningTooltip, anchor)
 		scanningTooltip:ClearLines()
-		local itemString = itemLink:match("|H(.-)|h")
-		local rc
+		local itemString = strmatch(itemLink, "|H(.-)|h")
 		if key and key > -1 and slot then
-			rc = pcall(scanningTooltip.SetBagItem, scanningTooltip, key, slot)
+			scanningTooltip.SetBagItem(scanningTooltip, key, slot)
 		elseif key then
-			rc = pcall(scanningTooltip.SetInventoryItem, scanningTooltip, "player", (key == -1) and BankButtonIDToInvSlotID(slot) or key)
+			scanningTooltip.SetInventoryItem(scanningTooltip, "player", (key == -1) and BankButtonIDToInvSlotID(slot) or key)
 		else
-			rc = pcall(scanningTooltip.SetHyperlink, scanningTooltip, itemString)
+			scanningTooltip.SetHyperlink(scanningTooltip, itemString)
 		end
-
-		local c = tipCache[itemLink]
-		-- Don't cache Artifact Weapons
-		if c.quality == LE_ITEM_QUALITY_ARTIFACT then
-			c.cached = false
-		end
-
-		if not rc then return emptytable end
 		scanningTooltip:Show()
 
 		for i = 2, 4 do
-			local label = _G["GearLevelScanTooltipTextLeft"..i]
+			local label = _G["SyLevelScanTooltipTextLeft"..i]
 			local text = label and label:GetText()
 			if text then
-				if not c.ilevel then
-					local normal, timewalking = text:match(itemLevelPattern)
+				if not tipCache[itemLink].ilevel then
+					local normal, timewalking = strmatch(text, itemLevelPattern)
 					if timewalking and timewalking ~= "" then
-						c.ilevel = tonumber(timewalking)
+						tipCache[itemLink].ilevel = tonumber(timewalking)
 						tipCache[itemLink].cached = false
 					else
-						c.ilevel = tonumber(normal)
+						tipCache[itemLink].ilevel = tonumber(normal)
 						tipCache[itemLink].cached = true
 					end
 				end
-				if not c.bind then
+				if not tipCache[itemLink].bind then
 					if text == ITEM_BIND_ON_EQUIP then
-						c.bind = true
+						tipCache[itemLink].bind = true
+						tipCache[itemLink].cached = false
 					end
 				end
 			end
 		end
-		c.ilevel = c.ilevel or 1
+
+		-- Don't cache Artifact Weapons
+		if tipCache[itemLink].quality == LE_ITEM_QUALITY_ARTIFACT then
+			tipCache[itemLink].cached = false
+		end
+
+		tipCache[itemLink].ilevel = tipCache[itemLink].ilevel or 1
 		scanningTooltip:Hide()
 	end
 
