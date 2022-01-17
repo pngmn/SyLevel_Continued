@@ -1,3 +1,7 @@
+SyLevel Continued | 1.2.2
+-------------------------
+- Fix Advenuture Guide Display
+
 SyLevel Continued | 1.2.1
 -------------------------
 - Add missing default values
