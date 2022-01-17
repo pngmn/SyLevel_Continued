@@ -1,3 +1,7 @@
+SyLevel Continued | 1.2.3
+-------------------------
+- Fix Itemlevel filter
+
 SyLevel Continued | 1.2.2
 -------------------------
 - Fix Advenuture Guide Display
