@@ -1,11 +1,9 @@
 local _E
 local hook
 
-local function update(button)
-	if (not EncounterJournal:IsVisible() or not button) then return end
-	local itemLink = button.link
-	local slotFrame = button.IconBorder
-	SyLevel:CallFilters("adventureguide", slotFrame, _E and itemLink)
+local function update(item)
+	if (not EncounterJournal:IsVisible() or not item) then return end
+	SyLevel:CallFilters("adventureguide", item.lootFrame.icon, _E and item.link)
 end
 
 local function doHook()
