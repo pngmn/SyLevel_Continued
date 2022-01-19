@@ -4,7 +4,7 @@ local function ilevel(itemLink, id, i)
 	local ilvl = -1
 	local itemQuality
 	if (itemLink) then
-		ilvl, itemQuality = SyLevel:GetUpgradedItemLevel(itemLink, id, i)
+		ilvl, itemQuality = SyLevel:GetItemLevel(itemLink, id, i)
 		if not ilvl then
 			ilvl = -1
 		end
