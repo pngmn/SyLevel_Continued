@@ -1,3 +1,7 @@
+SyLevel Continued | 1.3.0
+-------------------------
+- Reworked cache and tooltip scanning
+
 SyLevel Continued | 1.2.3
 -------------------------
 - Fix Itemlevel filter
