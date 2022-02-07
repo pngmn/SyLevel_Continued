@@ -6,13 +6,10 @@ local scanningTooltip, anchor
 local getItemInfoCache = {}
 local tipCache = {}
 local itemLevelPattern = gsub(ITEM_LEVEL, '%%d', '(%%d+).?%%(?(%%d*)%%)?')
-local boePattern = ITEM_BIND_ON_EQUIP
-local boaPattern1 = ITEM_BIND_TO_BNETACCOUNT
-local boaPattern2 = ITEM_BNETACCOUNTBOUND
-local patterns = {
-	[boePattern] = "BoE",
-	[boaPattern1] = "BoA",
-	[boaPattern2] = "BoA",
+local bindPatterns = {
+	[ITEM_BIND_ON_EQUIP] = "BoE",
+	[ITEM_BIND_TO_BNETACCOUNT] = "BoA",
+	[ITEM_BNETACCOUNTBOUND] = "BoA",
 }
 
 local function CachedGetItemInfo(key)
@@ -54,6 +51,8 @@ local function ScanTip(itemLink, key, slot)
 		scanningTooltip:Show()
 
 		tipCache[itemLink].cached = true
+		tipCache[itemLink].bind = nil
+
 		for i = 2, 4 do
 			local label = _G["SyLevelScanTooltipTextLeft"..i]
 			local text = label and label:GetText()
@@ -71,7 +70,7 @@ local function ScanTip(itemLink, key, slot)
 					tipCache[itemLink].cached = false
 				end
 
-				for pattern, key in pairs(patterns) do
+				for pattern, key in pairs(bindPatterns) do
 					if strfind(text, pattern) then
 						tipCache[itemLink].bind = key
 					end
@@ -92,7 +91,9 @@ local function ScanTip(itemLink, key, slot)
 end
 
 function SyLevel:GetItemLevel(itemString, id, slot)
-	if type(itemString) ~= "string" then return nil, false end
+	if type(itemString) ~= "string" then
+		return nil, false
+	end
 	local itemLink = CachedGetItemInfo(itemString)
 	local ilevel, quality, bind = ScanTip(itemLink, id, slot)
 	if ilevel then
