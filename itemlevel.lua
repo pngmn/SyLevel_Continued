@@ -92,7 +92,7 @@ end
 
 function SyLevel:GetItemLevel(itemString, id, slot)
 	if type(itemString) ~= "string" then
-		return nil, false
+		return
 	end
 	local itemLink = CachedGetItemInfo(itemString)
 	local ilevel, quality, bind = ScanTip(itemLink, id, slot)

@@ -1,3 +1,7 @@
+SyLevel Continued | 1.4.0
+-------------------------
+- ToC update for 9.2.0
+
 SyLevel Continued | 1.3.0
 -------------------------
 - Reworked cache and tooltip scanning

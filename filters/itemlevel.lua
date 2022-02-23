@@ -2,12 +2,9 @@ local ilevelThreshold, qualityThreshold
 
 local function ilevel(itemLink, id, i)
 	local ilvl = -1
-	local itemQuality
+	local itemQuality = -1
 	if (itemLink) then
 		ilvl, itemQuality = SyLevel:GetItemLevel(itemLink, id, i)
-		if not ilvl then
-			ilvl = -1
-		end
 	end
 
 	if ilvl and (ilvl >= ilevelThreshold) and (itemQuality >= qualityThreshold) then
